@@ -1,33 +1,50 @@
 import numpy as np
+class GeneticAlgorithm:
+    def __init__(self):
+        # TODO Hier alle Parameter eintragen und vorbereiten
+        pass
 
-def genetic_algorithm(initial_population, generation_number,  selection_function, fitness_function, recombination_function, mutation_function,  inversion_function, replacement_function):
-    population = initial_population
-    for run in range(generation_number):
-        # select parents from the current population
-        parents = selection_function(population, fitness_function)
-        # use recombination to produce offspring
-        offspring = recombination_function(parents, crossover_rate)
+    def run(self, object_list):
+        pass
 
-def selection_function(population, fitness_function):
-    pass
+class Population:
+    def __init__(self, population_size, object_list, bin_vol_capacity, bin_weight_capacity ):
+        '''Creates the initial_population by creating population_size chromosomes using the objects in object_list'''
+        self.current_members = np.array(population_size, dtype=object)
+        for index, _ in self.current_members:
+            random.shuffle(object_list)
+            chromosome = create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity)
+            self.current_members[index] = chromosome
 
-def recombination_function(parents, crossover_rate):
-    pass
+    def select_parents(population, number_parents):
+        '''Selects number_parents from the given population using roulette_wheel sampling'''
+        pass
 
+    def create_offspring(parents):
+        '''Creates the offspring through recombination of the parents'''
+        pass
 
 class Chromosome:
-    def __init__(self, object_list, bin_vol_capacity, bin_weight_capacity):
+    def __init__(self, object_part, group_part):
+        self.object_part = object_part
+        self.group_part = group_part
+
+    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity):
         '''Given a list of objects the constructor will create a valid distribution to the bins using the first fit heuristic'''
-        # the object part describes in which bin each object is located using the original index
-        self.object_part = object_list
+        # the object part describes in which bin each object is located
+        object_part = object_list
         # create a list that only contains one bin
-        self.group_part = [Bin(bin_vol_capacity, bin_weight_capacity)]
+        group_part = [Bin(bin_vol_capacity, bin_weight_capacity)]
+        # create Chromosome
+        chromosome = Chromosome(object_part, group_part)
         # use first fit heuristic to distribute the objects
         for obj in object_list:
-            self.first_fit(obj)
+            chromosome.first_fit(obj)
+        return chromosome
+
 
     def first_fit(self, obj):
-        # fits an object obj = (Volume, Weight) into the first bin that has enough capacity
+        '''Fits an object obj = (Volume, Weight) into the first bin that has enough remaining capacity'''
         for bin in self.group_part:
             if bin.check_fit(obj):
                 bin.fit_obj(obj)
@@ -38,14 +55,40 @@ class Chromosome:
             new_bin.fit_obj(obj)
             return
 
+    def fitness_function(self, k):
+        '''Calculates the fitness of the chromosome'''
+        amount_bins_used = len(self.group_part)
+        numerator = 0
+        for bin in self.group_part:
+            numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
+        return numerator / amount_bins_used
+
+    def recombination(parent_chromosome_a, parent_chromosome_b):
+        '''Uses the BPCX to produce two offspring'''
+        # TODO: Recombination function noch implementieren
+        pass
+
+    def mutate(self, mutation_probability):
+        '''Mutates the chromosome'''
+        # Iterate through the bins and delete bin with mutation_probability
+        removed_objects = []
+        for bin in reversed(self.group_part):
+            if np.random.random() <= mutation_probability:
+                # Delete the bin
+                self.group_part.remove(bin)
+                # save the objects that need to be reinserted
+                removed_objects = removed_objects + bin.objects_contained
+        # use first fit to distribute the items back to the bins
+        for obj in removed_objects:
+            self.first_fit(obj)
+
     def print(self):
         print('Amount of Bins used:' +str(len(self.group_part)))
         print(f'Amount of objects: {len(self.object_part)}')
+        print(self.fitness_function(2))
         print(f'Information about the bins:')
         for bin in self.group_part:
             bin.print()
-
-
 
 class Bin:
     vol_capacity = None
@@ -68,6 +111,7 @@ class Bin:
             return False
 
     def fit_obj(self, obj):
+        '''Inserts an object into a bin'''
         self.volume_fill += obj.volume
         self.weight_fill += obj.weight
         obj.corresponding_bin = self
@@ -96,5 +140,7 @@ if __name__=='__main__':
     for i in range(10):
         object_list.append(Obj(np.random.randint(1,10),np.random.randint(1,10)))
 
-    chromosome = Chromosome(object_list,10,10)
+    chromosome = Chromosome.create_chromosome(object_list,20,20)
+    chromosome.print()
+    chromosome.mutate(0.5)
     chromosome.print()
