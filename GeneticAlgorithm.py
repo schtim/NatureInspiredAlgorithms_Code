@@ -1,59 +1,136 @@
+import os
 import numpy as np
 import random
 import copy
 
 class GeneticAlgorithm:
-    def __init__(self):
-        # TODO Hier alle Parameter eintragen und vorbereiten
-        pass
+    def __init__(self, object_list, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations):
+        # Create initial Population
+        self.current_population = Population.create_initial_population(population_size, object_list, bin_vol_capacity, bin_weight_capacity)
+        self.crossover_probability = crossover_probability
+        self.mutation_probability = mutation_probability
+        self.population_size = population_size
+        self.number_generations = number_generations
 
-    def run(self, object_list):
-        pass
+    def run(self, printinfo = False):
+        for _ in np.arange(self.number_generations):
+            # Choose Parents
+            parents = Population.select_parents(self.current_population.current_members, self.population_size)
+            # Create offspring through recombination of the parents
+            offspring = Population.create_offspring(parents, self.crossover_probability)
+            # Mutate the offspring
+            for chromosome in offspring:
+                chromosome.mutate(self.mutation_probability)
+            # Inversion
+            chromosome.inversion()
+            # Replace Population
+            self.current_population = Population.replace_population(offspring)
+            # Print Info about the population
+            if printinfo:
+                self.current_population.get_info()
+        return self.current_population
 
 class Population:
-    def __init__(self, population_size, object_list, bin_vol_capacity, bin_weight_capacity ):
+    def __init__(self, population_member_list):
+        self.current_members = population_member_list
+
+    def create_initial_population(population_size, object_list, bin_vol_capacity, bin_weight_capacity):
         '''Creates the initial_population by creating population_size chromosomes using the objects in object_list'''
-        self.current_members = np.empty(population_size, dtype=object)
-        for index, _ in enumerate(self.current_members):
+        # create empty population
+        pop = Population( np.empty(population_size, dtype=object))
+        # Create chromosomes for the initial population
+        for index in np.arange(len(pop.current_members)):
             random.shuffle(object_list)
             chromosome = Chromosome.create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity)
-            self.current_members[index] = chromosome
+            pop.current_members[index] = chromosome
+        return pop
+
+    def replace_population(offspring):
+        '''Takes a list of chromosomes (offspring) and returns a new population'''
+        return Population(offspring)
+
+    def get_info(self):
+        '''Print info about the current population'''
+        total_size = 0
+        best_size = 1000
+        worst_size = 0
+        for chromosome in self.current_members:
+            total_size += len(chromosome.group_part)
+            if len(chromosome.group_part) <= best_size:
+                best_size = len(chromosome.group_part)
+            if len(chromosome.group_part) >=worst_size:
+                worst_size = len(chromosome.group_part)
+        average_size = total_size / len(self.current_members)
+        print(f'Durschnittliche Anzahl: {average_size}')
+        print(f'Beste Anzahl: {best_size}')
+        print(f'Schlechteste Anzahl: {worst_size}')
 
     def select_parents(population, number_parents):
         '''Selects number_parents from the given population using roulette_wheel sampling'''
-        pass
+        # TODO: Hier noch überlegen, ob man die Fitnesswerte speichert, um sie nicht immer neu zu berechnen
+        # calculate the fitness for every chromosome in the population
+        fitness_vals = np.empty(len(population), dtype = float)
+        for index,chromosome in enumerate(population):
+            fitness_vals[index] = chromosome.fitness_function()
+        # create probability distribution to draw parents from
+        total_fitness = np.sum(fitness_vals)
+        probabilities = 1/total_fitness * fitness_vals
+        # draw number_parents with replacement
+        parents = np.random.choice(population, size = len(population), replace=True, p = probabilities)
+        return parents
 
     def create_offspring(parents, crossover_probability):
         '''Creates the offspring through recombination of the parents'''
+        offpsring = []
         if len(parents) % 2 != 0:
             raise Exception("The amount of parents must not be odd.")
         else:
-            # Shufflen der Parents
+            # Shuffle the parents
             # TODO: Hier nochmal checken, ob wirklich nötig
             random.shuffle(parents)
+            # choose two parents and recombine
             for index in np.arange(0,len(parents), 2):
-                print(index)
-
-
+                parent_a = parents[index]
+                parent_b = parents[index+1]
+                offspring_1, offspring_2 = Chromosome.produce_offspring(parent_a, parent_b, crossover_probability)
+                offpsring = offpsring + [offspring_1, offspring_2]
+        return offpsring
 
 class Chromosome:
-    def __init__(self, object_part, group_part):
-        self.object_part = object_part
+    def __init__(self, group_part):
         self.group_part = group_part
 
-    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity):
-        '''Given a list of objects the constructor will create a valid distribution to the bins using the first fit heuristic'''
-        # the object part describes in which bin each object is located
-        object_part = object_list
+    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity, prob = 0.7):
+        '''Given a list of objects create a valid distribution using the first fit (chance) heuristic'''
         # create a list that only contains one bin
         group_part = [Bin(bin_vol_capacity, bin_weight_capacity)]
         # create Chromosome
-        chromosome = Chromosome(object_part, group_part)
+        chromosome = Chromosome(group_part)
         # use first fit heuristic to distribute the objects
         for obj in object_list:
-            chromosome.first_fit(obj)
+            chromosome.first_fit_chance(obj, prob)
         return chromosome
 
+    def first_fit_chance(self, obj, prob):
+        ''''With probability 1-prob fit an object obj = (Volume, Weight) into the first bin that has enough remaining capacity. With probability prob open a new bin.'''
+        chance = np.random.random()
+        # Use first fit
+        if chance >= prob:
+            for bin in self.group_part:
+                if bin.check_fit(obj):
+                    bin.fit_obj(obj)
+                    return
+            else:
+                new_bin = Bin()
+                self.group_part.append(new_bin)
+                new_bin.fit_obj(obj)
+                return
+        else:
+            # Open a new bin
+            new_bin = Bin()
+            self.group_part.append(new_bin)
+            new_bin.fit_obj(obj)
+            return
 
     def first_fit(self, obj):
         '''Fits an object obj = (Volume, Weight) into the first bin that has enough remaining capacity'''
@@ -67,75 +144,67 @@ class Chromosome:
             new_bin.fit_obj(obj)
             return
 
-    def fitness_function(self, k):
+    def fitness_function(self, k = 1.5):
         '''Calculates the fitness of the chromosome'''
+        # TODO: Hier nicht mehr mit self
+        # TODO: Hier noch andere Fitnessfunktionen ausprobieren
         amount_bins_used = len(self.group_part)
         numerator = 0
         for bin in self.group_part:
-            numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
-        return numerator / amount_bins_used
+               numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
+        return numerator/amount_bins_used
 
     def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability):
         '''Produces two offspring using the given recombination two times.'''
-        offspring_1 = recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability)
-        offspring_2 = recombination(parent_chromosome_b, parent_chromosome_a, crossover_probability)
+        offspring_1 = Chromosome.recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability)
+        offspring_2 = Chromosome.recombination(parent_chromosome_b, parent_chromosome_a, crossover_probability)
         return offspring_1, offspring_2
 
+    def inversion(self):
+        # TODO: Hier noch richtig implementieren
+        random.shuffle(self.group_part)
 
-    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability):
-        '''Uses the BPCX to produce one offspring'''
+    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, max_crossing_size = 10):
+        '''Uses the BPCX to produce one offspring'''#
+        # TODO: Hier vielleicht noch ein bisschen aufteilen
         # Parts of parent chromosome b are inserted into a
-        # TODO: Recombination function noch implementieren
         # Only recombinate, if crossover_probability
-        if np.random.random() >= crossover_probability:
-            print('Recombinate')
-            # Choose crossing points
-            crossing_point_l = np.random.randint(0,len(parent_chromosome_b.group_part))
-            crossing_point_r = np.random.randint(0,len(parent_chromosome_b.group_part))
-            if crossing_point_l == crossing_point_r:
-                print('Same Crossing point')
-                # No Crossover takes place
-                offspring_1 = parent_chromosome_a.duplicate()
-                return offspring_1
-            if crossing_point_l > crossing_point_r:
-                # change crossing points
-                cur = crossing_point_r
-                crossing_point_r = crossing_point_l
-                crossing_point_l = cur
-            print('Crossing Points')
-            print(crossing_point_l)
-            print(crossing_point_r)
-            # choose the bins in between the crossing_points
+        if np.random.random() <= crossover_probability:
+            # choose crossing_size
+            crossing_size = np.random.randint(1, max_crossing_size)
+            # Choose crossing point
+            crossing_point = np.random.randint(0,len(parent_chromosome_b.group_part)-crossing_size)
             # TODO: Checken ob die crossing points wirklich den gesamten Bereich abdecken (auch das Ende) Geht etwas durch den slice Operator verloren?
-            bins_to_be_inserted = parent_chromosome_b.group_part[crossing_point_l:crossing_point_r]
+            bins_to_be_inserted = parent_chromosome_b.group_part[crossing_point:crossing_point + crossing_size]
             objects_to_be_inserted = []
             for bin in bins_to_be_inserted:
                 objects_to_be_inserted = objects_to_be_inserted + bin.objects_contained
             # insert bins in parent_a
             # First copy the parent_chromosome_a to not change the old chromosome
             offspring_1 = parent_chromosome_a.duplicate()
-            print('Chromosome before removing')
-            offspring_1.print()
             # Iterate through the bins and check which bins need to be deleted
             removed_objects = []
             for bin in reversed(offspring_1.group_part):
+                # if object in bin is contained in one of the bins that were reinserted
                 if set(bin.objects_contained).intersection(set(objects_to_be_inserted)):
-                    print('HIER ein bin wurde gelöscht')
                     # Delete the bin
                     offspring_1.group_part.remove(bin)
                     # save the objects that need to be reinserted
                     removed_objects = removed_objects + bin.objects_contained
-            print('Chromosome after removing')
-            offspring_1.print()
             # choose a point where the bins will be inserted
-            insertion_point= np.random.randint(0,len(offspring_1.group_part))
-            print('Insertion point')
-            print(insertion_point)
+            if len(offspring_1.group_part)==0:
+                insertion_point = 0
+            else:
+                insertion_point= np.random.randint(0,len(offspring_1.group_part))
             # insert the bins
             offspring_1.group_part[insertion_point:insertion_point] = bins_to_be_inserted
             # reinsert the remaining objects using ff
             removed_objects = set(removed_objects) - set(objects_to_be_inserted)
             removed_objects = list(removed_objects)
+            # sort list of removed_objects (to reinsert with first_fit (decreasing))
+            # TODO: Hier noch verschiedene Sortierungen ausprobieren (chance, volume, weight .. )
+            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+            # reinsert using first fit
             for obj in removed_objects:
                 offspring_1.first_fit(obj)
             return offspring_1
@@ -145,7 +214,7 @@ class Chromosome:
             return offspring_1
 
     def mutate(self, mutation_probability):
-        '''Mutates the chromosome'''
+        '''Mutate the chromosome'''
         # Iterate through the bins and delete bin with mutation_probability
         removed_objects = []
         for bin in reversed(self.group_part):
@@ -159,20 +228,21 @@ class Chromosome:
             self.first_fit(obj)
 
     def duplicate(self):
+        '''Creates a copy of the chromosome,'''
+        # no deepcopy, obj stay the same
         group_part = copy.copy(self.group_part)
-        object_list = copy.copy(self.object_part)
-        new_one = Chromosome(object_list, group_part)
+        new_one = Chromosome(group_part)
         return new_one
 
-        return new_one
-
-    def print(self):
-        print('Amount of Bins used:' +str(len(self.group_part)))
-        print(f'Amount of objects: {len(self.object_part)}')
-        print(self.fitness_function(2))
-        print(f'Information about the bins:')
-        for bin in self.group_part:
-            bin.print()
+    def print(self, only_size= False):
+        if only_size:
+            print('Amount of Bins used:' +str(len(self.group_part)))
+        else:
+            print('Amount of Bins used:' +str(len(self.group_part)))
+            print(self.fitness_function(2))
+            print(f'Information about the bins:')
+            for bin in self.group_part:
+                bin.print()
 
 class Bin:
     vol_capacity = None
@@ -225,51 +295,17 @@ class Obj:
 
 
 if __name__=='__main__':
-    print()
-
+    # Load the object values
+    path = os.path.dirname(os.path.abspath(__file__))
+    small_container = np.load(os.path.join(path,'Ressources/medium_container.npy'))
+    small_objects = np.load(os.path.join(path, 'Ressources/medium_objects.npy'))
+    bin_vol_capacity,bin_weight_capacity = small_container
+    # TODO: Hier n array
     object_list = []
-    for i in range(10):
-        object_list.append(Obj(np.random.randint(1,10),np.random.randint(1,10)))
-
-    pop = Population(100,  object_list, 10,10)
-
-    Population.create_offspring(pop.current_members, 0.1)
-
-    # ob = object_list[3]
-    # new_list = []
-    # if set(new_list).intersection(set(object_list)):
-    #     print('True')
-
-    #
-    # chromosome_a = Chromosome.create_chromosome(object_list,10,10)
-    # print('Chromosome A')
-    # chromosome_a.print()
-    # print('')
-    # random.shuffle(object_list)
-    # chromosome_b = Chromosome.create_chromosome(object_list,20,20)
-    # print('Chromosome B')
-    # chromosome_b.print()
-    #
-    # offspring_1 = Chromosome.produce_one_offspring(chromosome_a, chromosome_b, 0.001)
-    # print('')
-    # print('Offspring_1')
-    # offspring_1.print()
-
-
-
-    # obj_a = Obj(4,1)
-    # obj_b = Obj(5,6)
-    # obj_c = Obj(3,5)
-    # obj_d = Obj(2,1)
-    # obj_e = Obj(4,2)
-    #
-    # bin1 = Bin(10, 10)
-    # bin2 = Bin(10, 10)
-    #
-    # bin1.fit_obj(obj_a)
-    # bin1.fit_obj(obj_b)
-    # bin1.fit_obj(obj_c)
-    #
-    # bin2.fit_obj(obj_a)
-    # bin2.fit_obj(obj_d)
-    # bin2.fit_obj(obj_e)
+    for obj_tuple in small_objects:
+        volume, weight = obj_tuple
+        obj = Obj(volume, weight)
+        object_list.append(obj)
+    # Create the GeneticAlgorithm
+    GA = GeneticAlgorithm(object_list, 100, bin_vol_capacity, bin_weight_capacity, 0.8, 0.001, 1000)
+    GA.run(printinfo = True)
