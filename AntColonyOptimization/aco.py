@@ -31,7 +31,7 @@ def ConstructAntSolutions(objects, containers, pheromone_trails,solution_matrix,
 		container_count[0] = 1
 		current_object = 1
 		#Ameise "ant" sucht Lösung
-		for w in range (n-1):
+		for x in range (n-1):
 			current_container = FindNextContainer(current_object, pheromone_trails, ant_containers, container_count, objects, n)
 			container_count[current_container] = 1
 			#Aktualisiere Füllstand
