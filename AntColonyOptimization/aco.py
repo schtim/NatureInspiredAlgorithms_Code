@@ -66,8 +66,8 @@ def UpdatePheromones(solutions, pheromone_trails, p, l, n):
 def ACObinpacking(objects, container_size):
 	n = len(objects)		#Anzahl Objekte
 	ant_count = n 			#Anzahl Ameisen
-	p = 0.1					#Zerfallsrate
-	l = 10					#Anzahl der Lösungen die Pheromonwerte erhöhen sollen
+	p = 0.1				#Zerfallsrate
+	l = 10				#Anzahl der Lösungen die Pheromonwerte erhöhen sollen
 
 	#initzialise container array mit object_0->container_0
 	containers = np.array(container_size)
