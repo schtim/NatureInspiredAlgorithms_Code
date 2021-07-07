@@ -1,6 +1,4 @@
 import numpy as np
-from random import seed
-from random import randint
 
 def FindNextContainer(current_object, pheromone_trails, ant_containers, container_count, objects, n):
 	container_reach = np.ones(n)
