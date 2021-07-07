@@ -7,9 +7,9 @@ def FindNextContainer(current_object, pheromone_trails, ant_containers, containe
 		if ant_containers[x][0]-objects[current_object][0]>=0 and ant_containers[x][1]-objects[current_object][1]>=0:
 			container_reach[x] = x
 			container_reach_p[x] = pheromone_trails[current_object, x]
-			#EVENTUELL: weniger freier platz -> höhere Wertung
-			#>>>container_reach_p[x] = container_reach_p[x]*1/(ant_containers[x][0]+ant_containers[x][1])
-			#NOCH UNBENUTZTE CONTAINER BESONDERS SCHLECHT BEWERTEN
+			#weniger freier platz -> höhere Wertung
+			container_reach_p[x] = container_reach_p[x]*1/(ant_containers[x][0]+ant_containers[x][1])
+			#noch unbenutzte Container besonders schlecht bewerten
 			if(container_count[x] == 0):
 				container_reach_p[x] = container_reach_p[x]/10 #Ersatz für 10 finden
 
