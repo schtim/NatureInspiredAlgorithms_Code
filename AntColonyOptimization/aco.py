@@ -56,7 +56,7 @@ def UpdatePheromones(solutions, pheromone_trails, p, l, n):
 	add_pheromones.shape = (n, n)
 	for x in range(l):
 		add_pheromones += sorted_solutions[x][1]  * 1/sorted_solutions[x][0]
-	
+
 	new_pheromone_trails = (1-p)*pheromone_trails
 	new_pheromone_trails += add_pheromones
 
@@ -106,7 +106,7 @@ small_container.shape = (2, )
 medium_objects = np.load('medium_objects.npy')
 medium_objects.shape = (100, 2)
 medium_container = np.load('medium_container.npy')
-medium_container.shape = (2, )
+medium_container.shape = (2,)
 
 solution = ACObinpacking(medium_objects, medium_container)
 print("Beste gefundene Lösung:")

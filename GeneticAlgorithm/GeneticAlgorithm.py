@@ -3,7 +3,9 @@ import numpy as np
 import random
 import copy
 
+
 class GeneticAlgorithm:
+    all_time_best = 1000000
     def __init__(self, object_list, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations):
         # Create initial Population
         self.current_population = Population.create_initial_population(population_size, object_list, bin_vol_capacity, bin_weight_capacity)
@@ -58,6 +60,8 @@ class Population:
             total_size += len(chromosome.group_part)
             if len(chromosome.group_part) <= best_size:
                 best_size = len(chromosome.group_part)
+            if len(chromosome.group_part) <= GeneticAlgorithm.all_time_best:
+                GeneticAlgorithm.all_time_best = len(chromosome.group_part)
             if len(chromosome.group_part) >=worst_size:
                 worst_size = len(chromosome.group_part)
         average_size = total_size / len(self.current_members)
@@ -100,7 +104,7 @@ class Chromosome:
     def __init__(self, group_part):
         self.group_part = group_part
 
-    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity, prob = 0.7):
+    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity, prob = 0.8):
         '''Given a list of objects create a valid distribution using the first fit (chance) heuristic'''
         # create a list that only contains one bin
         group_part = [Bin(bin_vol_capacity, bin_weight_capacity)]
@@ -152,8 +156,8 @@ class Chromosome:
         numerator = 0
         for bin in self.group_part:
                numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
-        return numerator/amount_bins_used
-        #return amount_bins_used
+        #return numerator/amount_bins_used
+        return amount_bins_used
         #return amount_bins_used
         #return 1
 
@@ -316,11 +320,11 @@ if __name__=='__main__':
     objects = np.load(os.path.join(path, 'Ressources/medium_objects.npy'))
     bin_vol_capacity,bin_weight_capacity = container
 
-    # amount_objects = 500
-    # objects = np.empty((amount_objects, 2))
-    # for index,_ in enumerate(objects):
-    #     obj = np.random.randint(0,100, 2)
-    #     objects[index] = obj
+    amount_objects = 300
+    objects = np.empty((amount_objects, 2))
+    for index,_ in enumerate(objects):
+        obj = np.random.randint(0,100, 2)
+        objects[index] = obj
 
     # TODO: Hier n array
     object_list = []
@@ -329,36 +333,7 @@ if __name__=='__main__':
         obj = Obj(volume, weight)
         object_list.append(obj)
     # Create the GeneticAlgorithm
-    GA = GeneticAlgorithm(object_list, 20, bin_vol_capacity, bin_weight_capacity, 0.8, 0.01, 200)
+    GA = GeneticAlgorithm(object_list, 60, bin_vol_capacity, bin_weight_capacity, 0.8, 0.05, 500)
     solution = GA.run(printinfo = True)
 
-    # for chromosome in solution.current_members:
-    #     chromosome.print()
-
-    #solution.print()
-    # obj_1 = Obj(1,2)
-    # obj_2 = Obj(4,3)
-    # obj_3 = Obj(5,3)
-    # obj_4 = Obj(1,1)
-    # obj_5 = Obj(3,4)
-    # obj_6 = Obj(2,1)
-    # obj_7 = Obj(4,4)
-    # obj_8 = Obj(1,4)
-    # obj_9 = Obj(1,3)
-    #
-    # object_list = [obj_1, obj_2, obj_3, obj_4, obj_5, obj_6, obj_7, obj_8]
-    #
-    # chrom_a = Chromosome.create_chromosome(object_list,9,9)
-    # random.shuffle(object_list)
-    # chrom_b = Chromosome.create_chromosome(object_list,9,9)
-    #
-    # chrom_a.print()
-    # chrom_b.print()
-    #
-    # print('')
-    # print('')
-    # print('Recombination')
-    #
-    # offspring = Chromosome.recombination(chrom_a, chrom_b, 1,10)
-
-    #offspring.print()
+    print(f'Bester gefundener Wert: {GeneticAlgorithm.all_time_best}')
