@@ -74,7 +74,7 @@ class Population:
             fitness_vals[index] = chromosome.fitness_function()
         # create probability distribution to draw parents from
         total_fitness = np.sum(fitness_vals)
-        probabilities = 1/total_fitness * fitness_vals
+        probabilities = (1/total_fitness) * fitness_vals
         # draw number_parents with replacement
         parents = np.random.choice(population, size = len(population), replace=True, p = probabilities)
         return parents
@@ -153,6 +153,9 @@ class Chromosome:
         for bin in self.group_part:
                numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
         return numerator/amount_bins_used
+        #return amount_bins_used
+        #return amount_bins_used
+        #return 1
 
     def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability):
         '''Produces two offspring using the given recombination two times.'''
@@ -172,8 +175,15 @@ class Chromosome:
         if np.random.random() <= crossover_probability:
             # choose crossing_size
             crossing_size = np.random.randint(1, max_crossing_size)
+            if crossing_size > len(parent_chromosome_b.group_part):
+                print('Ich war hier ')
+                crossing_size = len(parent_chromosome_b.group_part)
+            #print('crossing_size')
+            #print(crossing_size)
             # Choose crossing point
-            crossing_point = np.random.randint(0,len(parent_chromosome_b.group_part)-crossing_size)
+            crossing_point = np.random.randint(0,len(parent_chromosome_b.group_part)-crossing_size+1)
+            #print('Crossing Point')
+            #print(crossing_point)
             # TODO: Checken ob die crossing points wirklich den gesamten Bereich abdecken (auch das Ende) Geht etwas durch den slice Operator verloren?
             bins_to_be_inserted = parent_chromosome_b.group_part[crossing_point:crossing_point + crossing_size]
             objects_to_be_inserted = []
@@ -197,6 +207,8 @@ class Chromosome:
             else:
                 insertion_point= np.random.randint(0,len(offspring_1.group_part))
             # insert the bins
+            #print('Insertion point')
+            #print(insertion_point)
             offspring_1.group_part[insertion_point:insertion_point] = bins_to_be_inserted
             # reinsert the remaining objects using ff
             removed_objects = set(removed_objects) - set(objects_to_be_inserted)
@@ -235,6 +247,7 @@ class Chromosome:
         return new_one
 
     def print(self, only_size= False):
+        print('------------------------------------------------------------------------------')
         if only_size:
             print('Amount of Bins used:' +str(len(self.group_part)))
         else:
@@ -243,6 +256,8 @@ class Chromosome:
             print(f'Information about the bins:')
             for bin in self.group_part:
                 bin.print()
+        print('------------------------------------------------------------------------------')
+
 
 class Bin:
     vol_capacity = None
@@ -297,15 +312,53 @@ class Obj:
 if __name__=='__main__':
     # Load the object values
     path = os.path.dirname(os.path.abspath(__file__))
-    small_container = np.load(os.path.join(path,'Ressources/medium_container.npy'))
-    small_objects = np.load(os.path.join(path, 'Ressources/medium_objects.npy'))
-    bin_vol_capacity,bin_weight_capacity = small_container
+    container = np.load(os.path.join(path,'Ressources/medium_container.npy'))
+    objects = np.load(os.path.join(path, 'Ressources/medium_objects.npy'))
+    bin_vol_capacity,bin_weight_capacity = container
+
+    # amount_objects = 500
+    # objects = np.empty((amount_objects, 2))
+    # for index,_ in enumerate(objects):
+    #     obj = np.random.randint(0,100, 2)
+    #     objects[index] = obj
+
     # TODO: Hier n array
     object_list = []
-    for obj_tuple in small_objects:
+    for obj_tuple in objects:
         volume, weight = obj_tuple
         obj = Obj(volume, weight)
         object_list.append(obj)
     # Create the GeneticAlgorithm
-    GA = GeneticAlgorithm(object_list, 100, bin_vol_capacity, bin_weight_capacity, 0.8, 0.001, 1000)
-    GA.run(printinfo = True)
+    GA = GeneticAlgorithm(object_list, 20, bin_vol_capacity, bin_weight_capacity, 0.8, 0.01, 200)
+    solution = GA.run(printinfo = True)
+
+    # for chromosome in solution.current_members:
+    #     chromosome.print()
+
+    #solution.print()
+    # obj_1 = Obj(1,2)
+    # obj_2 = Obj(4,3)
+    # obj_3 = Obj(5,3)
+    # obj_4 = Obj(1,1)
+    # obj_5 = Obj(3,4)
+    # obj_6 = Obj(2,1)
+    # obj_7 = Obj(4,4)
+    # obj_8 = Obj(1,4)
+    # obj_9 = Obj(1,3)
+    #
+    # object_list = [obj_1, obj_2, obj_3, obj_4, obj_5, obj_6, obj_7, obj_8]
+    #
+    # chrom_a = Chromosome.create_chromosome(object_list,9,9)
+    # random.shuffle(object_list)
+    # chrom_b = Chromosome.create_chromosome(object_list,9,9)
+    #
+    # chrom_a.print()
+    # chrom_b.print()
+    #
+    # print('')
+    # print('')
+    # print('Recombination')
+    #
+    # offspring = Chromosome.recombination(chrom_a, chrom_b, 1,10)
+
+    #offspring.print()
