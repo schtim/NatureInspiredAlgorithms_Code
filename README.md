@@ -14,5 +14,4 @@
 * Die Strafe relativ drastisch zu erhöhen/ leere Container extrem unwahrscheinlich zu machen(Faktor 1/100 - 1/1000) hat sehr starke Verbesserungen bewirkt obwohl viele Lösungen  fast unerreichbar werden
 * BestFit kann schärfer definiert werden, dadurch wurde aber keine Verbesserung erzielt (momentan wird insgesamt wenig verfügbarer Platz besser bewertet, nicht wie gut ein spezielles objekt passt, zb würde ein Objekt(1,3) momentan mit gleicher Wahrscheinlichkeit in Container mit (3, 10) und (10, 3) freiem Platz zugeordnet werden)
 * Objekte vorher nach Gewicht oder Volumen zu sortieren hat keine Verbesserung bewirkt
-* Ergebnisse gelten bisher nur für die gegebenen Testmengen small/medium containers
 ## Particle Swarm Optimization
