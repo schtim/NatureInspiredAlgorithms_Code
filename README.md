@@ -16,3 +16,9 @@ das sollte glaube ich nicht so sein, nach den ersten Iterationen sind oft die be
 * BestFit kann schärfer definiert werden, dadurch wurde aber keine Verbesserung erzielt (momentan wird insgesamt wenig verfügbarer Platz besser bewertet, nicht wie gut ein spezielles objekt passt, zb würde ein Objekt(1,3) momentan mit gleicher Wahrscheinlichkeit in Container mit (3, 10) und (10, 3) freiem Platz zugeordnet werden)
 * Objekte vorher nach Gewicht oder Volumen zu sortieren hat keine Verbesserung bewirkt
 ## Particle Swarm Optimization
+### Fragen:
+* Wenn Zufallsverteilung mit FirstFit Arbeitet werden echt gute Lösungen geliefert. Blos ist es dann kein Zufall mehr und man könnte statt mit PSO auch gleich ganz mit FirstFit Arbeiten
+* Aktuelle Ergebnisse noch nicht zufriefenstellend und Endergebnisse finden sich in allen Verteilungsvarianten früh in der Laufzeit (erste Hälfte) weitere Verbesserungen kosten extrem viele Schritte
+* Niedrige Startcontainerzahl liefert sehr früh starke Verteilungen, die aber nur schwer weiter verbessert werden
+* Nur legale Verteilungen der Objekte in den Partikeln schränkt ein, sonst würden aber illegale Verteilungen alle ihre "brauchbaren" Informationen verlieren, wie könnten gute Ergebnisse in legalen und illegalen Partikeln besser genutzt werden. Mögliches Einbauen von höherer Wahrscheinlichkeit für Objekte in gut gefüllten (legalen) Containern in diesen zu bleiben? Bin mir nicht sicher ob dies Verbesserung gibt
+* Koeffizienten lieferten noch keine klaren Unterschiede, wie sie am Besten eingestellt sind, aber viel Chaos/Zufallsverteilung scheint immer gut
