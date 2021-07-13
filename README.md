@@ -9,7 +9,7 @@
  
 ### Fragen:
 ## Ant Colony Optimization
-* Die Anzahl Ameisen und Iterationen hat wenig Einfluß auf die Qualität der Lösungen, kommt wahrscheinlich bei grösseren Eingaben mehr zum Tragen
+* Die Anzahl Ameisen und Iterationen hat wenig Einfluß auf die Qualität der Lösungen
 * Stärkste Faktoren für die Qualität der Lösung sind BestFit und Strafe für leere Container bei der Containerwahl,
 das sollte glaube ich nicht so sein, nach den ersten Iterationen sind oft die besten Lösungen schon gefunden, die Iterationen verbessern sich nicht kontinuierlich sondern die Verbesserungen treten eher zufällig auf, die Pheromone haben scheinbar wenig Einfluss
 * Die Strafe relativ drastisch zu erhöhen/ leere Container extrem unwahrscheinlich zu machen(Faktor 1/100 - 1/1000) hat sehr starke Verbesserungen bewirkt obwohl viele Lösungen fast unerreichbar werden, Ziel sollte sein mit möglichst wenig "Strafe" auszukommen
