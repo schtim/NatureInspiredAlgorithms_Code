@@ -1,9 +1,6 @@
 ### Particle Swarm Optimization für das Bin Packing Problem
 # Last Updated:
-# 11.07.2021 14:52
-
-# todo:
-# bessere Auswertung (Durchschnittsfitness vom Partikelschwarm pro step)
+# 13.07.2021 16:50
 
 import numpy
 import random
@@ -225,6 +222,7 @@ class Swarm:
 	gbest_container_list = []
 	gbest_fitness_historie = []
 	gbest_container_historie = []
+	particle_fitness_historie = []
 	
 	def create_gbest(self):
 		gbest_list = []
@@ -245,8 +243,8 @@ class Swarm:
 		self.gbest_object_list = self.create_gbest()			
 		self.update_gbest(0)
 			
-	def get_particle(self, particel_number):
-		return self.particles_list[particel_number]
+	def get_particle(self, particle_number):
+		return self.particles_list[particle_number]
 	
 	def get_gbest_object(self, object_number):
 		return self.gbest_object_list[object_number]
@@ -288,81 +286,72 @@ class Swarm:
 	def add_gbest_container_historie(self):
 		self.gbest_container_historie.append(copy.deepcopy(self.get_gbest_number_container()))
 		
+	def add_particle_fitness_historie(self):
+		fitness = 0
+		for i in range(number_particles):
+			fitness += self.get_particle(i).get_fitness()
+		self.particle_fitness_historie.append(int(fitness/number_particles))
+	
+	def remove_particle_object_container(self, number_particle, number_object):
+		self.get_particle(number_particle).dec_container(self.get_particle(number_particle).get_object_position(number_object), self.get_particle(number_particle).get_object_weight(number_object), self.get_particle(number_particle).get_object_volume(number_object))
+	
+	def move_particle_object(self, number_particle, number_object, new_container):
+		if self.get_particle(number_particle).inc_legal(new_container, self.get_particle(number_particle).get_object_weight(number_object), self.get_particle(number_particle).get_object_volume(number_object)) == 1:
+			self.get_particle(number_particle).update_object_position(number_object, new_container)
+			self.get_particle(number_particle).inc_container(new_container, self.get_particle(number_particle).get_object_weight(number_object), self.get_particle(number_particle).get_object_volume(number_object))
+			return 1
+		else:
+			return 0
+		
 	def step(self):
 		for i in range(number_particles):
-			objects_order = list(range(number_objects))
-			random.shuffle(objects_order)
-			for j in objects_order:
+			#objects_order = list(range(number_objects))
+			#random.shuffle(objects_order)
+			objects_move_local = []
+			objects_move_global = []
+			objects_move_chaos = []
+			objects_stay = []
+			objects_stay_position = []
+			for j in range(number_objects):
+				r = random.random()
+				if r < c_local:
+					objects_move_local.append(j)
+				elif r < (c_local+c_global):
+					objects_move_global.append(j)
+				elif r < (c_local+c_global+c_chaos):
+					objects_move_chaos.append(j)
+				else:
+					objects_stay.append(j)
+					objects_stay_position.append(self.get_particle(i).get_object_position(j))
+				self.remove_particle_object_container(i, j)
+			random.shuffle(objects_move_local)
+			for j in objects_move_local:
+				if self.move_particle_object(i, j, self.get_particle(i).get_pbest_object_position(j)) == 0:
+					objects_move_chaos.append(j)
+			random.shuffle(objects_move_global)
+			for j in objects_move_global:
+				if self.move_particle_object(i, j, self.get_gbest_object_position(j)) == 0:
+					objects_move_chaos.append(j)
+			random.shuffle(objects_stay)
+			for j in range(len(objects_stay)):
+				if self.move_particle_object(i, objects_stay[j], objects_stay_position[j]) == 0:
+					objects_move_chaos.append(objects_stay[j])
+			random.shuffle(objects_move_chaos)
+			for j in objects_move_chaos:
+				jumps = []
+				empty_container = 0
+				for k in range(number_objects):
+					if self.get_particle(i).get_container_objects(k) > 0:
+						jumps.append(copy.deepcopy(k))
+					elif empty_container == 0:
+						jumps.append(copy.deepcopy(k))
+						empty_container = 1
+				jumps_len = len(jumps)
 				not_moved = 1
 				while not_moved:
-					# sollte die zuweisung von r zu einem illegalem partikel führen, wird es neu generiert bis die bewegung passiert ist
-					r = random.random()
-					# objekt im partikel bewegt sich zu dem container in welchem es in seinem pbest befindet
-					if r < c_local:
-						if self.get_particle(i).inc_legal(self.get_particle(i).get_pbest_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j)) == 1:
-							self.get_particle(i).dec_container(self.get_particle(i).get_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-							self.get_particle(i).update_object_position(j, self.get_particle(i).get_pbest_object_position(j))
-							self.get_particle(i).inc_container(self.get_particle(i).get_pbest_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-							not_moved = 0
-						else:
-							pass
-					# objekt im partikel bewegt sich zu dem container in welchem es sich im gbest befindet
-					elif r < (c_local+c_global):
-						if self.get_particle(i).inc_legal(self.get_gbest_object_position(j), self.get_gbest_object_weight(j), self.get_gbest_object_volume(j)) == 1:
-							self.get_particle(i).dec_container(self.get_particle(i).get_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-							self.get_particle(i).update_object_position(j, self.get_gbest_object_position(j))
-							self.get_particle(i).inc_container(self.get_gbest_object_position(j), self.get_gbest_object_weight(j), self.get_gbest_object_volume(j))
-							not_moved = 0
-						else:
-							pass
-					# objekt wählt seine neue position zufällig
-					elif r < (c_local+c_global+c_chaos):
-###----------------------------------------------------------------------------------------------------------------
-### Variante Zufall in bestimmten Containern (alle container mit mind. einem element plus einen leeren container)
-						jumps = []
-						empty_container = 0
-						for k in range(number_objects):
-							if self.get_particle(i).get_container_objects(k) > 0:
-								jumps.append(copy.deepcopy(k))
-							elif empty_container == 0:
-								jumps.append(copy.deepcopy(k))
-								empty_container = 1
-						jumps_len = len(jumps)
-						jump_position = random.randint(0, jumps_len-1)
-						while not_moved:
-							if self.get_particle(i).inc_legal(jumps[jump_position], self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j)) == 1:
-								self.get_particle(i).dec_container(self.get_particle(i).get_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-								self.get_particle(i).update_object_position(j, jumps[jump_position])
-								self.get_particle(i).inc_container(jumps[jump_position], self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-								not_moved = 0
-							else:
-								jump_position = random.randint(0, jumps_len-1)
-###----------------------------------------------------------------------------------------------------------------
-### Variante Zufall über kompletten Suchraum
-#						r2 = random.randint(0, number_objects-1)
-#						while not_moved:
-#							if self.get_particle(i).inc_legal(r2, self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j)) == 1:
-#								self.get_particle(i).dec_container(self.get_particle(i).get_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-#								self.get_particle(i).update_object_position(j, r2)
-#								self.get_particle(i).inc_container(r2, self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-#								not_moved = 0
-#							else:
-#								r2 = random.randint(0, number_objects-1)
-###----------------------------------------------------------------------------------------------------------------
-### Variante First Fit	(beste Ergebnisse, aber warum nicht gleich First Fit statt PSO verwenden?)				
-#						k = 0
-#						while not_moved:
-#							if self.get_particle(i).inc_legal(k, self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j)) == 1:
-#								self.get_particle(i).dec_container(self.get_particle(i).get_object_position(j), self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-#								self.get_particle(i).update_object_position(j, k)
-#								self.get_particle(i).inc_container(k, self.get_particle(i).get_object_weight(j), self.get_particle(i).get_object_volume(j))
-#								not_moved = 0
-#							else:
-#								k += 1
-###----------------------------------------------------------------------------------------------------------------
-					else:
-						if self.get_particle(i).get_container_legal(self.get_particle(i).get_object_position(j)) == 1:
-							not_moved = 0
+					jump_position = random.randint(0, jumps_len-1)
+					if self.move_particle_object(i, j, jump_position) == 1:
+						not_moved = 0
 		# nach bewegung: anpassen der fitness aller partikel plus updates von pbest und gbest
 		for i in range(number_particles):
 			self.get_particle(i).update_fitness()
@@ -370,8 +359,6 @@ class Swarm:
 				self.get_particle(i).update_pbest()
 				if self.get_particle(i).get_fitness() < self.get_gbest_fitness():
 					self.update_gbest(i)
-		self.add_gbest_fitness_historie()		
-		self.add_gbest_container_historie()
 	
 	def run(self, filename):
 		f = open("Solutions/" + filename, "a")
@@ -380,8 +367,13 @@ class Swarm:
 		f.write("Maximale Containeranzahl: " + str(number_objects) + "\n")
 		self.add_gbest_fitness_historie()
 		self.add_gbest_container_historie()
+		self.add_particle_fitness_historie()
 		for i in range(iterations):
 			self.step()
+			self.add_gbest_fitness_historie()		
+			self.add_gbest_container_historie()
+			self.add_particle_fitness_historie()
+		f.write("Particle Fitness Historie: " + str(self.particle_fitness_historie) +"\n")
 		f.write("gbest Fitness Historie: " + str(self.gbest_fitness_historie) +"\n")
 		f.write("gbest Container Historie: " + str(self.gbest_container_historie) +"\n")
 		f.write("gbest Verteilung:\n")

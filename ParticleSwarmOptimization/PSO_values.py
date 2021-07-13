@@ -7,7 +7,7 @@ import numpy as np
 
 ### Anzahl Durchläufe
 
-iterations = 500
+iterations = 1500
 
 
 ### Anzahl Partikel
