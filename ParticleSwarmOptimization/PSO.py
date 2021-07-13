@@ -332,7 +332,6 @@ class Swarm:
 			for j in objects_move_global:
 				if self.move_particle_object(i, j, self.get_gbest_object_position(j)) == 0:
 					objects_move_chaos.append(j)
-			random.shuffle(objects_stay)
 			for j in range(len(objects_stay)):
 				if self.move_particle_object(i, objects_stay[j], objects_stay_position[j]) == 0:
 					objects_move_chaos.append(objects_stay[j])
