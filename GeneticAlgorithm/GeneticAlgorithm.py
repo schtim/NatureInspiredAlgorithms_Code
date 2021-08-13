@@ -1,4 +1,5 @@
 import os
+import time
 import numpy as np
 import random
 import copy
@@ -6,16 +7,30 @@ import copy
 
 class GeneticAlgorithm:
     all_time_best = 1000000
-    def __init__(self, object_list, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations):
+    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations):
         # Create initial Population
+        object_list = []
+        for obj_tuple in objects:
+            volume, weight = obj_tuple
+            obj = Obj(volume, weight)
+            object_list.append(obj)
         self.current_population = Population.create_initial_population(population_size, object_list, bin_vol_capacity, bin_weight_capacity)
         self.crossover_probability = crossover_probability
         self.mutation_probability = mutation_probability
         self.population_size = population_size
         self.number_generations = number_generations
+        self.best_vals = np.zeros(number_generations)
+        self.av_vals = np.zeros(number_generations)
+        self.worst_vals = np.zeros(number_generations)
+        self.all_time_best =1000000
 
-    def run(self, printinfo = False):
-        for _ in np.arange(self.number_generations):
+    def run(self):
+        start = time.time()
+        for generation_number in np.arange(self.number_generations):
+            #print()
+            #print(f'Generation {generation_number}')
+            #for chromosome in self.current_population.current_members:
+            #    chromosome.print()
             # Choose Parents
             parents = Population.select_parents(self.current_population.current_members, self.population_size)
             # Create offspring through recombination of the parents
@@ -23,14 +38,33 @@ class GeneticAlgorithm:
             # Mutate the offspring
             for chromosome in offspring:
                 chromosome.mutate(self.mutation_probability)
-            # Inversion
-            chromosome.inversion()
+                # Inversion
+                chromosome.inversion()
             # Replace Population
             self.current_population = Population.replace_population(offspring)
             # Print Info about the population
-            if printinfo:
-                self.current_population.get_info()
-        return self.current_population
+            self.save_info(self.current_population , generation_number)
+        end = time.time()
+        runtime = end - start
+        return self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime
+
+    def save_info(self,current_population, generation_number):
+        '''Saves/updates the info about the current population'''
+        total_size = 0
+        best_size = 1000
+        worst_size = 0
+        for chromosome in current_population.current_members:
+            total_size += len(chromosome.group_part)
+            if len(chromosome.group_part) <= best_size:
+                best_size = len(chromosome.group_part)
+            if len(chromosome.group_part) <= self.all_time_best:
+                self.all_time_best = len(chromosome.group_part)
+            if len(chromosome.group_part) >=worst_size:
+                worst_size = len(chromosome.group_part)
+        average_size = total_size / len(current_population.current_members)
+        self.av_vals[generation_number] = average_size
+        self.best_vals[generation_number] = best_size
+        self.worst_vals[generation_number] = worst_size
 
 class Population:
     def __init__(self, population_member_list):
@@ -50,24 +84,6 @@ class Population:
     def replace_population(offspring):
         '''Takes a list of chromosomes (offspring) and returns a new population'''
         return Population(offspring)
-
-    def get_info(self):
-        '''Print info about the current population'''
-        total_size = 0
-        best_size = 1000
-        worst_size = 0
-        for chromosome in self.current_members:
-            total_size += len(chromosome.group_part)
-            if len(chromosome.group_part) <= best_size:
-                best_size = len(chromosome.group_part)
-            if len(chromosome.group_part) <= GeneticAlgorithm.all_time_best:
-                GeneticAlgorithm.all_time_best = len(chromosome.group_part)
-            if len(chromosome.group_part) >=worst_size:
-                worst_size = len(chromosome.group_part)
-        average_size = total_size / len(self.current_members)
-        print(f'Durschnittliche Anzahl: {average_size}')
-        print(f'Beste Anzahl: {best_size}')
-        print(f'Schlechteste Anzahl: {worst_size}')
 
     def select_parents(population, number_parents):
         '''Selects number_parents from the given population using roulette_wheel sampling'''
@@ -148,7 +164,36 @@ class Chromosome:
             new_bin.fit_obj(obj)
             return
 
-    def fitness_function(self, k = 1.5):
+    def random_fit(self, obj):
+        #'''Fits an object obj=(Volume,Weight) into a random bin or creates a new bin.'''
+        while True:
+            # choose a random index
+            number_bins = (len(self.group_part))
+            index = np.random.randint(number_bins)+1
+            # try to fit the object into a random bin
+            if  index < number_bins:
+                bin = self.group_part[index]
+                if bin.check_fit(obj):
+                    bin.fit_obj(obj)
+                    return
+            # create a new bin
+            if index >= number_bins:
+                new_bin = Bin()
+                self.group_part.append(new_bin)
+                new_bin.fit_obj(obj)
+                return
+    
+    def first_random_fit(self, obj, prob = 0.3):
+        # Draw a random number 
+        chance = np.random.random()
+        # if prob use first fit
+        if chance >= prob:
+            self.first_random_fit(obj)
+        else:
+            self.random_fit(obj)
+        
+
+    def fitness_function(self, k = 3):
         '''Calculates the fitness of the chromosome'''
         # TODO: Hier nicht mehr mit self
         # TODO: Hier noch andere Fitnessfunktionen ausprobieren
@@ -156,8 +201,7 @@ class Chromosome:
         numerator = 0
         for bin in self.group_part:
                numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
-        #return numerator/amount_bins_used
-        return amount_bins_used
+        return numerator/amount_bins_used
         #return amount_bins_used
         #return 1
 
@@ -171,7 +215,7 @@ class Chromosome:
         # TODO: Hier noch richtig implementieren
         random.shuffle(self.group_part)
 
-    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, max_crossing_size = 10):
+    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, max_crossing_size = 100):
         '''Uses the BPCX to produce one offspring'''#
         # TODO: Hier vielleicht noch ein bisschen aufteilen
         # Parts of parent chromosome b are inserted into a
@@ -180,7 +224,6 @@ class Chromosome:
             # choose crossing_size
             crossing_size = np.random.randint(1, max_crossing_size)
             if crossing_size > len(parent_chromosome_b.group_part):
-                print('Ich war hier ')
                 crossing_size = len(parent_chromosome_b.group_part)
             #print('crossing_size')
             #print(crossing_size)
@@ -222,26 +265,77 @@ class Chromosome:
             removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
             # reinsert using first fit
             for obj in removed_objects:
+                #offspring_1.first_random_fit(obj)
                 offspring_1.first_fit(obj)
+                #offspring_1.random_fit(obj)
             return offspring_1
         else:
             # no recombination, offspring is identical to the parents
             offspring_1 = parent_chromosome_a.duplicate()
             return offspring_1
 
+    #def mutate(self, mutation_probability):
+    #    '''Mutate the chromosome'''
+    #    # Iterate through the bins and delete bin with mutation_probability
+    #    removed_objects = []
+    #    for bin in reversed(self.group_part):
+    #        if np.random.random() <= mutation_probability:
+    #            # Delete the bin
+    #            self.group_part.remove(bin)
+    #            # save the objects that need to be reinserted
+    #            removed_objects = removed_objects + bin.objects_contained
+    #    # shuffle the objects
+    #    random.shuffle(removed_objects)
+    #    # use first fit to distribute the items back to the bins
+    #    for obj in removed_objects:
+    #        self.first_fit(obj)
+    #        #self.first_random_fit(obj)
+    #        #self.random_fit(obj)
+#
     def mutate(self, mutation_probability):
-        '''Mutate the chromosome'''
-        # Iterate through the bins and delete bin with mutation_probability
+        '''Mutates the chromosome'''
         removed_objects = []
+        bins_eliminated = 0
+        least_filled_bin = None
+        min_filled_bin_val = 10000000
+        # search the least filled bin
+        for bin in self.group_part:
+            if bin.weight_fill + bin.volume_fill <= min_filled_bin_val:
+                min_filled_bin_val = bin.weight_fill + bin.volume_fill
+                least_filled_bin = bin
+        # Delete the bin
+        self.group_part.remove(bin)
+        bins_eliminated += 1
+        # save the objects that need to be reinserted
+        removed_objects = removed_objects + bin.objects_contained
+        # cycle through the remaining bins and eliminate them
         for bin in reversed(self.group_part):
             if np.random.random() <= mutation_probability:
                 # Delete the bin
                 self.group_part.remove(bin)
+                bins_eliminated += 1
                 # save the objects that need to be reinserted
                 removed_objects = removed_objects + bin.objects_contained
         # use first fit to distribute the items back to the bins
+        # TODO: Hier noch besser aufschreiben
+        # eliminate at least 3 bins 
+        if bins_eliminated < 3:
+            # eliminate a random bin 
+            # choose random index
+            bin = self.group_part[np.random.randint(0,len(self.group_part))]            
+            removed_objects = removed_objects + bin.objects_contained
+        if bins_eliminated < 3:
+            # eliminate a random bin 
+            # choose random index
+            bin = self.group_part[np.random.randint(0,len(self.group_part))]            
+            removed_objects = removed_objects + bin.objects_contained
+        # Reinsert the objects 
+        # shuffle the objects
+        random.shuffle(removed_objects)
         for obj in removed_objects:
             self.first_fit(obj)
+            #self.first_random_fit(obj)
+            #self.random_fit(obj)
 
     def duplicate(self):
         '''Creates a copy of the chromosome,'''
@@ -256,11 +350,16 @@ class Chromosome:
             print('Amount of Bins used:' +str(len(self.group_part)))
         else:
             print('Amount of Bins used:' +str(len(self.group_part)))
-            print(self.fitness_function(2))
             print(f'Information about the bins:')
             for bin in self.group_part:
                 bin.print()
         print('------------------------------------------------------------------------------')
+        print('Fitness value')
+        print(self.fitness_function())
+        print('------------------------------------------------------------------------------')
+        print()
+        print()
+
 
 
 class Bin:
@@ -311,29 +410,3 @@ class Obj:
 
     def print(self):
         print(f'Object ({self.volume},{self.weight})')
-
-
-if __name__=='__main__':
-    # Load the object values
-    path = os.path.dirname(os.path.abspath(__file__))
-    container = np.load(os.path.join(path,'Ressources/medium_container.npy'))
-    objects = np.load(os.path.join(path, 'Ressources/medium_objects.npy'))
-    bin_vol_capacity,bin_weight_capacity = container
-
-    amount_objects = 300
-    objects = np.empty((amount_objects, 2))
-    for index,_ in enumerate(objects):
-        obj = np.random.randint(0,100, 2)
-        objects[index] = obj
-
-    # TODO: Hier n array
-    object_list = []
-    for obj_tuple in objects:
-        volume, weight = obj_tuple
-        obj = Obj(volume, weight)
-        object_list.append(obj)
-    # Create the GeneticAlgorithm
-    GA = GeneticAlgorithm(object_list, 60, bin_vol_capacity, bin_weight_capacity, 0.8, 0.05, 500)
-    solution = GA.run(printinfo = True)
-
-    print(f'Bester gefundener Wert: {GeneticAlgorithm.all_time_best}')
