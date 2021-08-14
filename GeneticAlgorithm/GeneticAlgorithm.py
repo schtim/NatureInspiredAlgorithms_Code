@@ -7,7 +7,8 @@ import copy
 
 class GeneticAlgorithm:
     all_time_best = 1000000
-    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations):
+    number_objects = None
+    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations, mutation_function):
         # Create initial Population
         object_list = []
         for obj_tuple in objects:
@@ -23,9 +24,14 @@ class GeneticAlgorithm:
         self.av_vals = np.zeros(number_generations)
         self.worst_vals = np.zeros(number_generations)
         self.all_time_best =1000000
+        # set mutation function
+        if mutation_function == 'amount_bins':
+            self.mutation_function = Chromosome.mutate
+        GeneticAlgorithm.number_objects = len(object_list)
 
     def run(self):
         start = time.time()
+        mutation_function = self.mutation_function
         for generation_number in np.arange(self.number_generations):
             #print()
             #print(f'Generation {generation_number}')
@@ -37,7 +43,7 @@ class GeneticAlgorithm:
             offspring = Population.create_offspring(parents, self.crossover_probability)
             # Mutate the offspring
             for chromosome in offspring:
-                chromosome.mutate(self.mutation_probability)
+                self.mutation_function(chromosome,self.mutation_probability)
                 # Inversion
                 chromosome.inversion()
             # Replace Population
@@ -201,8 +207,8 @@ class Chromosome:
         numerator = 0
         for bin in self.group_part:
                numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
-        return numerator/amount_bins_used
-        #return amount_bins_used
+        #return numerator/amount_bins_used
+        return GeneticAlgorithm.number_objects +1 - amount_bins_used
         #return 1
 
     def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability):
@@ -274,68 +280,68 @@ class Chromosome:
             offspring_1 = parent_chromosome_a.duplicate()
             return offspring_1
 
-    #def mutate(self, mutation_probability):
-    #    '''Mutate the chromosome'''
-    #    # Iterate through the bins and delete bin with mutation_probability
-    #    removed_objects = []
-    #    for bin in reversed(self.group_part):
-    #        if np.random.random() <= mutation_probability:
-    #            # Delete the bin
-    #            self.group_part.remove(bin)
-    #            # save the objects that need to be reinserted
-    #            removed_objects = removed_objects + bin.objects_contained
-    #    # shuffle the objects
-    #    random.shuffle(removed_objects)
-    #    # use first fit to distribute the items back to the bins
-    #    for obj in removed_objects:
-    #        self.first_fit(obj)
-    #        #self.first_random_fit(obj)
-    #        #self.random_fit(obj)
-#
     def mutate(self, mutation_probability):
-        '''Mutates the chromosome'''
+        '''Mutate the chromosome'''
+        # Iterate through the bins and delete bin with mutation_probability
         removed_objects = []
-        bins_eliminated = 0
-        least_filled_bin = None
-        min_filled_bin_val = 10000000
-        # search the least filled bin
-        for bin in self.group_part:
-            if bin.weight_fill + bin.volume_fill <= min_filled_bin_val:
-                min_filled_bin_val = bin.weight_fill + bin.volume_fill
-                least_filled_bin = bin
-        # Delete the bin
-        self.group_part.remove(bin)
-        bins_eliminated += 1
-        # save the objects that need to be reinserted
-        removed_objects = removed_objects + bin.objects_contained
-        # cycle through the remaining bins and eliminate them
         for bin in reversed(self.group_part):
             if np.random.random() <= mutation_probability:
                 # Delete the bin
                 self.group_part.remove(bin)
-                bins_eliminated += 1
                 # save the objects that need to be reinserted
                 removed_objects = removed_objects + bin.objects_contained
-        # use first fit to distribute the items back to the bins
-        # TODO: Hier noch besser aufschreiben
-        # eliminate at least 3 bins 
-        if bins_eliminated < 3:
-            # eliminate a random bin 
-            # choose random index
-            bin = self.group_part[np.random.randint(0,len(self.group_part))]            
-            removed_objects = removed_objects + bin.objects_contained
-        if bins_eliminated < 3:
-            # eliminate a random bin 
-            # choose random index
-            bin = self.group_part[np.random.randint(0,len(self.group_part))]            
-            removed_objects = removed_objects + bin.objects_contained
-        # Reinsert the objects 
         # shuffle the objects
         random.shuffle(removed_objects)
+        # use first fit to distribute the items back to the bins
         for obj in removed_objects:
             self.first_fit(obj)
             #self.first_random_fit(obj)
             #self.random_fit(obj)
+#
+    #def mutate(self, mutation_probability):
+    #    '''Mutates the chromosome'''
+    #    removed_objects = []
+    #    bins_eliminated = 0
+    #    least_filled_bin = None
+    #    min_filled_bin_val = 10000000
+    #    # search the least filled bin
+    #    for bin in self.group_part:
+    #        if bin.weight_fill + bin.volume_fill <= min_filled_bin_val:
+    #            min_filled_bin_val = bin.weight_fill + bin.volume_fill
+    #            least_filled_bin = bin
+    #    # Delete the bin
+    #    self.group_part.remove(bin)
+    #    bins_eliminated += 1
+    #    # save the objects that need to be reinserted
+    #    removed_objects = removed_objects + bin.objects_contained
+    #    # cycle through the remaining bins and eliminate them
+    #    for bin in reversed(self.group_part):
+    #        if np.random.random() <= mutation_probability:
+    #            # Delete the bin
+    #            self.group_part.remove(bin)
+    #            bins_eliminated += 1
+    #            # save the objects that need to be reinserted
+    #            removed_objects = removed_objects + bin.objects_contained
+    #    # use first fit to distribute the items back to the bins
+    #    # TODO: Hier noch besser aufschreiben und noch die Bins löschen 
+    #    # eliminate at least 3 bins 
+    #    if bins_eliminated < 3:
+    #        # eliminate a random bin 
+    #        # choose random index
+    #        bin = self.group_part[np.random.randint(0,len(self.group_part))]            
+    #        removed_objects = removed_objects + bin.objects_contained
+    #    if bins_eliminated < 3:
+    #        # eliminate a random bin 
+    #        # choose random index
+    #        bin = self.group_part[np.random.randint(0,len(self.group_part))]            
+    #        removed_objects = removed_objects + bin.objects_contained
+    #    # Reinsert the objects 
+    #    # shuffle the objects
+    #    random.shuffle(removed_objects)
+    #    for obj in removed_objects:
+    #        self.first_fit(obj)
+    #        #self.first_random_fit(obj)
+    #        #self.random_fit(obj)
 
     def duplicate(self):
         '''Creates a copy of the chromosome,'''
