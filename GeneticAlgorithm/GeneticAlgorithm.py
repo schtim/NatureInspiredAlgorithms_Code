@@ -40,8 +40,6 @@ class GeneticAlgorithm:
     def run(self):
         start = time.time()
         for generation_number in np.arange(self.number_generations):
-            if generation_number % 50 == 0:
-                print(f'Generation {generation_number}: Current all time best: {self.all_time_best}')
             # Choose Parents
             parents = Population.select_parents(self.current_population.current_members, self.population_size, self.fitness_function)
             # Create offspring through recombination of the parents
