@@ -203,32 +203,31 @@ class Chromosome:
     def random_fit(self, obj):
         '''Fits an object obj=(Volume,Weight) into a random bin or creates a new bin.'''
         assert(self.object_not_contained_in_any_bin(obj)), 'Object to be inserted already contained in a bin'
-        while True:
+        # try to fit the object 10 times 
+        for _ in range(10):
             # choose a random index
             number_bins = (len(self.group_part))
-            extra = int(1/3 * number_bins)+1
-            index = np.random.randint(number_bins+extra)
-            # try to fit the object into a random bin
-            if  index < number_bins:
-                bin = self.group_part[index]
-                if bin.check_fit(obj):
-                    bin.fit_obj(obj)
-                    #assert(self.total_amount_objects_in_bins() <= GeneticAlgorithm.number_objects), 'Total number of objects to big'
-                    #assert(len(self.group_part) <= GeneticAlgorithm.number_objects)
-                    return
-            # create a new bin
-            if index >= number_bins:
-                if len(self.group_part) == 10:
-                    print('10 Bins')
-                    self.print(Chromosome.fitness_amount_bins)
-                    print('Object to be fitted')
-                    obj.print()
+            if number_bins == 0:
                 new_bin = Bin.create_empty_bin()
                 self.group_part.append(new_bin)
                 new_bin.fit_obj(obj)
-                #assert(self.total_amount_objects_in_bins() <= GeneticAlgorithm.number_objects), 'Total number of objects to big'
-                #assert(len(self.group_part) <= GeneticAlgorithm.number_objects), f'{len(self.group_part)} Bins in Chromosome'
                 return
+            else:
+                index = np.random.randint(number_bins)
+            # try to fit the object into a random bin
+            bin = self.group_part[index]
+            if bin.check_fit(obj):
+                bin.fit_obj(obj)
+                #assert(self.total_amount_objects_in_bins() <= GeneticAlgorithm.number_objects), 'Total number of objects to big'
+                #assert(len(self.group_part) <= GeneticAlgorithm.number_objects)
+                return
+            # create a new bin
+        new_bin = Bin.create_empty_bin()
+        self.group_part.append(new_bin)
+        new_bin.fit_obj(obj)
+        #assert(self.total_amount_objects_in_bins() <= GeneticAlgorithm.number_objects), 'Total number of objects to big'
+        #assert(len(self.group_part) <= GeneticAlgorithm.number_objects), f'{len(self.group_part)} Bins in Chromosome'
+        return
     
     def first_random_fit(self, obj, prob = 0.3):
         # Draw a random number 
