@@ -1,3 +1,4 @@
+from os import replace
 import time
 import numpy as np
 import random
@@ -6,7 +7,7 @@ import copy
 class GeneticAlgorithm:
     all_time_best = 1000000
     number_objects = None
-    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations, fitness_function, fit_heuristic):
+    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations, fitness_function, fit_heuristic, sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined'):
         # Create initial Population
         object_list = []
         for obj_tuple in objects:
@@ -24,7 +25,9 @@ class GeneticAlgorithm:
         self.worst_vals = np.zeros(number_generations)
         self.fit_heuristic = None
         self.fitness_function = None
+        self.sampling_method = None
         self.all_time_best =1000000
+        self.fit_sort = ''
         # set fitness function
         if fitness_function == 'amount_bins':
             self.fitness_function = Chromosome.fitness_amount_bins
@@ -32,18 +35,30 @@ class GeneticAlgorithm:
             self.fitness_function = Chromosome.fitness_constant
         if fitness_function == 'fill':
             self.fitness_function = Chromosome.fitness_fill
+        # set fit heuristic
         if fit_heuristic == 'first_fit':
             self.fit_heuristic = Chromosome.first_fit
         if fit_heuristic == 'random':
             self.fit_heuristic = Chromosome.random_fit
-
+        # set sampling method
+        if sampling_method == 'roulette_wheel_sampling':
+            self.sampling_method = Population.roulette_wheel_sampling
+        if sampling_method == 'tournament_selection':
+            self.sampling_method = Population.tournament_selection
+        if fit_sort == 'combined':
+            self.fit_sort = 'combined'
+        if fit_sort == 'chance':
+            self.fit_sort = 'chance'
+        if fit_sort =='no_sort':
+            self.fit_sort = 'no_sort'
+        
     def run(self):
         start = time.time()
         for generation_number in np.arange(self.number_generations):
             # Choose Parents
-            parents = Population.select_parents(self.current_population.current_members, self.population_size, self.fitness_function)
+            parents = self.sampling_method(self.current_population.current_members, self.fitness_function)
             # Create offspring through recombination of the parents
-            offspring = Population.create_offspring(parents, self.crossover_probability, self.fit_heuristic)
+            offspring = Population.create_offspring(parents, self.crossover_probability, self.fit_heuristic, self.fit_sort)
             # Mutate the offspring
             for chromosome in offspring:
                 chromosome.mutate(self.mutation_probability, self.fit_heuristic)
@@ -95,7 +110,7 @@ class Population:
         '''Takes a list of chromosomes (offspring) and returns a new population'''
         return Population(offspring)
 
-    def select_parents(population, number_parents, fitness_function):
+    def roulette_wheel_sampling(population, fitness_function):
         '''Selects number_parents from the given population using roulette_wheel sampling'''
         # TODO: Hier noch überlegen, ob man die Fitnesswerte speichert, um sie nicht immer neu zu berechnen
         # calculate the fitness for every chromosome in the population
@@ -108,8 +123,21 @@ class Population:
         # draw number_parents with replacement
         parents = np.random.choice(population, size = len(population), replace=True, p = probabilities)
         return parents
+    
+    def tournament_selection(population, fitness_function, selection_pressure = 0.75):
+        parents = np.empty_like(population)    
+        for index in range(len(population)):
+            # choose 2 chromosomes from population
+            chrom_a, chrom_b = np.random.choice(population, size = 2, replace = False)
+            winner, looser = Chromosome.tournament_compare(chrom_a, chrom_b, fitness_function)
+            if np.random.random() <= 0.75:
+                parents[index] = winner
+            else:
+                parents[index] = looser
+        return parents
 
-    def create_offspring(parents, crossover_probability, fit_heuristic):
+
+    def create_offspring(parents, crossover_probability, fit_heuristic, fit_sort):
         '''Creates the offspring through recombination of the parents'''
         offspring = []
         if len(parents) % 2 != 0:
@@ -122,7 +150,7 @@ class Population:
             for index in np.arange(0,len(parents), 2):
                 parent_a = parents[index]
                 parent_b = parents[index+1]
-                offspring_1, offspring_2 = Chromosome.produce_offspring(parent_a, parent_b, crossover_probability, fit_heuristic)
+                offspring_1, offspring_2 = Chromosome.produce_offspring(parent_a, parent_b, crossover_probability, fit_heuristic, fit_sort)
                 offspring = offspring + [offspring_1, offspring_2]
         return offspring
 
@@ -204,7 +232,7 @@ class Chromosome:
         '''Fits an object obj=(Volume,Weight) into a random bin or creates a new bin.'''
         assert(self.object_not_contained_in_any_bin(obj)), 'Object to be inserted already contained in a bin'
         # try to fit the object 10 times 
-        for _ in range(10):
+        for _ in range(4):
             # choose a random index
             number_bins = (len(self.group_part))
             if number_bins == 0:
@@ -254,20 +282,23 @@ class Chromosome:
         return 1
     
     def fitness_amount_bins(self):
+        # TODO: Hier nochmal überlegen wie sinnvoll
         amount_bins_used = len(self.group_part)
         return GeneticAlgorithm.number_objects +1 - amount_bins_used
 
-    def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic):
+    def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, fit_sort):
         '''Produces two offspring using the given recombination two times.'''
-        offspring_1 = Chromosome.recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic)
-        offspring_2 = Chromosome.recombination(parent_chromosome_b, parent_chromosome_a, crossover_probability, fit_heuristic)
+        offspring_1 = Chromosome.recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, fit_sort = fit_sort)
+        offspring_2 = Chromosome.recombination(parent_chromosome_b, parent_chromosome_a, crossover_probability, fit_heuristic, fit_sort = fit_sort)
         return offspring_1, offspring_2
 
     def inversion(self):
         random.shuffle(self.group_part)
     
-    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, max_crossing_size = 5):
+    def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, max_crossing_size = 5, fit_sort = 'combined'):
         # Parts of parent chromosome b are inserted into a
+        # TODO: Hier noch einmal reinschauen
+        max_crossing_size = int(0.5*len(parent_chromosome_b.group_part))+1
         # Only recombinate, if crossover_probability
         if np.random.random() <= crossover_probability:
             # choose crossing_size
@@ -309,9 +340,19 @@ class Chromosome:
             # reinsert the remaining objects using the heuristic
             removed_objects = set(removed_objects).difference(set(objects_to_be_inserted))
             removed_objects = list(removed_objects)
-           # sort list of removed_objects (to reinsert with first_fit (decreasing))
-            # TODO: Hier noch verschiedene Sortierungen ausprobieren (chance, volume, weight .. )
-            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+            # sort list of removed_objects (to reinsert with first_fit (decreasing))
+            # sort using combined 
+            if fit_sort == 'combined':
+                removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+            # sort using one of the attributes by chance 
+            if fit_sort == 'chance':
+                coin = np.random.random()
+                if coin >= 0.5:
+                    # sort using volume
+                    removed_objects.sort(key=lambda x: x.volume, reverse=True)
+                else:
+                    # sort using one weight
+                    removed_objects.sort(key=lambda x: x.weight, reverse=True)
             # reinsert using first fit
             for obj in removed_objects:
                 fit_heuristic(offspring_1,obj)
@@ -400,6 +441,12 @@ class Chromosome:
         print('------------------------------------------------------------------------------')
         print()
         print()
+
+    def tournament_compare(chrom_a, chrom_b, fitness_function):
+        if fitness_function(chrom_a) > fitness_function(chrom_b):
+            return chrom_a , chrom_b
+        else:
+            return chrom_b, chrom_a 
 
     def total_amount_objects_in_bins(self):
         '''Returns the total amount of objects in the bins'''
