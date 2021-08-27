@@ -35,6 +35,8 @@ class GeneticAlgorithm:
             self.fitness_function = Chromosome.fitness_constant
         if fitness_function == 'fill':
             self.fitness_function = Chromosome.fitness_fill
+        if fitness_function == 'amount_bins_pow':
+            self.fitness_function = Chromosome.fitness_amount_bins_pow
         # set fit heuristic
         if fit_heuristic == 'first_fit':
             self.fit_heuristic = Chromosome.first_fit
@@ -61,7 +63,7 @@ class GeneticAlgorithm:
             offspring = Population.create_offspring(parents, self.crossover_probability, self.fit_heuristic, self.fit_sort)
             # Mutate the offspring
             for chromosome in offspring:
-                chromosome.mutate(self.mutation_probability, self.fit_heuristic)
+                chromosome.mutate(self.mutation_probability, self.fit_heuristic, self.fit_sort)
                 # Inversion
                 chromosome.inversion()
             # Replace Population
@@ -112,7 +114,6 @@ class Population:
 
     def roulette_wheel_sampling(population, fitness_function):
         '''Selects number_parents from the given population using roulette_wheel sampling'''
-        # TODO: Hier noch überlegen, ob man die Fitnesswerte speichert, um sie nicht immer neu zu berechnen
         # calculate the fitness for every chromosome in the population
         fitness_vals = np.empty(len(population), dtype = float)
         for index,chromosome in enumerate(population):
@@ -144,7 +145,6 @@ class Population:
             raise Exception("The amount of parents must not be odd.")
         else:
             # Shuffle the parents
-            # TODO: Hier nochmal checken, ob wirklich nötig
             random.shuffle(parents)
             # choose two parents and recombine
             for index in np.arange(0,len(parents), 2):
@@ -231,8 +231,8 @@ class Chromosome:
     def random_fit(self, obj):
         '''Fits an object obj=(Volume,Weight) into a random bin or creates a new bin.'''
         assert(self.object_not_contained_in_any_bin(obj)), 'Object to be inserted already contained in a bin'
-        # try to fit the object 10 times 
-        for _ in range(4):
+        number_attempts = int((GeneticAlgorithm.number_objects) * 0.03 +1)
+        for _ in range(number_attempts):
             # choose a random index
             number_bins = (len(self.group_part))
             if number_bins == 0:
@@ -282,9 +282,12 @@ class Chromosome:
         return 1
     
     def fitness_amount_bins(self):
-        # TODO: Hier nochmal überlegen wie sinnvoll
         amount_bins_used = len(self.group_part)
         return GeneticAlgorithm.number_objects +1 - amount_bins_used
+
+    def fitness_amount_bins_pow(self):
+        amount_bins_used = len(self.group_part)
+        return (GeneticAlgorithm.number_objects +1 - amount_bins_used)**2
 
     def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, fit_sort):
         '''Produces two offspring using the given recombination two times.'''
@@ -297,18 +300,24 @@ class Chromosome:
     
     def recombination(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, max_crossing_size = 5, fit_sort = 'combined'):
         # Parts of parent chromosome b are inserted into a
-        # TODO: Hier noch einmal reinschauen
-        max_crossing_size = int(0.5*len(parent_chromosome_b.group_part))+1
         # Only recombinate, if crossover_probability
         if np.random.random() <= crossover_probability:
-            # choose crossing_size
-            crossing_size = np.random.randint(1, max_crossing_size)
-            if crossing_size > len(parent_chromosome_b.group_part):
-                crossing_size = len(parent_chromosome_b.group_part)
             # Choose crossing point
-            crossing_point = np.random.randint(0,len(parent_chromosome_b.group_part)-crossing_size+1)
-            # TODO: Checken ob die crossing points wirklich den gesamten Bereich abdecken (auch das Ende) Geht etwas durch den slice Operator verloren?
-            bins_to_be_inserted = parent_chromosome_b.group_part[crossing_point:crossing_point + crossing_size]
+            crossing_point_l = np.random.randint(0,len(parent_chromosome_b.group_part))
+            crossing_point_r = np.random.randint(0,len(parent_chromosome_b.group_part))
+            # change crossing points if not in right order
+            if crossing_point_r < crossing_point_l:
+                temp = crossing_point_l
+                crossing_point_l = crossing_point_r
+                crossing_point_r = temp
+            # make sure crossing point are different
+            elif crossing_point_l == crossing_point_r:
+                if crossing_point_l == 0:
+                    crossing_point_r = 1
+                else:
+                    crossing_point_l = crossing_point_r -1
+            # 'cut' the bins from the parent
+            bins_to_be_inserted = parent_chromosome_b.group_part[crossing_point_l:crossing_point_r]
             # give new ids to the bins (copy them)
             temp = []
             for bin in bins_to_be_inserted:
@@ -367,7 +376,7 @@ class Chromosome:
             #assert(offspring_1.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), f'{len(offspring_1.group_part)} Bins with to many Objects after recombination'
             return offspring_1
 
-    def mutate(self, mutation_probability, fit_heuristic):
+    def mutate(self, mutation_probability, fit_heuristic, fit_sort):
         '''Mutate the chromosome'''
         # Iterate through the bins and delete bin with mutation_probability
         removed_objects = []
@@ -377,9 +386,19 @@ class Chromosome:
                 self.group_part.remove(bin)
                 # save the objects that need to be reinserted
                 removed_objects = removed_objects + bin.objects_contained
-        # shuffle the objects
-        random.shuffle(removed_objects)
         # use first fit to distribute the items back to the bins
+         # sort using combined 
+        if fit_sort == 'combined':
+            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+        # sort using one of the attributes by chance
+        if fit_sort == 'chance':
+            coin = np.random.random()
+            if coin >= 0.5:
+                # sort using volume
+                removed_objects.sort(key=lambda x: x.volume, reverse=True)
+            else:
+                # sort using one weight
+                removed_objects.sort(key=lambda x: x.weight, reverse=True)
         for obj in removed_objects:
             fit_heuristic(self,obj)
         #assert(self.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), 'Wrong number of Objects after mutation.'
