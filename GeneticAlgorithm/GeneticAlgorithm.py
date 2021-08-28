@@ -7,7 +7,7 @@ import copy
 class GeneticAlgorithm:
     all_time_best = 1000000
     number_objects = None
-    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations, fitness_function, fit_heuristic, sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined'):
+    def __init__(self, objects, population_size, bin_vol_capacity, bin_weight_capacity,crossover_probability,mutation_probability, number_generations, fitness_function, fit_heuristic, sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined', sort_in_recom_and_mutation = True):
         # Create initial Population
         object_list = []
         for obj_tuple in objects:
@@ -28,6 +28,7 @@ class GeneticAlgorithm:
         self.sampling_method = None
         self.all_time_best =1000000
         self.fit_sort = ''
+        self.sort_in_recom_and_mutation = None
         # set fitness function
         if fitness_function == 'amount_bins':
             self.fitness_function = Chromosome.fitness_amount_bins
@@ -37,6 +38,8 @@ class GeneticAlgorithm:
             self.fitness_function = Chromosome.fitness_fill
         if fitness_function == 'amount_bins_pow':
             self.fitness_function = Chromosome.fitness_amount_bins_pow
+        if fitness_function == 'combined':
+            self.fitness_function = Chromosome.fitness_combined
         # set fit heuristic
         if fit_heuristic == 'first_fit':
             self.fit_heuristic = Chromosome.first_fit
@@ -53,6 +56,7 @@ class GeneticAlgorithm:
             self.fit_sort = 'chance'
         if fit_sort =='no_sort':
             self.fit_sort = 'no_sort'
+        self.sort_in_recom_and_mutation == sort_in_recom_and_mutation
         
     def run(self):
         start = time.time()
@@ -63,7 +67,7 @@ class GeneticAlgorithm:
             offspring = Population.create_offspring(parents, self.crossover_probability, self.fit_heuristic, self.fit_sort)
             # Mutate the offspring
             for chromosome in offspring:
-                chromosome.mutate(self.mutation_probability, self.fit_heuristic, self.fit_sort)
+                chromosome.mutate(self.mutation_probability, self.fit_heuristic, fit_sort = self.fit_sort, sort_in_recom_and_mutation = self.sort_in_recom_and_mutation)
                 # Inversion
                 chromosome.inversion()
             # Replace Population
@@ -158,7 +162,7 @@ class Chromosome:
     def __init__(self, group_part):
         self.group_part = group_part
 
-    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity, prob = 0.8):
+    def create_chromosome(object_list, bin_vol_capacity, bin_weight_capacity, prob = 0.6):
         '''Given a list of objects create a valid distribution using the first fit (chance) heuristic'''
         # create a list that does not contain a bin yet
         group_part = [Bin.create_empty_bin(bin_vol_capacity = bin_vol_capacity, bin_weight_capacity =  bin_weight_capacity)]
@@ -174,6 +178,7 @@ class Chromosome:
     def first_fit_chance(self, obj, prob):
         ''''With probability 1-prob fit an object obj = (Volume, Weight) into the first bin that has enough remaining capacity. With probability prob open a new bin.'''
         chance = np.random.random()
+        self.group_part
         # special case for first bin
         assert(self.object_not_contained_in_any_bin(obj)), 'Object to be inserted already contained in a bin'
         if len(self.group_part) == 1:
@@ -231,7 +236,7 @@ class Chromosome:
     def random_fit(self, obj):
         '''Fits an object obj=(Volume,Weight) into a random bin or creates a new bin.'''
         assert(self.object_not_contained_in_any_bin(obj)), 'Object to be inserted already contained in a bin'
-        number_attempts = int((GeneticAlgorithm.number_objects) * 0.03 +1)
+        number_attempts = int((GeneticAlgorithm.number_objects) * 0.01 +1)
         for _ in range(number_attempts):
             # choose a random index
             number_bins = (len(self.group_part))
@@ -288,6 +293,9 @@ class Chromosome:
     def fitness_amount_bins_pow(self):
         amount_bins_used = len(self.group_part)
         return (GeneticAlgorithm.number_objects +1 - amount_bins_used)**2
+    
+    def fitness_combined(self):
+        return (self.fitness_amount_bins() + self.fitness_fill())**2
 
     def produce_offspring(parent_chromosome_a, parent_chromosome_b, crossover_probability, fit_heuristic, fit_sort):
         '''Produces two offspring using the given recombination two times.'''
@@ -376,7 +384,7 @@ class Chromosome:
             #assert(offspring_1.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), f'{len(offspring_1.group_part)} Bins with to many Objects after recombination'
             return offspring_1
 
-    def mutate(self, mutation_probability, fit_heuristic, fit_sort):
+    def mutate(self, mutation_probability, fit_heuristic, fit_sort, sort_in_recom_and_mutation):
         '''Mutate the chromosome'''
         # Iterate through the bins and delete bin with mutation_probability
         removed_objects = []
@@ -388,17 +396,18 @@ class Chromosome:
                 removed_objects = removed_objects + bin.objects_contained
         # use first fit to distribute the items back to the bins
          # sort using combined 
-        if fit_sort == 'combined':
-            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
-        # sort using one of the attributes by chance
-        if fit_sort == 'chance':
-            coin = np.random.random()
-            if coin >= 0.5:
-                # sort using volume
-                removed_objects.sort(key=lambda x: x.volume, reverse=True)
-            else:
-                # sort using one weight
-                removed_objects.sort(key=lambda x: x.weight, reverse=True)
+        if sort_in_recom_and_mutation:
+            if fit_sort == 'combined':
+                removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+            # sort using one of the attributes by chance
+            if fit_sort == 'chance':
+                coin = np.random.random()
+                if coin >= 0.5:
+                    # sort using volume
+                    removed_objects.sort(key=lambda x: x.volume, reverse=True)
+                else:
+                    # sort using  weight
+                    removed_objects.sort(key=lambda x: x.weight, reverse=True)
         for obj in removed_objects:
             fit_heuristic(self,obj)
         #assert(self.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), 'Wrong number of Objects after mutation.'
