@@ -280,7 +280,7 @@ class Chromosome:
         numerator = 0
         for bin in self.group_part:
                numerator += ( bin.volume_fill / Bin.vol_capacity)**k+(bin.weight_fill / Bin.weight_capacity)**k
-        return GeneticAlgorithm.number_objects +1 - amount_bins_used
+        return  numerator/amount_bins_used
 
     def fitness_constant(self):
         '''Calculates the fitness of the chromosome'''
@@ -384,10 +384,60 @@ class Chromosome:
             #assert(offspring_1.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), f'{len(offspring_1.group_part)} Bins with to many Objects after recombination'
             return offspring_1
 
-    def mutate(self, mutation_probability, fit_heuristic, fit_sort, sort_in_recom_and_mutation):
-        '''Mutate the chromosome'''
-        # Iterate through the bins and delete bin with mutation_probability
+    #def mutate(self, mutation_probability, fit_heuristic, fit_sort, sort_in_recom_and_mutation):
+    #    '''Mutate the chromosome'''
+    #    # Iterate through the bins and delete bin with mutation_probability
+    #    removed_objects = []
+    #    for bin in reversed(self.group_part):
+    #        if np.random.random() <= mutation_probability:
+    #            # Delete the bin
+    #            self.group_part.remove(bin)
+    #            # save the objects that need to be reinserted
+    #            removed_objects = removed_objects + bin.objects_contained
+    #    # use first fit to distribute the items back to the bins
+    #     # sort using combined 
+    #    if sort_in_recom_and_mutation:
+    #        if fit_sort == 'combined':
+    #            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
+    #        # sort using one of the attributes by chance
+    #        if fit_sort == 'chance':
+    #            coin = np.random.random()
+    #            if coin >= 0.5:
+    #                # sort using volume
+    #                removed_objects.sort(key=lambda x: x.volume, reverse=True)
+    #            else:
+    #                # sort using  weight
+    #                removed_objects.sort(key=lambda x: x.weight, reverse=True)
+    #    for obj in removed_objects:
+    #        fit_heuristic(self,obj)
+    #    #assert(self.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), 'Wrong number of Objects after mutation.'
+    #    #assert(len(self.group_part) <= GeneticAlgorithm.number_objects), 'To many bins after mutation'
+
+    def mutate(self, mutation_probability, fit_heuristic, fit_sort ,sort_in_recom_and_mutation):
+        '''Mutates the chromosome'''
         removed_objects = []
+        least_filled_bin = None
+        min_filled_bin_val = 10000000
+        # search the least filled bin
+        for bin in self.group_part:
+            if bin.weight_fill + bin.volume_fill <= min_filled_bin_val:
+                min_filled_bin_val = bin.weight_fill + bin.volume_fill
+                least_filled_bin = bin
+        # Delete the bin
+        self.group_part.remove(bin)
+        # save the objects that need to be reinserted
+        removed_objects = removed_objects + bin.objects_contained
+        # delete 2 more bins
+        # choose 2 random indices 
+        indices = random.sample(range(len(self.group_part)), 2)
+        # sort the indices to delete 
+        for i in sorted(indices, reverse = True):
+            bin = self.group_part[i]
+            # Delete the bin
+            self.group_part.remove(bin)
+            # save the objects that need to be reinserted
+            removed_objects = removed_objects + bin.objects_contained
+        # cycle through the remaining bins and eliminate them
         for bin in reversed(self.group_part):
             if np.random.random() <= mutation_probability:
                 # Delete the bin
@@ -410,39 +460,6 @@ class Chromosome:
                     removed_objects.sort(key=lambda x: x.weight, reverse=True)
         for obj in removed_objects:
             fit_heuristic(self,obj)
-        #assert(self.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), 'Wrong number of Objects after mutation.'
-        #assert(len(self.group_part) <= GeneticAlgorithm.number_objects), 'To many bins after mutation'
-
-    #def mutate(self, mutation_probability, fit_heuristic):
-    #    '''Mutates the chromosome'''
-    #    removed_objects = []
-    #    bins_eliminated = 0
-    #    least_filled_bin = None
-    #    min_filled_bin_val = 10000000
-    #    # search the least filled bin
-    #    for bin in self.group_part:
-    #        if bin.weight_fill + bin.volume_fill <= min_filled_bin_val:
-    #            min_filled_bin_val = bin.weight_fill + bin.volume_fill
-    #            least_filled_bin = bin
-    #    # Delete the bin
-    #    self.group_part.remove(bin)
-    #    bins_eliminated += 1
-    #    # save the objects that need to be reinserted
-    #    removed_objects = removed_objects + bin.objects_contained
-    #    # cycle through the remaining bins and eliminate them
-    #    for bin in reversed(self.group_part):
-    #        if np.random.random() <= mutation_probability:
-    #            # Delete the bin
-    #            self.group_part.remove(bin)
-    #            bins_eliminated += 1
-    #            # save the objects that need to be reinserted
-    #            removed_objects = removed_objects + bin.objects_contained
-    #    # use first fit to distribute the items back to the bins
-    #    # Reinsert the objects 
-    #    # shuffle the objects
-    #    random.shuffle(removed_objects)
-    #    for obj in removed_objects:
-    #        fit_heuristic(self,obj)
 
     def duplicate(self):
         '''Creates a copy of the chromosome,'''
@@ -471,10 +488,13 @@ class Chromosome:
         print()
 
     def tournament_compare(chrom_a, chrom_b, fitness_function):
-        if fitness_function(chrom_a) > fitness_function(chrom_b):
+        if len(chrom_a.group_part) > len(chrom_b.group_part):
             return chrom_a , chrom_b
-        else:
+        elif len(chrom_a.group_part) < len(chrom_b.group_part):
             return chrom_b, chrom_a 
+        else:
+            # TODO: Wie den fall behandeln
+            return chrom_b, chrom_a
 
     def total_amount_objects_in_bins(self):
         '''Returns the total amount of objects in the bins'''
