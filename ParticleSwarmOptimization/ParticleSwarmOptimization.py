@@ -1,6 +1,18 @@
 ## Aufruf:
-#PSO = ParticleSwarmOptimization(number_particle, iterations, object_list, max_weight, max_volume, c_local, c_global, c_chaos, c_local_change, c_global_change, c_chaos_change, 'initiate_heuristic', 'unfit_heuristic', 'chaos_heuristic')
-#best_solution, solution_used_container, runtime, average_bins_list, best_bins_list, worst_bins_list, average_fitness_list, unfit_moves_history, chaos_moves_history, heuristic_moves_history = PSO.run()
+# PSO = ParticleSwarmOptimization(number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic)
+# gbest_object_list, gbest_used_container, runtime, gbest_bins, gbest_fitness_h, average_bins, best_bins, worst_bins, average_fitness, unfit_moves_history, chaos_moves_history, heuristic_moves_history= PSO.run()
+# gbest_object_list | list of integer of length number_objects
+# gbest_used_container | integer
+# runtime | float
+# gbest_bins | array[iterations] of integer
+# gbest_fitness_h | array[iterations] of integer
+# average_bins | array[iterations] of floats
+# best_bins | array[iterations] of integer
+# worst_bins | array[iterations] of integer
+# average_fitness | array[iterations] of floats
+# unfit_moves_history | array[iterations] of floats
+# chaos_moves_history | array[iterations] of floats
+# heuristic_moves_history | array[iterations] of floats
 
 import os
 import numpy as np
@@ -33,7 +45,7 @@ class ParticleSwarmOptimization:
 		for i in range(self.number_objects):
 			new_gbest_object = Object(objects[i][0], objects[i][1], 0)
 			self.gbest_object_list.append(new_gbest_object)
-		self.gbest_used_container = 0
+		self.gbest_used_container = self.number_objects
 		self.gbest_fitness = 100000000
 		self.update_gbest()
 		self.average_fitness = np.zeros(self.iterations)
@@ -53,7 +65,7 @@ class ParticleSwarmOptimization:
 			if self.particle_list[i].fitness < min_fitness:
 				min_fitness = self.particle_list[i].fitness
 				particle_number = i
-		if min_fitness < self.gbest_fitness:
+		if min_fitness < self.gbest_fitness and self.particle_list[particle_number].used_container <= self.gbest_used_container:
 			self.gbest_fitness = copy.deepcopy(self.particle_list[particle_number].fitness)
 			self.gbest_used_container = copy.deepcopy(self.particle_list[particle_number].used_container)
 			for i in range(self.number_objects):
@@ -214,7 +226,7 @@ class Particle:
 		return temp_cnt
 	
 	def update_pbest(self):
-		if self.fitness < self.pbest_fitness:
+		if self.fitness < self.pbest_fitness and self.used_container <= self.pbest_used_container:
 			for i in range(self.number_objects):
 				self.pbest_object_list[i].container = copy.deepcopy(self.object_list[i].container)	
 			self.pbest_fitness = copy.deepcopy(self.fitness)
