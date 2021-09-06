@@ -1,10 +1,11 @@
 import sys
+import time
 import math
 import numpy as np
 from numpy.random import default_rng
 rng = default_rng()
 
-def ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b, s):
+def ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b):
 	object_list = np.arange(0, n)
 	objects_no_zero = np.array(objects)
 	objects_no_zero[objects_no_zero==0] = 1
@@ -26,9 +27,13 @@ def ConstructAntSolutions(objects, container_size, max_weight, max_volume, phero
 			#choose object
 			available_objects = np.zeros_like(object_list)
 			if item_number > 0:
-				container_fit_weight = (np.tile(ant_container_level[0], (1, n)[0])-objects[:, 0])
-				container_fit_volume = (np.tile(ant_container_level[1], (1, n)[0])-objects[:, 1])
+				#print(np.broadcast_to(ant_container_level[0], (1, n))-objects[:, 0])
+				container_fit_weight = np.broadcast_to(ant_container_level[0], (1, n))[0]-objects[:, 0]
+				container_fit_volume = np.broadcast_to(ant_container_level[1], (1, n))[0]-objects[:, 1]
+				#container_fit_weight = (np.tile(ant_container_level[0], (1, n)[0])-objects[:, 0])
+				#container_fit_volume = (np.tile(ant_container_level[1], (1, n)[0])-objects[:, 1])
 				container_fit = (container_fit_weight>=0)*(container_fit_volume>=0)*remaining_objects
+				#print(container_fit)
 				if np.any(container_fit) == 0:current_object = -1
 				else:
 					available_pheromones_weight = np.zeros((n, max_weight+1))
@@ -68,7 +73,7 @@ def ConstructAntSolutions(objects, container_size, max_weight, max_volume, phero
 				container_items_volume[objects[current_object][1]] += 1
 				remaining_objects[current_object] = 0
 				item_number += 1
-		fitness = (fitness_weight + fitness_volume)/current_container*0.5
+		fitness = ((fitness_weight + fitness_volume)/current_container)*0.5
 		#fitness = (fitness_weight * fitness_volume)**0.5/current_container
 		solutions.append([ant_solution, current_container, fitness])
 	#Sortiere Lösungen
@@ -76,9 +81,8 @@ def ConstructAntSolutions(objects, container_size, max_weight, max_volume, phero
 	solutions = solutions[::-1]
 	solutions = np.array(solutions)
 	solutions.shape = (ant_number, 3)
-	print('------------------------------------------------------')
-	print('worst:', solutions[ant_number-1][1], solutions[ant_number-1][2])
-	return solutions[0:s]
+
+	return solutions
 
 def UpdatePheromones(solutions, global_best, pheromones_weight, pheromones_volume, objects, n, p, t_min, µ, s):
 	if µ <= 1:  solutions[0] = global_best
@@ -109,32 +113,14 @@ def UpdatePheromones(solutions, global_best, pheromones_weight, pheromones_volum
 
 	return [update_weight, update_volume]
 
-
-#Lade Objekte/Container
-small_objects = np.load('small_objects.npy')
-small_objects.shape = (10, 2)
-small_container = np.load('small_container.npy')
-small_optimal = np.load('small_optimal.npy')
-
-medium_objects = np.load('medium_objects.npy')
-medium_objects.shape = (250, 2)
-medium_container = np.load('medium_container.npy')
-medium_container.shape = (2, )
-medium_optimal = np.load('medium_optimal.npy')
-
-many_medium_objects = np.load('many_medium_objects3.npy')
-many_medium_objects.shape = (1000, 2)
-
-large_objects = np.load('large_objects.npy')
-large_objects.shape = (500, 2)
-large_container = np.load('large_container.npy')
-large_container.shape = (2, )
-large_optimal = np.load('large_optimal.npy')
-
-objects = medium_objects
-container_size = medium_container
-
-#ACO_BinPacking.py [ant_number] [iterations] [b:heuristic_importance] [k:fitness_stress] [p: Zerfallsrate] [s :solutions_that_update_pheromones]
+#ACO_BinPacking.py [ant_number] [iterations] [b:heuristic_importance] [k:fitness_stress] [p:Zerfallsrate] [µ:l_best_update] [s:solutions_that_update_pheromones][problem_size]
+#main
+objects = np.load(sys.argv[8] + '.npy')
+objects.shape = (int(objects.size/2), 2)
+container_size = np.load('medium_container.npy')
+container_size.shape = (2, )
+optimals = np.load('optimal_solutions_500.npy')
+print(optimals)
 #Parameter:
 n = len(objects)					#Anzahl Objekte
 ant_number = int(sys.argv[1])		#Anzahl Ameisen
@@ -142,17 +128,22 @@ iterations = int(sys.argv[2])		#Anzahl Iterationen
 b = float(sys.argv[3])				#Heuristik Balance (standard: 2-10)
 k = float(sys.argv[4])				#Fitness Stress (standard: 1-2)
 p = float(sys.argv[5])				#Zerfallsrate
-µ = math.ceil(500/n) 				#global best statt local best nach µ Iterationen (standard: math.ceil(500/n))
 p_best = 0.05           			#approx. prob. of finding optimal solution
 t_min = ((1/(1-p))*(1-p_best**(1/float(n))))/((n/2-1)*p_best**(1/float(n)))	#lower threshold pheromones
-s = int(sys.argv[6])
+µ = int(sys.argv[6])				#global best statt local best nach µ Iterationen (standard: math.ceil(500/n))
+s = int(sys.argv[7])
 if(s > 1):
 	t_min = 0
 	µ = iterations
-
 solution_matrix = np.zeros(n*n)
 solution_matrix.shape = (n, n)
-g_best = [solution_matrix, n, 0, 0]
+g_best = [solution_matrix, n, 0]
+iteration_avg_container = np.zeros(iterations)
+iteration_avg_fitness = np.zeros(iterations)
+iteration_best = np.zeros(iterations)
+iteration_best_fitness = np.zeros(iterations)
+iteration_worst = np.zeros(iterations)
+iteration_worst_fitness = np.zeros(iterations)
 #initialize pheromone trails
 [max_weight, max_volume] = np.argmax(objects, axis=0)
 max_weight = objects[max_weight][0]
@@ -162,18 +153,28 @@ pheromones_volume = np.ones((max_volume+1, max_volume+1))
 pheromones_weight = pheromones_weight*(1/(1-p))
 pheromones_volume = pheromones_volume*(1/(1-p))
 
+start = time.time()
 for x in range(iterations):
-	solutions = ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b, s)
-	print('best:', solutions[0][1], solutions[0][2])
+	solutions = ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b)
+	iteration_avg_container[x] = np.mean(np.array(solutions[:,1]), axis=None)
+	iteration_avg_fitness[x] = np.mean(np.array(solutions[:,2]), axis=None)
+	iteration_worst[x] = solutions[ant_number-1][1]
+	iteration_worst_fitness[x] = solutions[ant_number-1][2]
+	iteration_best[x] = solutions[0][1]
+	iteration_best_fitness[x] = solutions[0][2]
 	if g_best[2] < solutions[0][2]:
 		g_best = solutions[0]
-		µ = int(math.ceil(500/n))
+		µ = int(sys.argv[6])
 	else:
 		µ -= 1
 	[pheromones_weight, pheromones_volume] = UpdatePheromones(solutions, g_best, pheromones_weight, pheromones_volume, objects, n, p, t_min, µ, s)
-
+ende = time.time()
+runtime = '{:5.3f}s'.format(ende-start)
+print(runtime)
+print(iteration_avg_container)
+print(iteration_avg_fitness)
+g_worst = np.argmax(iteration_worst_fitness, axis=0)
+g_worst = [iteration_worst[g_worst], iteration_worst_fitness[g_worst]]
 print("Beste gefundene Lösung:", g_best[1])
-
-#return g_best
 #np.set_printoptions(threshold=np.inf)
 #print(solution[1])
