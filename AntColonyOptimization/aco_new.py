@@ -170,11 +170,12 @@ for x in range(iterations):
 	[pheromones_weight, pheromones_volume] = UpdatePheromones(solutions, g_best, pheromones_weight, pheromones_volume, objects, n, p, t_min, µ, s)
 ende = time.time()
 runtime = '{:5.3f}s'.format(ende-start)
-print(runtime)
-print(iteration_avg_container)
-print(iteration_avg_fitness)
+#print(runtime)
+#print(iteration_avg_container)
+#print(iteration_avg_fitness)
 g_worst = np.argmax(iteration_worst_fitness, axis=0)
 g_worst = [iteration_worst[g_worst], iteration_worst_fitness[g_worst]]
-print("Beste gefundene Lösung:", g_best[1])
+#print("Beste gefundene Lösung:", g_best[1])
+return [runtime, g_best[1], g_worst[0], iteration_avg_container, iteration_avg_fitness, iteration_best, iteration_best_fitness, iteration_worst, iteration_worst_fitness]
 #np.set_printoptions(threshold=np.inf)
 #print(solution[1])
