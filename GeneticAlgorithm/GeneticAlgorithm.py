@@ -310,6 +310,7 @@ class Chromosome:
         # Parts of parent chromosome b are inserted into a
         # Only recombinate, if crossover_probability
         if np.random.random() <= crossover_probability:
+            # TODO: Hier noch in ziehen ohne zurücklegen umwandeln 
             # Choose crossing point
             crossing_point_l = np.random.randint(0,len(parent_chromosome_b.group_part))
             crossing_point_r = np.random.randint(0,len(parent_chromosome_b.group_part))
@@ -471,7 +472,7 @@ class Chromosome:
         new_one = Chromosome(new_group_part)
         return new_one
 
-    def print(self, fitness_function, only_size= False):
+    def print(self, only_size= False):
         print('------------------------------------------------------------------------------')
         if only_size:
             print('Amount of Bins used:' +str(len(self.group_part)))
@@ -481,19 +482,12 @@ class Chromosome:
             for bin in self.group_part:
                 bin.print()
         print('------------------------------------------------------------------------------')
-        print('Fitness value')
-        print(fitness_function(self))
-        print('------------------------------------------------------------------------------')
-        print()
         print()
 
     def tournament_compare(chrom_a, chrom_b, fitness_function):
-        if len(chrom_a.group_part) > len(chrom_b.group_part):
+        if fitness_function(chrom_a) > fitness_function(chrom_b):
             return chrom_a , chrom_b
-        elif len(chrom_a.group_part) < len(chrom_b.group_part):
-            return chrom_b, chrom_a 
         else:
-            # TODO: Wie den fall behandeln
             return chrom_b, chrom_a
 
     def total_amount_objects_in_bins(self):
