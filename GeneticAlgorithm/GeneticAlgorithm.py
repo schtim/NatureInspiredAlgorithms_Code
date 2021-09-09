@@ -42,7 +42,7 @@ class SimpleFirstFit:
 class GeneticAlgorithm:
     all_time_best = 1000000
     number_objects = None
-    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_generations, population_size = 60, crossover_probability = 0.7,mutation_probability = 0.1, fitness_function = 'fill', fit_heuristic = 'first_fit', sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined', sort_in_recom_and_mutation = True):
+    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_generations = 30, population_size = 60, crossover_probability = 0.7,mutation_probability = 0.1, fitness_function = 'fill', fit_heuristic = 'first_fit', sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined', sort_in_recom_and_mutation = True):
         # Create initial Population
         object_list = []
         for obj_tuple in objects:
