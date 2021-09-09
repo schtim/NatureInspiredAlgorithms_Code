@@ -58,6 +58,7 @@ class GeneticAlgorithm:
         self.best_vals = np.zeros(number_generations)
         self.av_vals = np.zeros(number_generations)
         self.worst_vals = np.zeros(number_generations)
+        self.av_fitness_vals = np.zeros(number_generations, dtype= float)
         self.fit_heuristic = None
         self.fitness_function = None
         self.sampling_method = None
@@ -97,7 +98,7 @@ class GeneticAlgorithm:
         start = time.time()
         for generation_number in np.arange(self.number_generations):
             # Choose Parents
-            parents = self.sampling_method(self.current_population.current_members, self.fitness_function)
+            parents, self.av_fitness_vals[generation_number]  = self.sampling_method(self.current_population.current_members, self.fitness_function)
             # Create offspring through recombination of the parents
             offspring = Population.create_offspring(parents, self.crossover_probability, self.fit_heuristic, self.fit_sort)
             # Mutate the offspring
@@ -111,7 +112,7 @@ class GeneticAlgorithm:
             self.save_info(self.current_population , generation_number)
         end = time.time()
         runtime = end - start
-        return self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime
+        return self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime, self.av_fitness_vals
 
     def save_info(self,current_population, generation_number):
         '''Saves/updates the info about the current population'''
@@ -134,7 +135,7 @@ class GeneticAlgorithm:
 class Population:
     def __init__(self, population_member_list):
         self.current_members = population_member_list
-
+        self.av_fitness = 0.0
     def create_initial_population(population_size, object_list, bin_vol_capacity, bin_weight_capacity):
         '''Creates the initial_population by creating population_size chromosomes using the objects in object_list'''
         # create empty population
@@ -159,10 +160,11 @@ class Population:
             fitness_vals[index] = fitness_function(chromosome)
         # create probability distribution to draw parents from
         total_fitness = np.sum(fitness_vals)
+        av_fitness = np.average(fitness_vals)
         probabilities = (1/total_fitness) * fitness_vals
         # draw number_parents with replacement
         parents = np.random.choice(population, size = len(population), replace=True, p = probabilities)
-        return parents
+        return parents, av_fitness
     
     def tournament_selection(population, fitness_function, selection_pressure = 0.75):
         parents = np.empty_like(population)    
