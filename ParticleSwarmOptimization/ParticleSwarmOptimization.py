@@ -22,7 +22,7 @@ import copy
 
 class ParticleSwarmOptimization:
 	#def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
-		def __init__(self, objects, bin_max_weight, bin_max_volume):
+	def __init__(self, objects, bin_max_weight, bin_max_volume):
 		self.iterations = 150
 		#self.iterations = iterations
 		self.number_objects = objects.shape[0]
