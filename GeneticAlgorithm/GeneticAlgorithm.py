@@ -4,6 +4,41 @@ import numpy as np
 import random
 import copy
 
+class SimpleFirstFit:
+    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_trials):
+        self.all_time_best = 1000
+        self.object_list = []
+        for obj_tuple in objects:
+            volume, weight = obj_tuple
+            obj = Obj(volume, weight)
+            self.object_list.append(obj)
+        self.number_objects = len(self.object_list)
+        self.number_trials = number_trials
+        self.bin_vol_capacity = bin_vol_capacity
+        self.bin_weight_capacity = bin_weight_capacity
+        self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
+
+    def run(self):
+        for index in np.arange(self.number_trials):
+            random.shuffle(self.object_list)
+            for obj in self.object_list:
+                self.first_fit(obj)
+            if len(self.solution) <= self.all_time_best:
+                self.all_time_best = len(self.solution)
+            self.solution = [Bin.create_empty_bin(self.bin_vol_capacity, self.bin_weight_capacity)]
+        return self.all_time_best
+    
+    def first_fit(self, obj):
+        for bin in self.solution:
+            if bin.check_fit(obj):
+                bin.fit_obj(obj)
+                return
+        new_bin = Bin.create_empty_bin()
+        self.solution.append(new_bin)
+        new_bin.fit_obj(obj)
+        return
+                
+
 class GeneticAlgorithm:
     all_time_best = 1000000
     number_objects = None
