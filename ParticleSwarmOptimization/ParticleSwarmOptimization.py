@@ -61,7 +61,7 @@ class ParticleSwarmOptimization:
 			new_gbest_object = Object(objects[i][0], objects[i][1], 0)
 			self.gbest_object_list.append(new_gbest_object)
 		self.gbest_used_container = self.number_objects
-		self.gbest_fitness = 100000000
+		self.gbest_fitness = (self.number_objects**2) * ((bin_max_weight**2) + (bin_max_volume**2))
 		self.update_gbest()
 		self.average_fitness = np.zeros(self.iterations)
 		self.average_bins = np.zeros(self.iterations)
@@ -80,7 +80,7 @@ class ParticleSwarmOptimization:
 			if self.particle_list[i].fitness < min_fitness:
 				min_fitness = self.particle_list[i].fitness
 				particle_number = i
-		if min_fitness < self.gbest_fitness and self.particle_list[particle_number].used_container <= self.gbest_used_container:
+		if min_fitness < self.gbest_fitness:
 			self.gbest_fitness = copy.deepcopy(self.particle_list[particle_number].fitness)
 			self.gbest_used_container = copy.deepcopy(self.particle_list[particle_number].used_container)
 			for i in range(self.number_objects):
@@ -141,7 +141,7 @@ class Particle:
 		self.number_objects = number_objects
 		self.bin_max_weight = bin_max_weight
 		self.bin_max_volume = bin_max_volume
-		self.container_max = self.bin_max_weight**2 + self.bin_max_volume**2
+		self.container_max = (self.bin_max_weight**2) + (self.bin_max_volume**2)
 		self.initiate_heuristic = initiate_heuristic
 		
 		#initiate container list for particle
@@ -227,10 +227,14 @@ class Particle:
 		self.pbest_fitness = copy.deepcopy(self.fitness)
 			
 	def get_fitness(self):
+		punishment = (self.number_objects * self.container_max)
 		temp_fitness = 0
+		number_container = 0
 		for i in range(self.number_objects):
 			if self.container_list[i].placed_objects > 0:
-				temp_fitness += self.container_max - self.object_list[i].weight**2 - self.object_list[i].volume**2
+				number_container += 1
+				temp_fitness += (self.container_max - (self.object_list[i].weight**2) - (self.object_list[i].volume**2))
+		temp_fitness += (punishment * number_container)
 		return temp_fitness
 	
 	def get_used_container(self):
@@ -241,7 +245,7 @@ class Particle:
 		return temp_cnt
 	
 	def update_pbest(self):
-		if self.fitness < self.pbest_fitness and self.used_container <= self.pbest_used_container:
+		if self.fitness < self.pbest_fitness:
 			for i in range(self.number_objects):
 				self.pbest_object_list[i].container = copy.deepcopy(self.object_list[i].container)	
 			self.pbest_fitness = copy.deepcopy(self.fitness)
