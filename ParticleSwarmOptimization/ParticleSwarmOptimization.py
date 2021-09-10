@@ -21,20 +21,35 @@ import time
 import copy
 
 class ParticleSwarmOptimization:
-	def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
-		self.iterations = iterations
+	#def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
+	def __init__(self, objects, bin_max_weight, bin_max_volume):
+		self.iterations = 150
+		#self.iterations = iterations
 		self.number_objects = objects.shape[0]
-		self.number_particles = number_particles
-		self.initiate_heuristic = initiate_heuristic
-		self.unfit_heuristic = unfit_heuristic
-		self.chaos_heuristic = chaos_heuristic
-		self.c_local = local_coefficient
-		self.c_global = global_coefficient
-		self.c_chaos = chaos_coefficient
+		self.number_particles = 40
+		#self.number_particles = number_particles
+		self.initiate_heuristic = 'random'
+		#self.initiate_heuristic = initiate_heuristic
+		self.unfit_heuristic = 'first_fit'
+		#self.unfit_heuristic = unfit_heuristic
+		self.chaos_heuristic = 'first_fit'
+		#self.chaos_heuristic = chaos_heuristic
+		self.c_local = 0.4
+		#self.c_local = local_coefficient
+		self.c_global = 0.2
+		#self.c_global = global_coefficient
+		self.c_chaos = 0.2
+		#self.c_chaos = chaos_coefficient
 		self.number_changes = self.iterations - 1
-		self.c_local_change = (local_coefficient_change - self.c_local)/self.number_changes
-		self.c_global_change = (global_coefficient_change - self.c_global)/self.number_changes
-		self.c_chaos_change = (chaos_coefficient_change - self.c_chaos)/self.number_changes
+		self.local_coefficient_change = 0.2
+		#self.local_coefficient_change = local_coefficient_change
+		self.global_coefficient_change = 0.4
+		#self.global_coefficient_change = global_coefficient_change
+		self.chaos_coefficient_change = 0.2
+		#self.chaos_coefficient_change = chaos_coefficient_change
+		self.c_local_change = (self.local_coefficient_change - self.c_local)/self.number_changes
+		self.c_global_change = (self.global_coefficient_change - self.c_global)/self.number_changes
+		self.c_chaos_change = (self.chaos_coefficient_change - self.c_chaos)/self.number_changes
 		if self.c_local_change == 0 and self.c_global_change == 0 and self.c_chaos_change == 0:
 			self.number_changes = 0
 		self.particle_list = []
