@@ -91,7 +91,7 @@ class ParticleSwarmOptimization:
 		worst_bin = 0
 		worst_bin_fitness = 0
 		best_bin = self.number_objects
-		best_bin_fitness = 100000000
+		best_bin_fitness = (self.number_objects**2) * ((bin_max_weight**2) + (bin_max_volume**2))
 		average_fitness = 0
 		for i in range(self.number_particles):
 			bins_count += self.particle_list[i].used_container
