@@ -23,6 +23,8 @@ import copy
 class ParticleSwarmOptimization:
 	#def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
 	def __init__(self, objects, bin_max_weight, bin_max_volume):
+		self.bin_max_weight = bin_max_weight
+		self.bin_max_volume = bin_max_volume
 		self.iterations = 150
 		#self.iterations = iterations
 		self.number_objects = objects.shape[0]
@@ -54,14 +56,14 @@ class ParticleSwarmOptimization:
 			self.number_changes = 0
 		self.particle_list = []
 		for i in range(self.number_particles):
-			new_particle = Particle(objects, self.number_objects, bin_max_weight, bin_max_volume, self.initiate_heuristic)
+			new_particle = Particle(objects, self.number_objects, self.bin_max_weight, self.bin_max_volume, self.initiate_heuristic)
 			self.particle_list.append(new_particle)
 		self.gbest_object_list = []
 		for i in range(self.number_objects):
 			new_gbest_object = Object(objects[i][0], objects[i][1], 0)
 			self.gbest_object_list.append(new_gbest_object)
 		self.gbest_used_container = self.number_objects
-		self.gbest_fitness = (self.number_objects**2) * ((bin_max_weight**2) + (bin_max_volume**2))
+		self.gbest_fitness = (self.number_objects**2) * ((self.bin_max_weight**2) + (self.bin_max_volume**2))
 		self.update_gbest()
 		self.average_fitness = np.zeros(self.iterations)
 		self.average_bins = np.zeros(self.iterations)
@@ -91,7 +93,7 @@ class ParticleSwarmOptimization:
 		worst_bin = 0
 		worst_bin_fitness = 0
 		best_bin = self.number_objects
-		best_bin_fitness = (self.number_objects**2) * ((bin_max_weight**2) + (bin_max_volume**2))
+		best_bin_fitness = (self.number_objects**2) * ((self.bin_max_weight**2) + (self.bin_max_volume**2))
 		average_fitness = 0
 		for i in range(self.number_particles):
 			bins_count += self.particle_list[i].used_container
