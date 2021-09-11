@@ -6,181 +6,201 @@ from numpy.random import default_rng
 rng = default_rng()
 
 
-def AntColonyOptimization(ant_number, iterations, b, k, p, µ, s, problem):
-	#ACO_BinPacking.py [ant_number] [iterations] [b:heuristic_importance] [k:fitness_stress] [p:Zerfallsrate] [µ:l_best_update] [s:solutions_that_update_pheromones][problem_size]
-	#main
-	objects = np.load(problem + '.npy')
-	objects.shape = (int(objects.size/2), 2)
-	container_size = np.load('medium_container.npy')
-	container_size.shape = (2, )
-	#optimals = np.load('optimal_solutions_500.npy')
-	#print(optimals)
-	#Parameter:
-	n = len(objects)					#Anzahl Objekte
-	#ant_number = int(sys.argv[1])		#Anzahl Ameisen
-	#iterations = int(sys.argv[2])		#Anzahl Iterationen
-	#b = float(sys.argv[3])				#Heuristik Balance (standard: 2-10)
-	#k = float(sys.argv[4])				#Fitness Stress (standard: 1-2)
-	#p = float(sys.argv[5])				#Zerfallsrate
-	p_best = 0.05           			#approx. prob. of finding optimal solution
-	t_min = ((1/(1-p))*(1-p_best**(1/float(n))))/((n/2-1)*p_best**(1/float(n)))	#lower threshold pheromones
-	#µ = int(sys.argv[6])				#global best statt local best nach µ Iterationen (standard: math.ceil(500/n))
-	#s = int(sys.argv[7])
-	if(s > 1):
-		t_min = 0
-		µ = iterations
-	solution_matrix = np.zeros(n*n)
-	solution_matrix.shape = (n, n)
-	g_best = [solution_matrix, n, 0]
-	iteration_avg_container = np.zeros(iterations)
-	iteration_avg_fitness = np.zeros(iterations)
-	iteration_best = np.zeros(iterations)
-	iteration_best_fitness = np.zeros(iterations)
-	iteration_worst = np.zeros(iterations)
-	iteration_worst_fitness = np.zeros(iterations)
-	#initialize pheromone trails
-	[max_weight, max_volume] = np.argmax(objects, axis=0)
-	max_weight = objects[max_weight][0]
-	max_volume = objects[max_volume][1]
-	pheromones_weight = np.ones((max_weight+1, max_weight+1))
-	pheromones_volume = np.ones((max_volume+1, max_volume+1))
-	pheromones_weight = pheromones_weight*(1/(1-p))
-	pheromones_volume = pheromones_volume*(1/(1-p))
+class AntColonyOptimization:
+	
+	def __init__(self, ant_number, iterations, b, k, p, µ, problem, container_size):
+		self.objects = problem
+		self.objects_float = np.array(self.objects, dtype=float)
+		self.container_size = np.array(container_size, dtype=float)
+		self.n = len(self.objects)
+		self.update_g_best_wait = µ
+		self.ant_number = ant_number
+		self.iterations = iterations
+		self.b = b
+		self.k = float(k)
+		self.p = p
+		self.p_best = 0.05
+		self.t_min = ((1/(1-self.p))*(1-self.p_best**(1/float(self.n))))/((self.n/2-1)*self.p_best**(1/float(self.n)))
+		self.µ = µ
+		self.objects_b = np.array(self.objects)
+		self.objects_b[self.objects_b==0] = 1
+		self.objects_b = np.float_power(self.objects_b, self.b)
+		self.g_best = [self.n, 0, 0, 0]
+		self.iteration_avg_container = np.zeros(self.iterations)
+		self.iteration_avg_fitness = np.zeros(self.iterations)
+		self.iteration_best = np.zeros(self.iterations)
+		self.iteration_best_fitness = np.zeros(self.iterations)
+		self.iteration_gbest = np.zeros(self.iterations)
+		self.iteration_worst = np.zeros(self.iterations)
 
-	start = time.time()
-	for x in range(iterations):
-		solutions = ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b)
-		iteration_avg_container[x] = np.mean(np.array(solutions[:,1]), axis=None)
-		iteration_avg_fitness[x] = np.mean(np.array(solutions[:,2]), axis=None)
-		iteration_worst[x] = solutions[ant_number-1][1]
-		iteration_worst_fitness[x] = solutions[ant_number-1][2]
-		iteration_best[x] = solutions[0][1]
-		iteration_best_fitness[x] = solutions[0][2]
-		if g_best[2] < solutions[0][2]:
-			g_best = solutions[0]
-			µ = int(sys.argv[6])
-		else:
-			µ -= 1
-		[pheromones_weight, pheromones_volume] = UpdatePheromones(solutions, g_best, pheromones_weight, pheromones_volume, objects, n, p, t_min, µ, s)
-	ende = time.time()
-	runtime = '{:5.3f}s'.format(ende-start)
-	#print(runtime)
-	#print(iteration_avg_container)
-	#print(iteration_avg_fitness)
-	g_worst = np.argmax(iteration_worst_fitness, axis=0)
-	g_worst = [iteration_worst[g_worst], iteration_worst_fitness[g_worst]]
-	#print("Beste gefundene Lösung:", g_best[1])
-	return [runtime, g_best[1], g_worst[0], iteration_avg_container, iteration_avg_fitness, iteration_best, iteration_best_fitness, iteration_worst, iteration_worst_fitness]
-	#np.set_printoptions(threshold=np.inf)
-	#print(solution[1])
+		[self.max_weight, self.max_volume] = np.argmax(self.objects, axis=0)
+		self.max_weight = self.objects[self.max_weight][0]
+		self.max_volume = self.objects[self.max_volume][1]
+		self.objects_mapped_index_weight = np.zeros(self.n, dtype = int)
+		self.objects_mapped_index_volume = np.zeros(self.n, dtype = int)
+		self.reverse_index_weight = np.zeros(self.max_weight+1)
+		self.reverse_index_volume = np.zeros(self.max_volume+1)
+		self.weight_index_mem = np.ones(self.max_weight+1, dtype=int)*(-1)
+		self.volume_index_mem = np.ones(self.max_volume+1, dtype=int)*(-1)
+		self.weight_index_count = np.zeros(self.max_weight+1)
+		self.volume_index_count = np.zeros(self.max_volume+1)
+		self.weight_index_size = 0
+		self.volume_index_size = 0
+		self.objects_weight = np.array(self.objects[:,0])
+		self.objects_volume = np.array(self.objects[:,1])
+		for z in range(self.n):
+			self.w = self.objects_weight[z]
+			if self.weight_index_mem[self.w] == -1:
+				self.weight_index_mem[self.w] = z
+				self.objects_mapped_index_weight[z] = self.weight_index_size
+				self.reverse_index_weight[self.weight_index_size] = self.w
+				self.weight_index_count[self.weight_index_size] = 1
+				self.weight_index_size += 1
+			else:
+				self.objects_mapped_index_weight[z] = self.objects_mapped_index_weight[self.weight_index_mem[self.w]]
+				self.weight_index_count[self.objects_mapped_index_weight[z]] += 1
+			self.v = self.objects_volume[z]
+			if self.volume_index_mem[self.v] == -1:
+				self.volume_index_mem[self.v] = z
+				self.objects_mapped_index_volume[z] = self.volume_index_size
+				self.reverse_index_volume[self.volume_index_size] = self.v
+				self.volume_index_count[self.volume_index_size] = 1
+				self.volume_index_size += 1
+			else:
+				self.objects_mapped_index_volume[z] = self.objects_mapped_index_volume[self.volume_index_mem[self.v]]
+				self.volume_index_count[self.objects_mapped_index_volume[z]] += 1
+		self.weight_index_count = self.weight_index_count[0:self.weight_index_size]
+		self.volume_index_count = self.volume_index_count[0:self.volume_index_size]
+		self.reverse_index_weight = self.reverse_index_weight[0:self.weight_index_size]
+		self.reverse_index_volume = self.reverse_index_volume[0:self.volume_index_size]
 
-def ConstructAntSolutions(objects, container_size, max_weight, max_volume, pheromones_weight, pheromones_volume, ant_number, solution_matrix, n, k, b):
-	object_list = np.arange(0, n)
-	objects_no_zero = np.array(objects)
-	objects_no_zero[objects_no_zero==0] = 1
-	container_items_weight = np.zeros(max_weight+1)
-	container_items_volume = np.zeros(max_volume+1)
-	item_number = 0
+		self.permutation_matrix_weight = np.zeros((self.n, self.weight_index_size))
+		self.permutation_matrix_volume = np.zeros((self.n, self.volume_index_size))
+		for i in range(self.n):
+			self.permutation_matrix_weight[i][self.objects_mapped_index_weight[i]] = 1.0
+			self.permutation_matrix_volume[i][self.objects_mapped_index_volume[i]] = 1.0
+		self.diag_weight = np.diag(np.diag(np.tile(self.weight_index_count, (self.weight_index_size, 1))))
+		self.diag_volume = np.diag(np.diag(np.tile(self.volume_index_count, (self.volume_index_size, 1))))
+		self.pheromones_weight = np.ones((self.weight_index_size, self.weight_index_size))
+		self.pheromones_volume = np.ones((self.volume_index_size, self.volume_index_size))
+		self.pheromones_weight = self.pheromones_weight*(1/(1-self.p))
+		self.pheromones_volume = self.pheromones_volume*(1/(1-self.p))
+
+	def run(self):
+		start = time.time()
+		for x in range(self.iterations):
+			self.available_pheromones_weight = np.dot(self.permutation_matrix_weight, self.pheromones_weight)
+			self.available_pheromones_volume = np.dot(self.permutation_matrix_volume, self.pheromones_volume)
+			self.solutions = ConstructAntSolutions(self.objects_float, self.objects_b, self.container_size, self.weight_index_size, self.volume_index_size, self.objects_mapped_index_weight, self.objects_mapped_index_volume, self.reverse_index_weight, self.reverse_index_volume, self.available_pheromones_weight, self.available_pheromones_volume, self.ant_number, self.n, self.k, self.b)
+			self.iteration_avg_container[x] = np.mean(np.array(self.solutions[:,0]), axis=None)
+			self.iteration_avg_fitness[x] = np.mean(np.array(self.solutions[:,1]), axis=None)
+			self.iteration_worst[x] = self.solutions[self.ant_number-1][0]
+			self.iteration_best[x] = self.solutions[0][0]
+			self.iteration_best_fitness[x] = self.solutions[0][1]
+			if self.g_best[1] < self.solutions[0][1]:
+				self.g_best = self.solutions[0]
+				self.µ = self.update_g_best_wait
+			else:
+				self.µ -= 1
+				if self.µ <= 1:  self.solutions[0] = self.g_best
+			self.iteration_gbest[x] = self.g_best[0]
+			self.iteration_best_fitness[x] = self.g_best[1]
+			[self.pheromones_weight, self.pheromones_volume] = UpdatePheromones(self.solutions[0], self.pheromones_weight, self.pheromones_volume, self.diag_weight, self.diag_volume, self.p, self.t_min)
+		ende = time.time()
+		runtime = ende-start
+		return [runtime, self.g_best[0], self.iteration_avg_container, self.iteration_avg_fitness, self.iteration_best, self.iteration_worst, self.iteration_gbest, self.iteration_best_fitness]
+
+
+def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index_size, volume_index_size, objects_mapped_index_weight, objects_mapped_index_volume, reverse_index_weight, reverse_index_volume, available_pheromones_weight, available_pheromones_volume, ant_number, n, k, b):
 	solutions = []
+	object_list = np.arange(0, n)
+	available_objects = np.zeros(n)
+	container_items_weight = np.zeros(weight_index_size)
+	container_items_volume = np.zeros(volume_index_size)
+	p_value_weight = np.zeros(n)
+	p_value_volume = np.zeros(n)
+	item_number = 0.0
 
 	for ant in range(ant_number):
-		ant_solution = np.array(solution_matrix)
+		ant_containers_weight = np.zeros_like(available_pheromones_weight)
+		ant_containers_volume = np.zeros_like(available_pheromones_volume)
 		ant_container_level = np.array(container_size)
 		current_container = 0
 		remaining_objects = np.ones(n)
-		fitness_weight = 0
-		fitness_volume = 0
-
-		#ants build solutions
 		for x in range (2*n):
-			#choose object
-			available_objects = np.zeros_like(object_list)
 			if item_number > 0:
-				#print(np.broadcast_to(ant_container_level[0], (1, n))-objects[:, 0])
-				container_fit_weight = np.broadcast_to(ant_container_level[0], (1, n))[0]-objects[:, 0]
-				container_fit_volume = np.broadcast_to(ant_container_level[1], (1, n))[0]-objects[:, 1]
-				#container_fit_weight = (np.tile(ant_container_level[0], (1, n)[0])-objects[:, 0])
-				#container_fit_volume = (np.tile(ant_container_level[1], (1, n)[0])-objects[:, 1])
+				container_fit_weight = np.subtract(np.broadcast_to(ant_container_level[0], (1, n))[0], objects_float[:, 0])
+				container_fit_volume = np.subtract(np.broadcast_to(ant_container_level[1], (1, n))[0], objects_float[:, 1])
 				container_fit = (container_fit_weight>=0)*(container_fit_volume>=0)*remaining_objects
-				#print(container_fit)
 				if np.any(container_fit) == 0:current_object = -1
 				else:
-					available_pheromones_weight = np.zeros((n, max_weight+1))
-					available_pheromones_volume = np.zeros((n, max_volume+1))
-					for x in range(n):
-						if container_fit[x] == 1:
-							available_pheromones_weight[x] = pheromones_weight[objects[x][0]]
-							available_pheromones_volume[x] = pheromones_volume[objects[x][1]]
-					p_value_weight = container_items_weight.dot(available_pheromones_weight.T)/item_number
-					p_value_volume = container_items_volume.dot(available_pheromones_volume.T)/item_number
-					p_value_weight = p_value_weight*objects_no_zero[:,0]**b
-					p_value_volume = p_value_volume*objects_no_zero[:,1]**b
-					available_objects = (p_value_weight/p_value_weight.sum(axis=None) + p_value_volume/p_value_volume.sum(axis=None))/2
+					p_value_weight = np.add(p_value_weight, available_pheromones_weight[:,objects_mapped_index_weight[current_object]])
+					p_value_volume = np.add(p_value_volume, available_pheromones_volume[:,objects_mapped_index_volume[current_object]])
+					p_value_weight = np.multiply(p_value_weight, container_fit)
+					p_value_volume = np.multiply(p_value_volume, container_fit)
+					p_value_weight = np.divide(p_value_weight, item_number)
+					p_value_volume = np.divide(p_value_volume, item_number)
+					p_value_weight = np.multiply(p_value_weight, objects_b[:,0])
+					p_value_volume = np.multiply(p_value_volume, objects_b[:,1])
+					p_value_weight = np.divide(p_value_weight,np.sum(p_value_weight))
+					p_value_volume = np.divide(p_value_volume,np.sum(p_value_volume))
+					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
 					current_object = int(rng.choice(object_list, size=None, replace=True, p=available_objects))
 			else:
 				if np.any(remaining_objects) == 0: current_object = -1
 				else:
-					p_value_weight = remaining_objects*objects_no_zero[:,0]**b
-					p_value_volume = remaining_objects*objects_no_zero[:,1]**b
-					available_objects = (p_value_weight/p_value_weight.sum(axis=None) + p_value_volume/p_value_volume.sum(axis=None))/2
+					p_value_weight = np.multiply(remaining_objects, objects_b[:,0])
+					p_value_volume = np.multiply(remaining_objects, objects_b[:,0])
+					p_value_weight = np.divide(p_value_weight,np.sum(p_value_weight))
+					p_value_volume = np.divide(p_value_volume,np.sum(p_value_volume))
+					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
 					current_object = int(rng.choice(object_list, size=None, replace=True, p=available_objects))
 
-
 			if(current_object == -1):
-				fitness_weight += ((container_size[0]-ant_container_level[0])/container_size[0])**k
-				fitness_volume += ((container_size[1]-ant_container_level[1])/container_size[1])**k
-				container_items_weight = np.zeros_like(container_items_weight)
-				container_items_volume = np.zeros_like(container_items_volume)
+				ant_containers_weight[current_container] = container_items_weight
+				ant_containers_volume[current_container] = container_items_volume
+				container_items_weight = np.zeros(weight_index_size)
+				container_items_volume = np.zeros(volume_index_size)
+				p_value_weight = np.zeros(n)
+				p_value_volume = np.zeros(n)
 				ant_container_level = np.array(container_size)
 				current_container += 1
-				item_number = 0
-				if remaining_objects.sum(axis=None) == 0: break
+				item_number = 0.0
+				if np.sum(remaining_objects) == 0: break
 			else:
-				ant_container_level -= objects[current_object]
-				ant_solution[current_object, current_container] = 1
-				container_items_weight[objects[current_object][0]] += 1
-				container_items_volume[objects[current_object][1]] += 1
-				remaining_objects[current_object] = 0
-				item_number += 1
-		fitness = ((fitness_weight + fitness_volume)/current_container)*0.5
-		#fitness = (fitness_weight * fitness_volume)**0.5/current_container
-		solutions.append([ant_solution, current_container, fitness])
-	#Sortiere Lösungen
-	solutions = sorted(solutions, key=lambda solutions: solutions[2])
+				ant_container_level -= objects_float[current_object]
+				container_items_weight[objects_mapped_index_weight[current_object]] += 1.0
+				container_items_volume[objects_mapped_index_volume[current_object]] += 1.0
+				remaining_objects[current_object] = 0.0
+				item_number += 1.0
+		ant_containers_weight = ant_containers_weight[0:current_container, :]
+		ant_containers_volume = ant_containers_volume[0:current_container, :]
+		fitness_weight = np.einsum('i,ji->j', reverse_index_weight, ant_containers_weight)
+		fitness_volume = np.einsum('i,ji->j', reverse_index_volume, ant_containers_volume)
+		fitness_weight = np.divide(fitness_weight, container_size[0])
+		fitness_volume = np.divide(fitness_volume, container_size[1])
+		fitness_weight = np.power(fitness_weight, k)
+		fitness_volume = np.power(fitness_weight, k)
+		fitness = (np.sum(fitness_weight) + np.sum(fitness_volume))/(2*float(current_container))
+		solutions.append([current_container, fitness, ant_containers_weight, ant_containers_volume])
+
+	solutions = sorted(solutions, key=lambda solutions: solutions[1])
 	solutions = solutions[::-1]
 	solutions = np.array(solutions)
-	solutions.shape = (ant_number, 3)
+	solutions.shape = (ant_number, 4)
 
 	return solutions
 
-def UpdatePheromones(solutions, global_best, pheromones_weight, pheromones_volume, objects, n, p, t_min, µ, s):
-	if µ <= 1:  solutions[0] = global_best
-	update_weight = np.zeros_like(pheromones_weight)
-	update_volume = np.zeros_like(pheromones_volume)
-	update_sum_weight = np.zeros_like(pheromones_weight)
-	update_sum_volume = np.zeros_like(pheromones_volume)
-	for z in range(s):
-		co_occurence_matrix = solutions[z][0].dot(solutions[z][0].T)
-		np.fill_diagonal(co_occurence_matrix, 0)
-		for x in range(n):
-			for y in range(n-x-1):
-				occurence_count = co_occurence_matrix[x][x+y+1]
-				if occurence_count > 0:
-					update_weight[objects[x][0]][objects[x+y+1][0]] += occurence_count
-					update_volume[objects[x][1]][objects[x+y+1][1]] += occurence_count
-		update_weight = update_weight + update_weight.T
-		update_volume = update_volume + update_volume.T
-		update_sum_weight += update_weight
-		update_sum_volume += update_volume
-		update_weight = np.zeros_like(pheromones_weight)
-		update_volume = np.zeros_like(pheromones_volume)
-
-	update_weight = p*pheromones_weight + update_sum_weight
-	update_volume = p*pheromones_volume + update_sum_volume
+def UpdatePheromones(s_update, pheromones_weight, pheromones_volume, diag_weight, diag_volume, p, t_min):
+	co_occurence_weight = np.array(s_update[2])
+	co_occurence_volume = np.array(s_update[3])
+	co_occurence_weight = np.subtract(np.dot(co_occurence_weight.T, co_occurence_weight), diag_weight)
+	co_occurence_volume = np.subtract(np.dot(co_occurence_volume.T, co_occurence_volume), diag_volume)
+	pheromones_weight = pheromones_weight*p
+	pheromones_volume = pheromones_volume*p
+	update_weight = np.add(pheromones_weight, co_occurence_weight)
+	update_volume = np.add(pheromones_volume, co_occurence_volume)
 	update_weight[update_weight<t_min] = t_min
 	update_volume[update_volume<t_min] = t_min
 
 	return [update_weight, update_volume]
-
-if __name__ == "__main__":
-    AntColonyOptimization(int(sys.argv[1]), int(sys.argv[2]), float(sys.argv[3]), float(sys.argv[4]), float(sys.argv[5]), int(sys.argv[6]), int(sys.argv[7]), sys.argv[8])
