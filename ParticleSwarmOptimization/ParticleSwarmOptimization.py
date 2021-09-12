@@ -299,7 +299,6 @@ class Particle:
 		unfit_moves = len(unfit_objects)
 		chaos_moves = len(chaos_objects)
 		if unfit_heuristic == 'random':
-			random.shuffle(unfit_objects)
 			filled_container = []
 			empty_container = []
 			for i in range(self.number_objects):
@@ -324,7 +323,6 @@ class Particle:
 							self.object_list[i].container = copy.deepcopy(filled_container[new_container])
 							not_moved = 0
 		elif unfit_heuristic == 'random_fit':
-			random.shuffle(unfit_objects)
 			filled_container = []
 			empty_container = []
 			for i in range(self.number_objects):
@@ -352,14 +350,12 @@ class Particle:
 							not_moved = 0
 						tries += 1
 		elif unfit_heuristic == 'first_fit':
-			random.shuffle(unfit_objects)
 			for i in unfit_objects:
 				for j in range(self.number_objects):
 					if self.container_list[j].add_object(self.object_list[i].weight, self.object_list[i].volume) == 1:
 						self.object_list[i].container = copy.deepcopy(j)
 						break
 		elif unfit_heuristic == 'best_fit':
-			random.shuffle(unfit_objects)
 			bin_max = self.bin_max_weight + self.bin_max_volume
 			for i in unfit_objects:
 				best_fit_value = bin_max
