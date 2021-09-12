@@ -185,9 +185,11 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 		fitness_volume = np.divide(fitness_volume, container_size[1])
 		fitness_weight = np.power(fitness_weight, k)
 		fitness_volume = np.power(fitness_volume, k)
+		fitness_weight = np.sum(fitness_weight)/float(current_container)
+		fitness_volume = np.sum(fitness_volume)/float(current_container)
+		fitness_weight = np.power(fitness_weight, k)
+		fitness_volume = np.power(fitness_volume, k)
 		fitness = np.add(fitness_weight, fitness_volume)/2.0
-		fitness = np.power(fitness, k)
-		fitness = np.sum(fitness)/float(current_container)
 		solutions.append([current_container, fitness, ant_containers_weight, ant_containers_volume])
 
 	solutions = sorted(solutions, key=lambda solutions: solutions[1])
