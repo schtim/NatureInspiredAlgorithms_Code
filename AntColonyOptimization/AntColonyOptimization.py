@@ -13,6 +13,7 @@ class AntColonyOptimization:
 		self.objects_float = np.array(self.objects, dtype=float)
 		self.container_size = np.array(container_size, dtype=float)
 		self.n = len(self.objects)
+		self.µ = µ
 		self.update_g_best_wait = µ
 		self.ant_number = ant_number
 		self.iterations = iterations
@@ -21,9 +22,8 @@ class AntColonyOptimization:
 		self.p = p
 		self.p_best = 0.05
 		self.t_min = ((1/(1-self.p))*(1-self.p_best**(1/float(self.n))))/((self.n/2-1)*self.p_best**(1/float(self.n)))
-		self.µ = µ
-		self.objects_b = np.array(self.objects)
-		self.objects_b[self.objects_b==0] = 1
+		self.objects_b = np.array(self.objects, dtype=float)
+		self.objects_b[self.objects_b==0] = 0.9
 		self.objects_b = np.float_power(self.objects_b, self.b)
 		self.g_best = [self.n, 0, 0, 0]
 		self.iteration_avg_container = np.zeros(self.iterations)
@@ -85,7 +85,6 @@ class AntColonyOptimization:
 		self.pheromones_volume = np.ones((self.volume_index_size, self.volume_index_size))
 		self.pheromones_weight = self.pheromones_weight*(1/(1-self.p))
 		self.pheromones_volume = self.pheromones_volume*(1/(1-self.p))
-
 	def run(self):
 		start = time.time()
 		for x in range(self.iterations):
@@ -103,6 +102,7 @@ class AntColonyOptimization:
 			else:
 				self.µ -= 1
 				if self.µ <= 1:  self.solutions[0] = self.g_best
+
 			self.iteration_gbest[x] = self.g_best[0]
 			self.iteration_best_fitness[x] = self.g_best[1]
 			[self.pheromones_weight, self.pheromones_volume] = UpdatePheromones(self.solutions[0], self.pheromones_weight, self.pheromones_volume, self.diag_weight, self.diag_volume, self.p, self.t_min)
@@ -119,6 +119,8 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 	container_items_volume = np.zeros(volume_index_size)
 	p_value_weight = np.zeros(n)
 	p_value_volume = np.zeros(n)
+	p_value_weight_sum = np.zeros(n)
+	p_value_volume_sum = np.zeros(n)
 	item_number = 0.0
 
 	for ant in range(ant_number):
@@ -132,12 +134,13 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 				container_fit_weight = np.subtract(np.broadcast_to(ant_container_level[0], (1, n))[0], objects_float[:, 0])
 				container_fit_volume = np.subtract(np.broadcast_to(ant_container_level[1], (1, n))[0], objects_float[:, 1])
 				container_fit = (container_fit_weight>=0)*(container_fit_volume>=0)*remaining_objects
-				if np.any(container_fit) == 0:current_object = -1
+				if np.any(container_fit) == 0:
+					current_object = -1
 				else:
-					p_value_weight = np.add(p_value_weight, available_pheromones_weight[:,objects_mapped_index_weight[current_object]])
-					p_value_volume = np.add(p_value_volume, available_pheromones_volume[:,objects_mapped_index_volume[current_object]])
-					p_value_weight = np.multiply(p_value_weight, container_fit)
-					p_value_volume = np.multiply(p_value_volume, container_fit)
+					p_value_weight_sum = np.add(p_value_weight_sum, available_pheromones_weight[:,objects_mapped_index_weight[current_object]])
+					p_value_volume_sum = np.add(p_value_volume_sum, available_pheromones_volume[:,objects_mapped_index_volume[current_object]])
+					p_value_weight = np.multiply(p_value_weight_sum, container_fit)
+					p_value_volume = np.multiply(p_value_volume_sum, container_fit)
 					p_value_weight = np.divide(p_value_weight, item_number)
 					p_value_volume = np.divide(p_value_volume, item_number)
 					p_value_weight = np.multiply(p_value_weight, objects_b[:,0])
@@ -147,7 +150,8 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
 					current_object = int(rng.choice(object_list, size=None, replace=True, p=available_objects))
 			else:
-				if np.any(remaining_objects) == 0: current_object = -1
+				if np.any(remaining_objects) == 0:
+					current_object = -1
 				else:
 					p_value_weight = np.multiply(remaining_objects, objects_b[:,0])
 					p_value_volume = np.multiply(remaining_objects, objects_b[:,1])
@@ -161,8 +165,8 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 				ant_containers_volume[current_container] = container_items_volume
 				container_items_weight = np.zeros(weight_index_size)
 				container_items_volume = np.zeros(volume_index_size)
-				p_value_weight = np.zeros(n)
-				p_value_volume = np.zeros(n)
+				p_value_weight_sum = np.zeros(n)
+				p_value_volume_sum = np.zeros(n)
 				ant_container_level = np.array(container_size)
 				current_container += 1
 				item_number = 0.0
@@ -180,8 +184,10 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 		fitness_weight = np.divide(fitness_weight, container_size[0])
 		fitness_volume = np.divide(fitness_volume, container_size[1])
 		fitness_weight = np.power(fitness_weight, k)
-		fitness_volume = np.power(fitness_weight, k)
-		fitness = (np.sum(fitness_weight) + np.sum(fitness_volume))/(2*float(current_container))
+		fitness_volume = np.power(fitness_volume, k)
+		fitness = np.add(fitness_weight, fitness_volume)/2.0
+		fitness = np.power(fitness, k)
+		fitness = np.sum(fitness)/float(current_container)
 		solutions.append([current_container, fitness, ant_containers_weight, ant_containers_volume])
 
 	solutions = sorted(solutions, key=lambda solutions: solutions[1])
