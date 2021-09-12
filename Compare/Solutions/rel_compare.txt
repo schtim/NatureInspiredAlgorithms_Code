@@ -1,0 +1,346 @@
+Übersicht über die Algorithmen
+new_50_0 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.39
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.10 | 0.14 in 0.90 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.30
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      10.85
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.20
+---------------------------------------------------------------------------
+
+new_50_1 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.41
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.20 | 0.14 in 0.80 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.43
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      12.04
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.84
+---------------------------------------------------------------------------
+
+new_50_2 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.39
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.20 | 0.14 in 0.80 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.42
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      10.87
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.01
+---------------------------------------------------------------------------
+
+new_50_3 Problem:
+Optimale Lösung des Problems: 15
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.13 in 0.00 | 0.20 in 0.0 der Fälle. | Mit Laufzeit:       0.41
+Algorithmus:	PSO        |  Beste Werte: 0.13 in 1.00 | 0.20 in 0.00 | 0.27 in 0.0 der Fälle. | Mit Laufzeit:       1.46
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.13 in 0.00 | 0.20 in 0.0 der Fälle. | Mit Laufzeit:      11.51
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.13 in 0.00 | 0.20 in 0.0 der Fälle. | Mit Laufzeit:       0.91
+---------------------------------------------------------------------------
+
+new_50_4 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.41
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.10 | 0.14 in 0.90 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.41
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      11.32
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.89
+---------------------------------------------------------------------------
+
+new_50_5 Problem:
+Optimale Lösung des Problems: 13
+Algorithmus:	GA         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       0.39
+Algorithmus:	PSO        |  Beste Werte: 0.08 in 0.50 | 0.15 in 0.50 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.40
+Algorithmus:	ACO        |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:      11.17
+Algorithmus:	FF         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.10
+---------------------------------------------------------------------------
+
+new_50_6 Problem:
+Optimale Lösung des Problems: 13
+Algorithmus:	GA         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       0.40
+Algorithmus:	PSO        |  Beste Werte: 0.08 in 0.40 | 0.15 in 0.60 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.41
+Algorithmus:	ACO        |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:      10.52
+Algorithmus:	FF         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.53
+---------------------------------------------------------------------------
+
+new_50_7 Problem:
+Optimale Lösung des Problems: 13
+Algorithmus:	GA         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       0.41
+Algorithmus:	PSO        |  Beste Werte: 0.08 in 0.30 | 0.15 in 0.70 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.42
+Algorithmus:	ACO        |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:      10.49
+Algorithmus:	FF         |  Beste Werte: 0.08 in 1.00 | 0.15 in 0.00 | 0.23 in 0.0 der Fälle. | Mit Laufzeit:       1.20
+---------------------------------------------------------------------------
+
+new_50_8 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.42
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.10 | 0.14 in 0.90 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.43
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      10.81
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.92
+---------------------------------------------------------------------------
+
+new_50_9 Problem:
+Optimale Lösung des Problems: 14
+Algorithmus:	GA         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       0.42
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.10 | 0.14 in 0.90 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.43
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:      10.52
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.14 in 0.00 | 0.21 in 0.0 der Fälle. | Mit Laufzeit:       1.12
+---------------------------------------------------------------------------
+
+new_100_0 Problem:
+Optimale Lösung des Problems: 30
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:       0.94
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.50 | 0.13 in 0.50 | 0.17 in 0.0 der Fälle. | Mit Laufzeit:       3.29
+Algorithmus:	ACO        |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      12.71
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:       2.62
+---------------------------------------------------------------------------
+
+new_100_1 Problem:
+Optimale Lösung des Problems: 26
+Algorithmus:	GA         |  Beste Werte: 0.04 in 1.00 | 0.08 in 0.00 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:       0.90
+Algorithmus:	PSO        |  Beste Werte: 0.12 in 1.00 | 0.15 in 0.00 | 0.19 in 0.0 der Fälle. | Mit Laufzeit:       3.17
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.08 in 0.00 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:      12.60
+Algorithmus:	FF         |  Beste Werte: 0.08 in 1.00 | 0.12 in 0.00 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:       2.04
+---------------------------------------------------------------------------
+
+new_100_2 Problem:
+Optimale Lösung des Problems: 29
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:       0.96
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.80 | 0.14 in 0.20 | 0.17 in 0.0 der Fälle. | Mit Laufzeit:       3.38
+Algorithmus:	ACO        |  Beste Werte: 0.03 in 0.60 | 0.07 in 0.40 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      12.82
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:       2.11
+---------------------------------------------------------------------------
+
+new_100_3 Problem:
+Optimale Lösung des Problems: 27
+Algorithmus:	GA         |  Beste Werte: 0.04 in 0.40 | 0.07 in 0.60 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:       0.95
+Algorithmus:	PSO        |  Beste Werte: 0.11 in 1.00 | 0.15 in 0.00 | 0.19 in 0.0 der Fälle. | Mit Laufzeit:       3.33
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.11 in 0.00 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:      13.03
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.11 in 0.00 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:       1.91
+---------------------------------------------------------------------------
+
+new_100_4 Problem:
+Optimale Lösung des Problems: 29
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:       0.97
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.70 | 0.14 in 0.30 | 0.17 in 0.0 der Fälle. | Mit Laufzeit:       3.23
+Algorithmus:	ACO        |  Beste Werte: 0.03 in 0.80 | 0.07 in 0.20 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      13.78
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:       1.93
+---------------------------------------------------------------------------
+
+new_100_5 Problem:
+Optimale Lösung des Problems: 29
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:       0.96
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.60 | 0.14 in 0.40 | 0.17 in 0.0 der Fälle. | Mit Laufzeit:       3.62
+Algorithmus:	ACO        |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:      13.18
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:       1.98
+---------------------------------------------------------------------------
+
+new_100_6 Problem:
+Optimale Lösung des Problems: 29
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.07 in 0.00 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:       1.00
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 1.00 | 0.14 in 0.00 | 0.17 in 0.0 der Fälle. | Mit Laufzeit:       3.28
+Algorithmus:	ACO        |  Beste Werte: 0.03 in 0.70 | 0.07 in 0.30 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      13.26
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.10 in 0.00 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:       1.88
+---------------------------------------------------------------------------
+
+new_100_7 Problem:
+Optimale Lösung des Problems: 25
+Algorithmus:	GA         |  Beste Werte: 0.04 in 1.00 | 0.08 in 0.00 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:       0.90
+Algorithmus:	PSO        |  Beste Werte: 0.08 in 0.20 | 0.12 in 0.80 | 0.16 in 0.0 der Fälle. | Mit Laufzeit:       3.10
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.08 in 0.00 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:      12.54
+Algorithmus:	FF         |  Beste Werte: 0.04 in 0.30 | 0.08 in 0.70 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:       1.72
+---------------------------------------------------------------------------
+
+new_100_8 Problem:
+Optimale Lösung des Problems: 27
+Algorithmus:	GA         |  Beste Werte: 0.04 in 1.00 | 0.07 in 0.00 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:       0.88
+Algorithmus:	PSO        |  Beste Werte: 0.11 in 1.00 | 0.15 in 0.00 | 0.19 in 0.0 der Fälle. | Mit Laufzeit:       3.34
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.50 | 0.07 in 0.50 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      13.51
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.11 in 0.00 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:       2.93
+---------------------------------------------------------------------------
+
+new_100_9 Problem:
+Optimale Lösung des Problems: 27
+Algorithmus:	GA         |  Beste Werte: 0.04 in 1.00 | 0.07 in 0.00 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:       1.11
+Algorithmus:	PSO        |  Beste Werte: 0.07 in 0.10 | 0.11 in 0.90 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:       3.21
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.07 in 0.00 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      13.40
+Algorithmus:	FF         |  Beste Werte: 0.07 in 1.00 | 0.11 in 0.00 | 0.15 in 0.0 der Fälle. | Mit Laufzeit:       2.89
+---------------------------------------------------------------------------
+
+new_250_0 Problem:
+Optimale Lösung des Problems: 72
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.58
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.20 | 0.11 in 0.80 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:      10.71
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.90 | 0.06 in 0.10 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      56.71
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       8.23
+---------------------------------------------------------------------------
+
+new_250_1 Problem:
+Optimale Lösung des Problems: 70
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.53
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.80 | 0.11 in 0.20 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      10.99
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      58.21
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.09 in 0.0 der Fälle. | Mit Laufzeit:       6.00
+---------------------------------------------------------------------------
+
+new_250_2 Problem:
+Optimale Lösung des Problems: 67
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.45
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.30 | 0.10 in 0.70 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:      10.92
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      55.22
+Algorithmus:	FF         |  Beste Werte: 0.04 in 0.10 | 0.06 in 0.90 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:       5.83
+---------------------------------------------------------------------------
+
+new_250_3 Problem:
+Optimale Lösung des Problems: 71
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.59
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.50 | 0.11 in 0.50 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      10.55
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      51.39
+Algorithmus:	FF         |  Beste Werte: 0.04 in 0.10 | 0.06 in 0.90 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:       6.05
+---------------------------------------------------------------------------
+
+new_250_4 Problem:
+Optimale Lösung des Problems: 71
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.58
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.60 | 0.11 in 0.40 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      10.69
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.70 | 0.06 in 0.30 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      50.20
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       6.92
+---------------------------------------------------------------------------
+
+new_250_5 Problem:
+Optimale Lösung des Problems: 71
+Algorithmus:	GA         |  Beste Werte: 0.03 in 0.90 | 0.04 in 0.10 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.58
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.60 | 0.11 in 0.40 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      10.75
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      50.13
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       6.64
+---------------------------------------------------------------------------
+
+new_250_6 Problem:
+Optimale Lösung des Problems: 67
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.47
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.60 | 0.10 in 0.40 | 0.12 in 0.0 der Fälle. | Mit Laufzeit:      10.58
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      51.78
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.09 in 0.0 der Fälle. | Mit Laufzeit:       5.97
+---------------------------------------------------------------------------
+
+new_250_7 Problem:
+Optimale Lösung des Problems: 74
+Algorithmus:	GA         |  Beste Werte: 0.04 in 1.00 | 0.05 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:       3.64
+Algorithmus:	PSO        |  Beste Werte: 0.11 in 0.70 | 0.12 in 0.30 | 0.14 in 0.0 der Fälle. | Mit Laufzeit:      11.13
+Algorithmus:	ACO        |  Beste Werte: 0.05 in 1.00 | 0.07 in 0.00 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:      50.98
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.20 | 0.07 in 0.80 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       6.31
+---------------------------------------------------------------------------
+
+new_250_8 Problem:
+Optimale Lösung des Problems: 75
+Algorithmus:	GA         |  Beste Werte: 0.03 in 0.90 | 0.04 in 0.10 | 0.05 in 0.0 der Fälle. | Mit Laufzeit:       3.75
+Algorithmus:	PSO        |  Beste Werte: 0.11 in 0.90 | 0.12 in 0.10 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      11.14
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.40 | 0.05 in 0.60 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      51.75
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.50 | 0.07 in 0.50 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       6.44
+---------------------------------------------------------------------------
+
+new_250_9 Problem:
+Optimale Lösung des Problems: 71
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:       3.79
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.50 | 0.11 in 0.50 | 0.13 in 0.0 der Fälle. | Mit Laufzeit:      10.60
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.06 in 0.00 | 0.07 in 0.0 der Fälle. | Mit Laufzeit:      51.80
+Algorithmus:	FF         |  Beste Werte: 0.06 in 1.00 | 0.07 in 0.00 | 0.08 in 0.0 der Fälle. | Mit Laufzeit:       6.34
+---------------------------------------------------------------------------
+
+new_500_0 Problem:
+Optimale Lösung des Problems: 145
+Algorithmus:	GA         |  Beste Werte: 0.02 in 0.70 | 0.03 in 0.30 | 0.03 in 0.0 der Fälle. | Mit Laufzeit:      12.19
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.10 | 0.10 in 0.60 | 0.10 in 0.3 der Fälle. | Mit Laufzeit:      33.38
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.10 | 0.05 in 0.90 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      91.36
+Algorithmus:	FF         |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.63
+---------------------------------------------------------------------------
+
+new_500_1 Problem:
+Optimale Lösung des Problems: 139
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.04 in 0.00 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      11.80
+Algorithmus:	PSO        |  Beste Werte: 0.08 in 0.10 | 0.09 in 0.10 | 0.09 in 0.8 der Fälle. | Mit Laufzeit:      33.90
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.20 | 0.05 in 0.80 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      99.61
+Algorithmus:	FF         |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.15
+---------------------------------------------------------------------------
+
+new_500_2 Problem:
+Optimale Lösung des Problems: 141
+Algorithmus:	GA         |  Beste Werte: 0.02 in 1.00 | 0.03 in 0.00 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      11.79
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.30 | 0.09 in 0.70 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      38.88
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 1.00 | 0.05 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:     100.19
+Algorithmus:	FF         |  Beste Werte: 0.04 in 0.20 | 0.05 in 0.80 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      25.57
+---------------------------------------------------------------------------
+
+new_500_3 Problem:
+Optimale Lösung des Problems: 146
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.03 in 0.00 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      13.38
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.90 | 0.10 in 0.10 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      39.90
+Algorithmus:	ACO        |  Beste Werte: 0.05 in 0.70 | 0.05 in 0.30 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      95.27
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.20 | 0.05 in 0.80 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.20
+---------------------------------------------------------------------------
+
+new_500_4 Problem:
+Optimale Lösung des Problems: 143
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.03 in 0.00 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      13.23
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.30 | 0.10 in 0.70 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      41.86
+Algorithmus:	ACO        |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      88.46
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.70 | 0.06 in 0.30 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.01
+---------------------------------------------------------------------------
+
+new_500_5 Problem:
+Optimale Lösung des Problems: 149
+Algorithmus:	GA         |  Beste Werte: 0.03 in 1.00 | 0.03 in 0.00 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      13.71
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.70 | 0.10 in 0.30 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      36.66
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.10 | 0.05 in 0.90 | 0.05 in 0.0 der Fälle. | Mit Laufzeit:      88.42
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.30 | 0.05 in 0.70 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.60
+---------------------------------------------------------------------------
+
+new_500_6 Problem:
+Optimale Lösung des Problems: 142
+Algorithmus:	GA         |  Beste Werte: 0.02 in 0.10 | 0.03 in 0.90 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      12.68
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.50 | 0.10 in 0.50 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      33.10
+Algorithmus:	ACO        |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      88.25
+Algorithmus:	FF         |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      25.69
+---------------------------------------------------------------------------
+
+new_500_7 Problem:
+Optimale Lösung des Problems: 143
+Algorithmus:	GA         |  Beste Werte: 0.02 in 0.10 | 0.03 in 0.90 | 0.03 in 0.0 der Fälle. | Mit Laufzeit:      11.60
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.30 | 0.10 in 0.70 | 0.10 in 0.0 der Fälle. | Mit Laufzeit:      33.71
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.10 | 0.05 in 0.70 | 0.06 in 0.2 der Fälle. | Mit Laufzeit:      88.41
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.10 | 0.06 in 0.90 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      25.46
+---------------------------------------------------------------------------
+
+new_500_8 Problem:
+Optimale Lösung des Problems: 147
+Algorithmus:	GA         |  Beste Werte: 0.02 in 0.10 | 0.03 in 0.90 | 0.03 in 0.0 der Fälle. | Mit Laufzeit:      12.50
+Algorithmus:	PSO        |  Beste Werte: 0.10 in 0.60 | 0.10 in 0.40 | 0.11 in 0.0 der Fälle. | Mit Laufzeit:      34.23
+Algorithmus:	ACO        |  Beste Werte: 0.05 in 1.00 | 0.05 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      88.21
+Algorithmus:	FF         |  Beste Werte: 0.05 in 0.10 | 0.05 in 0.90 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      26.24
+---------------------------------------------------------------------------
+
+new_500_9 Problem:
+Optimale Lösung des Problems: 140
+Algorithmus:	GA         |  Beste Werte: 0.02 in 0.10 | 0.03 in 0.90 | 0.04 in 0.0 der Fälle. | Mit Laufzeit:      11.94
+Algorithmus:	PSO        |  Beste Werte: 0.09 in 0.20 | 0.09 in 0.70 | 0.10 in 0.1 der Fälle. | Mit Laufzeit:      32.97
+Algorithmus:	ACO        |  Beste Werte: 0.04 in 0.60 | 0.05 in 0.40 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      88.38
+Algorithmus:	FF         |  Beste Werte: 0.05 in 1.00 | 0.06 in 0.00 | 0.06 in 0.0 der Fälle. | Mit Laufzeit:      27.20
+---------------------------------------------------------------------------
+
+Zusammenfassung der Ergebnisse
+new_50 Problem:
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       0.41
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 15.187% | Mit Laufzeit:       1.41
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:      11.01
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       1.07
+
+new_100 Problem:
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 7.217% | Mit Laufzeit:       0.96
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 13.663% | Mit Laufzeit:       3.30
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 7.932% | Mit Laufzeit:      13.08
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 10.425% | Mit Laufzeit:       2.20
+
+new_250 Problem:
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 4.371% | Mit Laufzeit:       3.60
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 11.267% | Mit Laufzeit:      10.81
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 5.784% | Mit Laufzeit:      52.82
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 6.770% | Mit Laufzeit:       6.47
+
+new_500 Problem:
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 3.066% | Mit Laufzeit:      12.48
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 9.763% | Mit Laufzeit:      35.86
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 5.171% | Mit Laufzeit:      91.66
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 5.506% | Mit Laufzeit:      26.17
+

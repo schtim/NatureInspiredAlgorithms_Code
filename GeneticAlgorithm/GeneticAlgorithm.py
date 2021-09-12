@@ -19,6 +19,7 @@ class SimpleFirstFit:
         self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
 
     def run(self):
+        start = time.time()
         for index in np.arange(self.number_trials):
             random.shuffle(self.object_list)
             for obj in self.object_list:
@@ -26,7 +27,9 @@ class SimpleFirstFit:
             if len(self.solution) <= self.all_time_best:
                 self.all_time_best = len(self.solution)
             self.solution = [Bin.create_empty_bin(self.bin_vol_capacity, self.bin_weight_capacity)]
-        return self.all_time_best
+        end = time.time()
+        runtime = end - start
+        return self.all_time_best, runtime 
     
     def first_fit(self, obj):
         for bin in self.solution:
