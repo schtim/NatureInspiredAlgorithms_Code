@@ -150,7 +150,7 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 				if np.any(remaining_objects) == 0: current_object = -1
 				else:
 					p_value_weight = np.multiply(remaining_objects, objects_b[:,0])
-					p_value_volume = np.multiply(remaining_objects, objects_b[:,0])
+					p_value_volume = np.multiply(remaining_objects, objects_b[:,1])
 					p_value_weight = np.divide(p_value_weight,np.sum(p_value_weight))
 					p_value_volume = np.divide(p_value_volume,np.sum(p_value_volume))
 					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
