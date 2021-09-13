@@ -3,6 +3,78 @@ import time
 import numpy as np
 import random
 import copy
+from matplotlib import pyplot as plt
+import matplotlib.patches as mpatches
+
+
+
+class FirstFitDecreasing:
+    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity):
+        self.object_list = []
+        for obj_tuple in objects:
+            volume, weight = obj_tuple
+            obj = Obj(volume, weight)
+            self.object_list.append(obj)
+        self.number_objects = len(self.object_list)
+        self.bin_vol_capacity = bin_vol_capacity
+        self.bin_weight_capacity = bin_weight_capacity
+        self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
+
+    def run(self):
+        start = time.time()
+        self.object_list.sort(key=lambda x: x.volume+x.weight, reverse=True)
+        for obj in self.object_list:
+            self.first_fit(obj)
+        end = time.time()
+        runtime = end - start
+        return np.array([len(self.solution)]), np.array([runtime])
+    
+    def first_fit(self, obj):
+        for bin in self.solution:
+            if bin.check_fit(obj):
+                bin.fit_obj(obj)
+                return
+        new_bin = Bin.create_empty_bin()
+        self.solution.append(new_bin)
+        new_bin.fit_obj(obj)
+        return
+
+class SimpleFirstFit:
+    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_trials):
+        self.all_time_best = 1000
+        self.object_list = []
+        for obj_tuple in objects:
+            volume, weight = obj_tuple
+            obj = Obj(volume, weight)
+            self.object_list.append(obj)
+        self.number_objects = len(self.object_list)
+        self.number_trials = number_trials
+        self.bin_vol_capacity = bin_vol_capacity
+        self.bin_weight_capacity = bin_weight_capacity
+        self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
+
+    def run(self):
+        start = time.time()
+        for index in np.arange(self.number_trials):
+            random.shuffle(self.object_list)
+            for obj in self.object_list:
+                self.first_fit(obj)
+            if len(self.solution) <= self.all_time_best:
+                self.all_time_best = len(self.solution)
+            self.solution = [Bin.create_empty_bin(self.bin_vol_capacity, self.bin_weight_capacity)]
+        end = time.time()
+        runtime = end - start
+        return self.all_time_best, runtime 
+    
+    def first_fit(self, obj):
+        for bin in self.solution:
+            if bin.check_fit(obj):
+                bin.fit_obj(obj)
+                return
+        new_bin = Bin.create_empty_bin()
+        self.solution.append(new_bin)
+        new_bin.fit_obj(obj)
+        return
 
 class SimpleFirstFit:
     def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_trials):
@@ -68,6 +140,7 @@ class GeneticAlgorithm:
         self.all_time_best =1000000
         self.fit_sort = ''
         self.sort_in_recom_and_mutation = None
+        self.solution = None
         # set fitness function
         if fitness_function == 'amount_bins':
             self.fitness_function = Chromosome.fitness_amount_bins
@@ -115,7 +188,7 @@ class GeneticAlgorithm:
             self.save_info(self.current_population , generation_number)
         end = time.time()
         runtime = end - start
-        return self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime, self.av_fitness_vals
+        return self.solution, self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime, self.av_fitness_vals
 
     def save_info(self,current_population, generation_number):
         '''Saves/updates the info about the current population'''
@@ -128,6 +201,7 @@ class GeneticAlgorithm:
                 best_size = len(chromosome.group_part)
             if len(chromosome.group_part) <= self.all_time_best:
                 self.all_time_best = len(chromosome.group_part)
+                self.solution = chromosome
             if len(chromosome.group_part) >=worst_size:
                 worst_size = len(chromosome.group_part)
         average_size = total_size / len(current_population.current_members)
@@ -543,6 +617,40 @@ class Chromosome:
             if bin.contains_obj(obj):
                 return False
         return True 
+
+    def plot_chromosome(self):
+        width = 0.35
+        # find the bin that has the most objects 
+        max_nr_obj = 0
+        for bin in self.group_part:
+            if len(bin.objects_contained) > max_nr_obj:
+                max_nr_obj = len(bin.objects_contained)
+        labels = []
+        for i in np.arange(len(self.group_part)):
+            labels.append(f'Bin{i+1}')
+        # create numpy array 
+        values = np.zeros((len(self.group_part), max_nr_obj,2))
+        #transform the values
+        for bin_index,bin in enumerate(self.group_part):
+            for obj_index,obj in enumerate(bin.objects_contained):
+                values[bin_index][obj_index][0] = obj.weight
+                values[bin_index][obj_index][1] = obj.volume
+        fig, ax = plt.subplots(figsize = (16,7))
+        # Initialize the bottom at zero for the first set of bars.
+        bottom_0 = np.zeros(len(self.group_part))
+        bottom_1 = np.zeros(len(self.group_part))
+        # Plot each layer of the bar, adding each bar to the "bottom" so
+        # the next bar starts higher.
+        for i in np.arange(max_nr_obj):
+            ax.bar(np.arange(len(self.group_part))-(width/2), np.array(values[:,i,0]) ,bottom=bottom_0, width=width, edgecolor = 'black', color = 'None')
+            ax.bar(np.arange(len(self.group_part))+(width/2), np.array(values[:,i,1]) ,bottom=bottom_1, width = width, edgecolor = 'black', color = 'None') 
+            bottom_0 += np.array(values[:,i,0])
+            bottom_1 += np.array(values[:,i,1])
+        ax.set_xticks(np.arange(len(self.group_part)))
+        ax.set_xticklabels(labels)
+        plt.xlabel('Gewicht/Volumen pro Container')
+        plt.ylabel('Füllstand')            
+        ax.set_title('Füllstände der Container')
 
 
 class Bin:

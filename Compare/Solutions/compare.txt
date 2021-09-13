@@ -5,6 +5,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  10% |  16 in  90% |  17 in   0% der Fälle. | Mit Laufzeit:       1.30
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      10.85
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       1.20
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_1 Problem:
@@ -13,6 +14,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  20% |  16 in  80% |  17 in   0% der Fälle. | Mit Laufzeit:       1.43
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      12.04
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.84
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_2 Problem:
@@ -21,6 +23,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  20% |  16 in  80% |  17 in   0% der Fälle. | Mit Laufzeit:       1.42
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      10.87
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       1.01
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_3 Problem:
@@ -29,6 +32,7 @@ Algorithmus:	GA         |  Beste Werte:  16 in 100% |  17 in   0% |  18 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  17 in 100% |  18 in   0% |  19 in   0% der Fälle. | Mit Laufzeit:       1.46
 Algorithmus:	ACO        |  Beste Werte:  16 in 100% |  17 in   0% |  18 in   0% der Fälle. | Mit Laufzeit:      11.51
 Algorithmus:	FF         |  Beste Werte:  16 in 100% |  17 in   0% |  18 in   0% der Fälle. | Mit Laufzeit:       0.91
+Algorithmus:	FFD        |  Beste Werte:  16 in 100% |  17 in   0% |  18 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_4 Problem:
@@ -37,6 +41,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  10% |  16 in  90% |  17 in   0% der Fälle. | Mit Laufzeit:       1.41
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      11.32
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.89
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_5 Problem:
@@ -45,6 +50,7 @@ Algorithmus:	GA         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  14 in  50% |  15 in  50% |  16 in   0% der Fälle. | Mit Laufzeit:       1.40
 Algorithmus:	ACO        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:      11.17
 Algorithmus:	FF         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       1.10
+Algorithmus:	FFD        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_6 Problem:
@@ -53,6 +59,7 @@ Algorithmus:	GA         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  14 in  40% |  15 in  60% |  16 in   0% der Fälle. | Mit Laufzeit:       1.41
 Algorithmus:	ACO        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:      10.52
 Algorithmus:	FF         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       1.53
+Algorithmus:	FFD        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_7 Problem:
@@ -61,6 +68,7 @@ Algorithmus:	GA         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  14 in  30% |  15 in  70% |  16 in   0% der Fälle. | Mit Laufzeit:       1.42
 Algorithmus:	ACO        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:      10.49
 Algorithmus:	FF         |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       1.20
+Algorithmus:	FFD        |  Beste Werte:  14 in 100% |  15 in   0% |  16 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_8 Problem:
@@ -69,6 +77,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  10% |  16 in  90% |  17 in   0% der Fälle. | Mit Laufzeit:       1.43
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      10.81
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.92
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_50_9 Problem:
@@ -77,6 +86,7 @@ Algorithmus:	GA         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  15 in  10% |  16 in  90% |  17 in   0% der Fälle. | Mit Laufzeit:       1.43
 Algorithmus:	ACO        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:      10.52
 Algorithmus:	FF         |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       1.12
+Algorithmus:	FFD        |  Beste Werte:  15 in 100% |  16 in   0% |  17 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_0 Problem:
@@ -85,6 +95,7 @@ Algorithmus:	GA         |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  33 in  50% |  34 in  50% |  35 in   0% der Fälle. | Mit Laufzeit:       3.29
 Algorithmus:	ACO        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:      12.71
 Algorithmus:	FF         |  Beste Werte:  32 in 100% |  33 in   0% |  34 in   0% der Fälle. | Mit Laufzeit:       2.62
+Algorithmus:	FFD        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_1 Problem:
@@ -93,6 +104,7 @@ Algorithmus:	GA         |  Beste Werte:  27 in 100% |  28 in   0% |  29 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:       3.17
 Algorithmus:	ACO        |  Beste Werte:  27 in 100% |  28 in   0% |  29 in   0% der Fälle. | Mit Laufzeit:      12.60
 Algorithmus:	FF         |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% der Fälle. | Mit Laufzeit:       2.04
+Algorithmus:	FFD        |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_100_2 Problem:
@@ -101,6 +113,7 @@ Algorithmus:	GA         |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  32 in  80% |  33 in  20% |  34 in   0% der Fälle. | Mit Laufzeit:       3.38
 Algorithmus:	ACO        |  Beste Werte:  30 in  60% |  31 in  40% |  32 in   0% der Fälle. | Mit Laufzeit:      12.82
 Algorithmus:	FF         |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       2.11
+Algorithmus:	FFD        |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_3 Problem:
@@ -109,6 +122,7 @@ Algorithmus:	GA         |  Beste Werte:  28 in  40% |  29 in  60% |  30 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% der Fälle. | Mit Laufzeit:       3.33
 Algorithmus:	ACO        |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:      13.03
 Algorithmus:	FF         |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:       1.91
+Algorithmus:	FFD        |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_4 Problem:
@@ -117,6 +131,7 @@ Algorithmus:	GA         |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  32 in  70% |  33 in  30% |  34 in   0% der Fälle. | Mit Laufzeit:       3.23
 Algorithmus:	ACO        |  Beste Werte:  30 in  80% |  31 in  20% |  32 in   0% der Fälle. | Mit Laufzeit:      13.78
 Algorithmus:	FF         |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       1.93
+Algorithmus:	FFD        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_5 Problem:
@@ -125,6 +140,7 @@ Algorithmus:	GA         |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  32 in  60% |  33 in  40% |  34 in   0% der Fälle. | Mit Laufzeit:       3.62
 Algorithmus:	ACO        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:      13.18
 Algorithmus:	FF         |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       1.98
+Algorithmus:	FFD        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_6 Problem:
@@ -133,6 +149,7 @@ Algorithmus:	GA         |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  32 in 100% |  33 in   0% |  34 in   0% der Fälle. | Mit Laufzeit:       3.28
 Algorithmus:	ACO        |  Beste Werte:  30 in  70% |  31 in  30% |  32 in   0% der Fälle. | Mit Laufzeit:      13.26
 Algorithmus:	FF         |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       1.88
+Algorithmus:	FFD        |  Beste Werte:  31 in 100% |  32 in   0% |  33 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_7 Problem:
@@ -141,6 +158,7 @@ Algorithmus:	GA         |  Beste Werte:  26 in 100% |  27 in   0% |  28 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  27 in  20% |  28 in  80% |  29 in   0% der Fälle. | Mit Laufzeit:       3.10
 Algorithmus:	ACO        |  Beste Werte:  26 in 100% |  27 in   0% |  28 in   0% der Fälle. | Mit Laufzeit:      12.54
 Algorithmus:	FF         |  Beste Werte:  26 in  30% |  27 in  70% |  28 in   0% der Fälle. | Mit Laufzeit:       1.72
+Algorithmus:	FFD        |  Beste Werte:  26 in 100% |  27 in   0% |  28 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_8 Problem:
@@ -149,6 +167,7 @@ Algorithmus:	GA         |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  30 in 100% |  31 in   0% |  32 in   0% der Fälle. | Mit Laufzeit:       3.34
 Algorithmus:	ACO        |  Beste Werte:  28 in  50% |  29 in  50% |  30 in   0% der Fälle. | Mit Laufzeit:      13.51
 Algorithmus:	FF         |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:       2.93
+Algorithmus:	FFD        |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_100_9 Problem:
@@ -157,6 +176,7 @@ Algorithmus:	GA         |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  29 in  10% |  30 in  90% |  31 in   0% der Fälle. | Mit Laufzeit:       3.21
 Algorithmus:	ACO        |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% der Fälle. | Mit Laufzeit:      13.40
 Algorithmus:	FF         |  Beste Werte:  29 in 100% |  30 in   0% |  31 in   0% der Fälle. | Mit Laufzeit:       2.89
+Algorithmus:	FFD        |  Beste Werte:  28 in 100% |  29 in   0% |  30 in   0% der Fälle. | Mit Laufzeit:       0.00
 ---------------------------------------------------------------------------
 
 new_250_0 Problem:
@@ -165,6 +185,7 @@ Algorithmus:	GA         |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  79 in  20% |  80 in  80% |  81 in   0% der Fälle. | Mit Laufzeit:      10.71
 Algorithmus:	ACO        |  Beste Werte:  75 in  90% |  76 in  10% |  77 in   0% der Fälle. | Mit Laufzeit:      56.71
 Algorithmus:	FF         |  Beste Werte:  76 in 100% |  77 in   0% |  78 in   0% der Fälle. | Mit Laufzeit:       8.23
+Algorithmus:	FFD        |  Beste Werte:  75 in 100% |  76 in   0% |  77 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_1 Problem:
@@ -173,6 +194,7 @@ Algorithmus:	GA         |  Beste Werte:  72 in 100% |  73 in   0% |  74 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  77 in  80% |  78 in  20% |  79 in   0% der Fälle. | Mit Laufzeit:      10.99
 Algorithmus:	ACO        |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% der Fälle. | Mit Laufzeit:      58.21
 Algorithmus:	FF         |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% der Fälle. | Mit Laufzeit:       6.00
+Algorithmus:	FFD        |  Beste Werte:  72 in 100% |  73 in   0% |  74 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_2 Problem:
@@ -181,6 +203,7 @@ Algorithmus:	GA         |  Beste Werte:  69 in 100% |  70 in   0% |  71 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  73 in  30% |  74 in  70% |  75 in   0% der Fälle. | Mit Laufzeit:      10.92
 Algorithmus:	ACO        |  Beste Werte:  70 in 100% |  71 in   0% |  72 in   0% der Fälle. | Mit Laufzeit:      55.22
 Algorithmus:	FF         |  Beste Werte:  70 in  10% |  71 in  90% |  72 in   0% der Fälle. | Mit Laufzeit:       5.83
+Algorithmus:	FFD        |  Beste Werte:  70 in 100% |  71 in   0% |  72 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_3 Problem:
@@ -189,6 +212,7 @@ Algorithmus:	GA         |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  78 in  50% |  79 in  50% |  80 in   0% der Fälle. | Mit Laufzeit:      10.55
 Algorithmus:	ACO        |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% der Fälle. | Mit Laufzeit:      51.39
 Algorithmus:	FF         |  Beste Werte:  74 in  10% |  75 in  90% |  76 in   0% der Fälle. | Mit Laufzeit:       6.05
+Algorithmus:	FFD        |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_4 Problem:
@@ -197,6 +221,7 @@ Algorithmus:	GA         |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  78 in  60% |  79 in  40% |  80 in   0% der Fälle. | Mit Laufzeit:      10.69
 Algorithmus:	ACO        |  Beste Werte:  74 in  70% |  75 in  30% |  76 in   0% der Fälle. | Mit Laufzeit:      50.20
 Algorithmus:	FF         |  Beste Werte:  75 in 100% |  76 in   0% |  77 in   0% der Fälle. | Mit Laufzeit:       6.92
+Algorithmus:	FFD        |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_5 Problem:
@@ -205,6 +230,7 @@ Algorithmus:	GA         |  Beste Werte:  73 in  90% |  74 in  10% |  75 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  78 in  60% |  79 in  40% |  80 in   0% der Fälle. | Mit Laufzeit:      10.75
 Algorithmus:	ACO        |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% der Fälle. | Mit Laufzeit:      50.13
 Algorithmus:	FF         |  Beste Werte:  75 in 100% |  76 in   0% |  77 in   0% der Fälle. | Mit Laufzeit:       6.64
+Algorithmus:	FFD        |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_6 Problem:
@@ -213,6 +239,7 @@ Algorithmus:	GA         |  Beste Werte:  69 in 100% |  70 in   0% |  71 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  73 in  60% |  74 in  40% |  75 in   0% der Fälle. | Mit Laufzeit:      10.58
 Algorithmus:	ACO        |  Beste Werte:  70 in 100% |  71 in   0% |  72 in   0% der Fälle. | Mit Laufzeit:      51.78
 Algorithmus:	FF         |  Beste Werte:  71 in 100% |  72 in   0% |  73 in   0% der Fälle. | Mit Laufzeit:       5.97
+Algorithmus:	FFD        |  Beste Werte:  69 in 100% |  70 in   0% |  71 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_7 Problem:
@@ -221,6 +248,7 @@ Algorithmus:	GA         |  Beste Werte:  77 in 100% |  78 in   0% |  79 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  82 in  70% |  83 in  30% |  84 in   0% der Fälle. | Mit Laufzeit:      11.13
 Algorithmus:	ACO        |  Beste Werte:  78 in 100% |  79 in   0% |  80 in   0% der Fälle. | Mit Laufzeit:      50.98
 Algorithmus:	FF         |  Beste Werte:  78 in  20% |  79 in  80% |  80 in   0% der Fälle. | Mit Laufzeit:       6.31
+Algorithmus:	FFD        |  Beste Werte:  77 in 100% |  78 in   0% |  79 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_8 Problem:
@@ -229,6 +257,7 @@ Algorithmus:	GA         |  Beste Werte:  77 in  90% |  78 in  10% |  79 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  83 in  90% |  84 in  10% |  85 in   0% der Fälle. | Mit Laufzeit:      11.14
 Algorithmus:	ACO        |  Beste Werte:  78 in  40% |  79 in  60% |  80 in   0% der Fälle. | Mit Laufzeit:      51.75
 Algorithmus:	FF         |  Beste Werte:  79 in  50% |  80 in  50% |  81 in   0% der Fälle. | Mit Laufzeit:       6.44
+Algorithmus:	FFD        |  Beste Werte:  77 in 100% |  78 in   0% |  79 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_250_9 Problem:
@@ -237,6 +266,7 @@ Algorithmus:	GA         |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% 
 Algorithmus:	PSO        |  Beste Werte:  78 in  50% |  79 in  50% |  80 in   0% der Fälle. | Mit Laufzeit:      10.60
 Algorithmus:	ACO        |  Beste Werte:  74 in 100% |  75 in   0% |  76 in   0% der Fälle. | Mit Laufzeit:      51.80
 Algorithmus:	FF         |  Beste Werte:  75 in 100% |  76 in   0% |  77 in   0% der Fälle. | Mit Laufzeit:       6.34
+Algorithmus:	FFD        |  Beste Werte:  73 in 100% |  74 in   0% |  75 in   0% der Fälle. | Mit Laufzeit:       0.01
 ---------------------------------------------------------------------------
 
 new_500_0 Problem:
@@ -245,6 +275,7 @@ Algorithmus:	GA         |  Beste Werte: 148 in  70% | 149 in  30% | 150 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 158 in  10% | 159 in  60% | 160 in  30% der Fälle. | Mit Laufzeit:      33.38
 Algorithmus:	ACO        |  Beste Werte: 151 in  10% | 152 in  90% | 153 in   0% der Fälle. | Mit Laufzeit:      91.36
 Algorithmus:	FF         |  Beste Werte: 152 in 100% | 153 in   0% | 154 in   0% der Fälle. | Mit Laufzeit:      26.63
+Algorithmus:	FFD        |  Beste Werte: 149 in 100% | 150 in   0% | 151 in   0% der Fälle. | Mit Laufzeit:       0.04
 ---------------------------------------------------------------------------
 
 new_500_1 Problem:
@@ -253,6 +284,7 @@ Algorithmus:	GA         |  Beste Werte: 143 in 100% | 144 in   0% | 145 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 150 in  10% | 151 in  10% | 152 in  80% der Fälle. | Mit Laufzeit:      33.90
 Algorithmus:	ACO        |  Beste Werte: 145 in  20% | 146 in  80% | 147 in   0% der Fälle. | Mit Laufzeit:      99.61
 Algorithmus:	FF         |  Beste Werte: 146 in 100% | 147 in   0% | 148 in   0% der Fälle. | Mit Laufzeit:      26.15
+Algorithmus:	FFD        |  Beste Werte: 143 in 100% | 144 in   0% | 145 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_500_2 Problem:
@@ -261,6 +293,7 @@ Algorithmus:	GA         |  Beste Werte: 144 in 100% | 145 in   0% | 146 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 153 in  30% | 154 in  70% | 155 in   0% der Fälle. | Mit Laufzeit:      38.88
 Algorithmus:	ACO        |  Beste Werte: 147 in 100% | 148 in   0% | 149 in   0% der Fälle. | Mit Laufzeit:     100.19
 Algorithmus:	FF         |  Beste Werte: 147 in  20% | 148 in  80% | 149 in   0% der Fälle. | Mit Laufzeit:      25.57
+Algorithmus:	FFD        |  Beste Werte: 144 in 100% | 145 in   0% | 146 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_500_3 Problem:
@@ -269,6 +302,7 @@ Algorithmus:	GA         |  Beste Werte: 150 in 100% | 151 in   0% | 152 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 160 in  90% | 161 in  10% | 162 in   0% der Fälle. | Mit Laufzeit:      39.90
 Algorithmus:	ACO        |  Beste Werte: 153 in  70% | 154 in  30% | 155 in   0% der Fälle. | Mit Laufzeit:      95.27
 Algorithmus:	FF         |  Beste Werte: 153 in  20% | 154 in  80% | 155 in   0% der Fälle. | Mit Laufzeit:      26.20
+Algorithmus:	FFD        |  Beste Werte: 150 in 100% | 151 in   0% | 152 in   0% der Fälle. | Mit Laufzeit:       0.04
 ---------------------------------------------------------------------------
 
 new_500_4 Problem:
@@ -277,6 +311,7 @@ Algorithmus:	GA         |  Beste Werte: 147 in 100% | 148 in   0% | 149 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 156 in  30% | 157 in  70% | 158 in   0% der Fälle. | Mit Laufzeit:      41.86
 Algorithmus:	ACO        |  Beste Werte: 150 in 100% | 151 in   0% | 152 in   0% der Fälle. | Mit Laufzeit:      88.46
 Algorithmus:	FF         |  Beste Werte: 150 in  70% | 151 in  30% | 152 in   0% der Fälle. | Mit Laufzeit:      26.01
+Algorithmus:	FFD        |  Beste Werte: 146 in 100% | 147 in   0% | 148 in   0% der Fälle. | Mit Laufzeit:       0.03
 ---------------------------------------------------------------------------
 
 new_500_5 Problem:
@@ -285,6 +320,7 @@ Algorithmus:	GA         |  Beste Werte: 153 in 100% | 154 in   0% | 155 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 163 in  70% | 164 in  30% | 165 in   0% der Fälle. | Mit Laufzeit:      36.66
 Algorithmus:	ACO        |  Beste Werte: 155 in  10% | 156 in  90% | 157 in   0% der Fälle. | Mit Laufzeit:      88.42
 Algorithmus:	FF         |  Beste Werte: 156 in  30% | 157 in  70% | 158 in   0% der Fälle. | Mit Laufzeit:      26.60
+Algorithmus:	FFD        |  Beste Werte: 153 in 100% | 154 in   0% | 155 in   0% der Fälle. | Mit Laufzeit:       0.03
 ---------------------------------------------------------------------------
 
 new_500_6 Problem:
@@ -293,6 +329,7 @@ Algorithmus:	GA         |  Beste Werte: 145 in  10% | 146 in  90% | 147 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 155 in  50% | 156 in  50% | 157 in   0% der Fälle. | Mit Laufzeit:      33.10
 Algorithmus:	ACO        |  Beste Werte: 149 in 100% | 150 in   0% | 151 in   0% der Fälle. | Mit Laufzeit:      88.25
 Algorithmus:	FF         |  Beste Werte: 149 in 100% | 150 in   0% | 151 in   0% der Fälle. | Mit Laufzeit:      25.69
+Algorithmus:	FFD        |  Beste Werte: 146 in 100% | 147 in   0% | 148 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_500_7 Problem:
@@ -301,6 +338,7 @@ Algorithmus:	GA         |  Beste Werte: 146 in  10% | 147 in  90% | 148 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 156 in  30% | 157 in  70% | 158 in   0% der Fälle. | Mit Laufzeit:      33.71
 Algorithmus:	ACO        |  Beste Werte: 149 in  10% | 150 in  70% | 151 in  20% der Fälle. | Mit Laufzeit:      88.41
 Algorithmus:	FF         |  Beste Werte: 150 in  10% | 151 in  90% | 152 in   0% der Fälle. | Mit Laufzeit:      25.46
+Algorithmus:	FFD        |  Beste Werte: 146 in 100% | 147 in   0% | 148 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_500_8 Problem:
@@ -309,6 +347,7 @@ Algorithmus:	GA         |  Beste Werte: 150 in  10% | 151 in  90% | 152 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 161 in  60% | 162 in  40% | 163 in   0% der Fälle. | Mit Laufzeit:      34.23
 Algorithmus:	ACO        |  Beste Werte: 154 in 100% | 155 in   0% | 156 in   0% der Fälle. | Mit Laufzeit:      88.21
 Algorithmus:	FF         |  Beste Werte: 154 in  10% | 155 in  90% | 156 in   0% der Fälle. | Mit Laufzeit:      26.24
+Algorithmus:	FFD        |  Beste Werte: 151 in 100% | 152 in   0% | 153 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_500_9 Problem:
@@ -317,14 +356,16 @@ Algorithmus:	GA         |  Beste Werte: 143 in  10% | 144 in  90% | 145 in   0% 
 Algorithmus:	PSO        |  Beste Werte: 152 in  20% | 153 in  70% | 154 in  10% der Fälle. | Mit Laufzeit:      32.97
 Algorithmus:	ACO        |  Beste Werte: 146 in  60% | 147 in  40% | 148 in   0% der Fälle. | Mit Laufzeit:      88.38
 Algorithmus:	FF         |  Beste Werte: 147 in 100% | 148 in   0% | 149 in   0% der Fälle. | Mit Laufzeit:      27.20
+Algorithmus:	FFD        |  Beste Werte: 143 in 100% | 144 in   0% | 145 in   0% der Fälle. | Mit Laufzeit:       0.02
 ---------------------------------------------------------------------------
 
 new_1000_0 Problem:
 Optimale Lösung des Problems: 283
-Algorithmus:	GA         |  Beste Werte: 288 in  10% | 289 in  90% | 290 in   0% der Fälle. | Mit Laufzeit:      43.33
+Algorithmus:	GA         |  Beste Werte: 288 in  20% | 289 in  80% | 290 in   0% der Fälle. | Mit Laufzeit:      68.85
 Algorithmus:	PSO        |  Beste Werte: 305 in  10% | 306 in  10% | 307 in  80% der Fälle. | Mit Laufzeit:     121.87
 Algorithmus:	ACO        |  Beste Werte: 296 in  10% | 297 in  50% | 298 in  40% der Fälle. | Mit Laufzeit:     259.80
 Algorithmus:	FF         |  Beste Werte: 295 in  10% | 296 in  90% | 297 in   0% der Fälle. | Mit Laufzeit:     101.24
+Algorithmus:	FFD        |  Beste Werte: 289 in 100% | 290 in   0% | 291 in   0% der Fälle. | Mit Laufzeit:       0.10
 ---------------------------------------------------------------------------
 
 new_1000_1 Problem:
@@ -333,6 +374,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 293 in 100% | 294 in   0% | 295 in   0% der Fälle. | Mit Laufzeit:       0.09
 ---------------------------------------------------------------------------
 
 new_1000_2 Problem:
@@ -341,6 +383,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 287 in 100% | 288 in   0% | 289 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
 new_1000_3 Problem:
@@ -349,6 +392,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 289 in 100% | 290 in   0% | 291 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
 new_1000_4 Problem:
@@ -357,6 +401,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 288 in 100% | 289 in   0% | 290 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
 new_1000_5 Problem:
@@ -365,6 +410,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 298 in 100% | 299 in   0% | 300 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
 new_1000_6 Problem:
@@ -373,6 +419,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 291 in 100% | 292 in   0% | 293 in   0% der Fälle. | Mit Laufzeit:       0.09
 ---------------------------------------------------------------------------
 
 new_1000_7 Problem:
@@ -381,6 +428,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 287 in 100% | 288 in   0% | 289 in   0% der Fälle. | Mit Laufzeit:       0.09
 ---------------------------------------------------------------------------
 
 new_1000_8 Problem:
@@ -389,6 +437,7 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 291 in 100% | 292 in   0% | 293 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
 new_1000_9 Problem:
@@ -397,5 +446,6 @@ Algorithmus:	GA         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% 
 Algorithmus:	PSO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	ACO        |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
 Algorithmus:	FF         |  Beste Werte:   0 in   0% |   1 in   0% |   2 in   0% der Fälle. | Mit Laufzeit:       0.00
+Algorithmus:	FFD        |  Beste Werte: 297 in 100% | 298 in   0% | 299 in   0% der Fälle. | Mit Laufzeit:       0.08
 ---------------------------------------------------------------------------
 
