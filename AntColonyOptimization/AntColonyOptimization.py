@@ -147,7 +147,9 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 					p_value_volume = np.multiply(p_value_volume, objects_b[:,1])
 					p_value_weight = np.divide(p_value_weight,np.sum(p_value_weight))
 					p_value_volume = np.divide(p_value_volume,np.sum(p_value_volume))
-					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
+					available_objects = np.multiply(p_value_weight, p_value_volume)
+					available_objects = available_objects/available_objects.sum()
+					#available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
 					current_object = int(rng.choice(object_list, size=None, replace=True, p=available_objects))
 			else:
 				if np.any(remaining_objects) == 0:
@@ -157,7 +159,9 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 					p_value_volume = np.multiply(remaining_objects, objects_b[:,1])
 					p_value_weight = np.divide(p_value_weight,np.sum(p_value_weight))
 					p_value_volume = np.divide(p_value_volume,np.sum(p_value_volume))
-					available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
+					available_objects = np.multiply(p_value_weight, p_value_volume)
+					available_objects = available_objects/available_objects.sum()
+					#available_objects = np.divide(np.add(p_value_weight, p_value_volume), 2.0)
 					current_object = int(rng.choice(object_list, size=None, replace=True, p=available_objects))
 
 			if(current_object == -1):
