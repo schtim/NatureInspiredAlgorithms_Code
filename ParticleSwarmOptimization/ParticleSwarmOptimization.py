@@ -22,7 +22,7 @@ import copy
 
 class ParticleSwarmOptimization:
 	#def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
-	def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume):
+	def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, coefficients):
 		self.bin_max_weight = bin_max_weight
 		self.bin_max_volume = bin_max_volume
 		#self.iterations = 150
@@ -36,18 +36,18 @@ class ParticleSwarmOptimization:
 		#self.unfit_heuristic = unfit_heuristic
 		self.chaos_heuristic = 'first_fit'
 		#self.chaos_heuristic = chaos_heuristic
-		self.c_local = 0.4
+		self.c_local = coefficients[0]
 		#self.c_local = local_coefficient
-		self.c_global = 0.2
+		self.c_global = coefficients[1]
 		#self.c_global = global_coefficient
-		self.c_chaos = 0.2
+		self.c_chaos = coefficients[2]
 		#self.c_chaos = chaos_coefficient
 		self.number_changes = self.iterations - 1
-		self.local_coefficient_change = 0.2
+		self.local_coefficient_change = coefficients[3]
 		#self.local_coefficient_change = local_coefficient_change
-		self.global_coefficient_change = 0.4
+		self.global_coefficient_change = coefficients[4]
 		#self.global_coefficient_change = global_coefficient_change
-		self.chaos_coefficient_change = 0.2
+		self.chaos_coefficient_change = coefficients[5]
 		#elf.chaos_coefficient_change = chaos_coefficient_change
 		self.c_local_change = (self.local_coefficient_change - self.c_local)/self.number_changes
 		self.c_global_change = (self.global_coefficient_change - self.c_global)/self.number_changes
