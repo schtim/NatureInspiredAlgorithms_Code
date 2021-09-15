@@ -1,19 +1,3 @@
-## Aufruf:
-# PSO = ParticleSwarmOptimization(number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic)
-# gbest_object_list, gbest_used_container, runtime, gbest_bins, gbest_fitness_h, average_bins, best_bins, worst_bins, average_fitness, unfit_moves_history, chaos_moves_history, heuristic_moves_history= PSO.run()
-# gbest_object_list | list of integer of length number_objects
-# gbest_used_container | integer
-# runtime | float
-# gbest_bins | array[iterations] of integer
-# gbest_fitness_h | array[iterations] of integer
-# average_bins | array[iterations] of floats
-# best_bins | array[iterations] of integer
-# worst_bins | array[iterations] of integer
-# average_fitness | array[iterations] of floats
-# unfit_moves_history | array[iterations] of floats
-# chaos_moves_history | array[iterations] of floats
-# heuristic_moves_history | array[iterations] of floats
-
 import os
 import numpy as np
 import random
@@ -23,26 +7,32 @@ import copy
 class ParticleSwarmOptimization:
 	#def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, local_coefficient, global_coefficient, chaos_coefficient,  local_coefficient_change, global_coefficient_change, chaos_coefficient_change, initiate_heuristic, unfit_heuristic, chaos_heuristic):
 	def __init__(self, number_particles, iterations, objects, bin_max_weight, bin_max_volume, coefficients):
+		self.number_objects = objects.shape[0]
 		self.bin_max_weight = bin_max_weight
 		self.bin_max_volume = bin_max_volume
+		
 		#self.iterations = 150
 		self.iterations = iterations
-		self.number_objects = objects.shape[0]
+		
 		#self.number_particles = 40
 		self.number_particles = number_particles
+		
 		self.initiate_heuristic = 'even'
 		#self.initiate_heuristic = initiate_heuristic
+		
 		self.unfit_heuristic = 'first_fit'
 		#self.unfit_heuristic = unfit_heuristic
+		
 		self.chaos_heuristic = 'first_fit'
 		#self.chaos_heuristic = chaos_heuristic
+				
+		self.number_changes = self.iterations - 1
 		self.c_local = coefficients[0]
 		#self.c_local = local_coefficient
 		self.c_global = coefficients[1]
 		#self.c_global = global_coefficient
 		self.c_chaos = coefficients[2]
 		#self.c_chaos = chaos_coefficient
-		self.number_changes = self.iterations - 1
 		self.local_coefficient_change = coefficients[3]
 		#self.local_coefficient_change = local_coefficient_change
 		self.global_coefficient_change = coefficients[4]
@@ -54,10 +44,14 @@ class ParticleSwarmOptimization:
 		self.c_chaos_change = (self.chaos_coefficient_change - self.c_chaos)/self.number_changes
 		if self.c_local_change == 0 and self.c_global_change == 0 and self.c_chaos_change == 0:
 			self.number_changes = 0
+		
+		# create Particles
 		self.particle_list = []
 		for i in range(self.number_particles):
 			new_particle = Particle(objects, self.number_objects, self.bin_max_weight, self.bin_max_volume, self.initiate_heuristic)
 			self.particle_list.append(new_particle)
+		
+		# create gbest
 		self.gbest_object_list = []
 		for i in range(self.number_objects):
 			new_gbest_object = Object(objects[i][0], objects[i][1], 0)
@@ -65,6 +59,8 @@ class ParticleSwarmOptimization:
 		self.gbest_used_container = self.number_objects
 		self.gbest_fitness = (self.number_objects**2) * ((self.bin_max_weight**2) + (self.bin_max_volume**2))
 		self.update_gbest()
+		
+		# statistics
 		self.average_fitness = np.zeros(self.iterations+1)
 		self.average_bins = np.zeros(self.iterations+1)
 		self.gbest_bins = np.zeros(self.iterations+1)
@@ -115,6 +111,8 @@ class ParticleSwarmOptimization:
 		self.chaos_moves_history[iteration] = copy.deepcopy(chaos_moves)
 		self.heuristic_moves_history[iteration] = copy.deepcopy((unfit_moves + chaos_moves))
 	
+	
+	# run all iterations over the swarm
 	def run(self):
 		begin = time.perf_counter()
 		if self.number_changes > 0:
@@ -137,6 +135,18 @@ class ParticleSwarmOptimization:
 			self.update_statistic(i+1, (unfit_moves/self.number_particles), (chaos_moves/self.number_particles))
 		end = time.perf_counter() - begin
 		runtime = '{0:0.4f}'.format(end)
+		# return list of objects
+		# lowest amount of bins found
+		# runtime
+		# history of gbest bins (length = iterations + 1 initial)
+		# history of gbest fitness (length = iterations + 1 initial)
+		# history of average bins of swarm (length = iterations + 1 initial)
+		# history of the best bin of the swarm in an iteration (length = iterations + 1 initial)
+		# history of the worst bin of the swarm in an iteration (length = iterations + 1 initial)
+		# history of the average fitness of the swarm in an iteration (length = iterations + 1 initial)
+		# history of average number of objects that had conflict with local/global moves in an iteration (length = iterations + 1 initial)
+		# history of average number of objects that got mutation in an iteration (length = iterations + 1 initial)
+		# history of average number of all objects that mutated in an iteration (length = iterations + 1 initial)
 		return self.gbest_object_list, self.gbest_used_container, runtime, self.gbest_bins, self.gbest_fitness_h, self.average_bins, self.best_bins, self.worst_bins, self.average_fitness, self.unfit_moves_history, self.chaos_moves_history, self.heuristic_moves_history
 
 class Particle:
@@ -163,6 +173,8 @@ class Particle:
 			self.pbest_object_list.append(new_pbest_object)
 		self.used_container = 0
 		self.pbest_used_container = 0
+		# heuristic of initialise
+		# random over used_container + one empty container
 		if initiate_heuristic == 'random':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -177,6 +189,7 @@ class Particle:
 						if new_container == self.used_container:
 							self.used_container += 1
 							self.pbest_used_container += 1
+		# randomized sequence of objects with each object getting one container
 		elif initiate_heuristic == 'even':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -186,6 +199,7 @@ class Particle:
 				self.pbest_object_list[randomized_sequence[i]].container = copy.deepcopy(i)
 				self.used_container += 1
 				self.pbest_used_container += 1
+		# randomized sequence of objects with roughly 2 objects getting one container
 		elif initiate_heuristic == 'halved':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -207,6 +221,7 @@ class Particle:
 					self.container_list[self.used_container].add_object(self.object_list[randomized_sequence[i]].weight, self.object_list[randomized_sequence[i]].volume)
 					self.object_list[randomized_sequence[i]].container = self.used_container
 					self.pbest_object_list[randomized_sequence[i]].container = self.used_container
+		# randomized sequence of objects with roughly 4 objects getting one container
 		elif initiate_heuristic == 'quartered':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -228,6 +243,7 @@ class Particle:
 					self.container_list[self.used_container].add_object(self.object_list[randomized_sequence[i]].weight, self.object_list[randomized_sequence[i]].volume)
 					self.object_list[randomized_sequence[i]].container = self.used_container
 					self.pbest_object_list[randomized_sequence[i]].container = self.used_container		
+		# random over used containers (number_objects/50 tries), if unfit new empty container
 		elif initiate_heuristic == 'random_fit':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -258,6 +274,7 @@ class Particle:
 							not_moved = 0
 						else:
 							tries += 1
+		# first fit
 		elif initiate_heuristic == 'first_fit':
 			randomized_sequence = np.arange(0, self.number_objects).tolist()
 			random.shuffle(randomized_sequence)
@@ -310,6 +327,7 @@ class Particle:
 		global_objects = []
 		unfit_objects = []
 		chaos_objects = []
+		# choose movement of objects
 		for i in range(self.number_objects):
 			r = random.random()
 			if r < local_coefficient:
@@ -321,6 +339,7 @@ class Particle:
 			elif r < (local_coefficient + global_coefficient + chaos_coefficient):
 				chaos_objects.append(i)
 				self.container_list[self.object_list[i].container].remove_object(self.object_list[i].weight, self.object_list[i].volume)
+		# move local, than global if local coefficient is bigger than global coefficient
 		if local_coefficient >= global_coefficient:
 			random.shuffle(local_objects)
 			for i in local_objects:
@@ -334,6 +353,7 @@ class Particle:
 					self.object_list[i].container = copy.deepcopy(global_object_list[i].container)
 				else:
 					unfit_objects.append(i)
+		# move global, than local if global coefficient is bigger than local coefficient
 		else:
 			random.shuffle(global_objects)
 			for i in global_objects:
@@ -349,6 +369,7 @@ class Particle:
 					unfit_objects.append(i)
 		unfit_moves = len(unfit_objects)
 		chaos_moves = len(chaos_objects)
+		# move objects with conflict using heuristic
 		if unfit_heuristic == 'random':
 			filled_container = []
 			empty_container = []
@@ -424,6 +445,7 @@ class Particle:
 							empty_con = 1
 				if self.container_list[best_fit_container].add_object(self.object_list[i].weight, self.object_list[i].volume) == 1:
 						self.object_list[i].container = copy.deepcopy(best_fit_container)
+		# move objects that mutated using heuristic
 		if chaos_heuristic == 'random':
 			random.shuffle(chaos_objects)
 			filled_container = []
@@ -503,9 +525,9 @@ class Particle:
 							empty_con = 1
 				if self.container_list[best_fit_container].add_object(self.object_list[i].weight, self.object_list[i].volume) == 1:
 						self.object_list[i].container = copy.deepcopy(best_fit_container)
-		self.used_container = copy.deepcopy(self.get_used_container())
-		self.fitness = copy.deepcopy(self.get_fitness())
-		self.update_pbest()
+		self.used_container = copy.deepcopy(self.get_used_container()) # update container
+		self.fitness = copy.deepcopy(self.get_fitness()) # update fitness
+		self.update_pbest() # check pbest
 		return unfit_moves, chaos_moves
 		
 class Object:
