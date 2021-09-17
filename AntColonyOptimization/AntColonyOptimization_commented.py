@@ -83,7 +83,7 @@ class AntColonyOptimization:
 		for i in range(self.n):
 			self.permutation_matrix_weight[i][self.objects_mapped_index_weight[i]] = 1.0
 			self.permutation_matrix_volume[i][self.objects_mapped_index_volume[i]] = 1.0
-		self.diag_weight = np.diag(np.diag(np.tile(self.weight_index_count, (self.weight_index_size, 1))))	#Diagonalmatrix mit Gewicht i in Eintrag (i, i)
+		self.diag_weight = np.diag(np.diag(np.tile(self.weight_index_count, (self.weight_index_size, 1))))	#Diagonalmatrix mit Anzahl Objekte mit Gewicht i in Eintrag (i, i)
 		self.diag_volume = np.diag(np.diag(np.tile(self.volume_index_count, (self.volume_index_size, 1))))
 		self.pheromones_weight = np.ones((self.weight_index_size, self.weight_index_size))					#Pheromonmatrix für Gewicht
 		self.pheromones_volume = np.ones((self.volume_index_size, self.volume_index_size))					#Pheromonmatrix für Volumen
