@@ -85,6 +85,8 @@ class AntColonyOptimization:
 			self.permutation_matrix_volume[i][self.objects_mapped_index_volume[i]] = 1.0
 		self.diag_weight = np.diag(np.diag(np.tile(self.weight_index_count, (self.weight_index_size, 1))))	#Diagonalmatrix mit Anzahl Objekte mit Gewicht i in Eintrag (i, i)
 		self.diag_volume = np.diag(np.diag(np.tile(self.volume_index_count, (self.volume_index_size, 1))))
+		self.diag_weight_2 = np.diag(np.ones(self.weight_index_size)*0.5)
+		self.diag_volume_2 = np.diag(np.ones(self.volume_index_size)*0.5)
 		self.pheromones_weight = np.ones((self.weight_index_size, self.weight_index_size))					#Pheromonmatrix für Gewicht
 		self.pheromones_volume = np.ones((self.volume_index_size, self.volume_index_size))					#Pheromonmatrix für Volumen
 		self.pheromones_weight = self.pheromones_weight*(1/(1-self.p))
@@ -115,7 +117,7 @@ class AntColonyOptimization:
 			self.iteration_gbest[x] = self.g_best[0]
 			self.iteration_best_fitness[x] = self.g_best[1]
 
-			[self.pheromones_weight, self.pheromones_volume] = UpdatePheromones(self.solutions[0], self.pheromones_weight, self.pheromones_volume, self.diag_weight, self.diag_volume, self.p, self.t_min)
+			[self.pheromones_weight, self.pheromones_volume] = UpdatePheromones(self.solutions[0], self.pheromones_weight, self.pheromones_volume, self.diag_weight, self.diag_volume, self.diag_weight_2, self.diag_volume_2, self.p, self.t_min)
 		
 		ende = time.time()
 		runtime = ende-start
@@ -224,12 +226,14 @@ def ConstructAntSolutions(objects_float, objects_b, container_size, weight_index
 
 	return solutions
 
-def UpdatePheromones(s_update, pheromones_weight, pheromones_volume, diag_weight, diag_volume, p, t_min):
+def UpdatePheromones(s_update, pheromones_weight, pheromones_volume, diag_weight, diag_volume, diag_weight_2, diag_volume_2, p, t_min):
 	#Berechne co_occurence Matrizen und ziehe die Diagonalmatrizen ab
 	co_occurence_weight = np.array(s_update[2])
 	co_occurence_volume = np.array(s_update[3])
 	co_occurence_weight = np.subtract(np.dot(co_occurence_weight.T, co_occurence_weight), diag_weight)
 	co_occurence_volume = np.subtract(np.dot(co_occurence_volume.T, co_occurence_volume), diag_volume)
+	co_occurence_weight = np.subtract(co_occurence_weight, np.multiply(co_occurence_weight, diag_weight_2))
+	co_occurence_volume = np.subtract(co_occurence_volume, np.multiply(co_occurence_volume, diag_volume_2))
 	#Zerfallsrate anwenden
 	pheromones_weight = pheromones_weight*p
 	pheromones_volume = pheromones_volume*p
