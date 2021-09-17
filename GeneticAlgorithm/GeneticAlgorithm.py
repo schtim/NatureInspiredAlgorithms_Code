@@ -6,11 +6,14 @@ import copy
 from matplotlib import pyplot as plt
 import matplotlib.patches as mpatches
 
-
-
 class FirstFitDecreasing:
+    ''''Class that implements the first fit decreasing heuristic'''
     def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity):
+        # Params:   objects <- objects to be inserted
+        #           bin_vol_capacity <- max volume of the bins that will be filled
+        #           bin_weight_capacity <- max weight of the bins that will be filled           
         self.object_list = []
+        # create objects
         for obj_tuple in objects:
             volume, weight = obj_tuple
             obj = Obj(volume, weight)
@@ -21,26 +24,37 @@ class FirstFitDecreasing:
         self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
 
     def run(self):
+        ''''Runs the FirstFitDecreasing Algorithm with the given objects and bins'''
         start = time.time()
+        # sort objects
         self.object_list.sort(key=lambda x: x.volume+x.weight, reverse=True)
+        # insert in bins
         for obj in self.object_list:
             self.first_fit(obj)
         end = time.time()
         runtime = end - start
+        # return the length of the solution and the runtime
         return np.array([len(self.solution)]), np.array([runtime])
     
     def first_fit(self, obj):
+        ''''Checks if an objects fits into a bin'''
         for bin in self.solution:
             if bin.check_fit(obj):
                 bin.fit_obj(obj)
                 return
+        # only if all other bins don't have enough remaining capacity
         new_bin = Bin.create_empty_bin()
         self.solution.append(new_bin)
         new_bin.fit_obj(obj)
         return
 
 class SimpleFirstFit:
+    ''''Class that implements the first fit decreasing heuristic'''
     def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_trials):
+        # Params:   objects <- objects to be inserted
+        #           bin_vol_capacity <- max volume of the bins that will be filled
+        #           bin_weight_capacity <- max weight of the bins that will be filled 
+        #           number_trials <- number of iterations/trials
         self.all_time_best = 1000
         self.object_list = []
         for obj_tuple in objects:
@@ -54,6 +68,7 @@ class SimpleFirstFit:
         self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
 
     def run(self):
+        ''''Runs the FirstFit Algorithm with the given objects and bins for a fixed number of times'''
         start = time.time()
         for index in np.arange(self.number_trials):
             random.shuffle(self.object_list)
@@ -64,9 +79,11 @@ class SimpleFirstFit:
             self.solution = [Bin.create_empty_bin(self.bin_vol_capacity, self.bin_weight_capacity)]
         end = time.time()
         runtime = end - start
+        # return the best value (lowest number of bins) and the runtime 
         return self.all_time_best, runtime 
     
     def first_fit(self, obj):
+        ''''Checks if an objects fits into a bin'''
         for bin in self.solution:
             if bin.check_fit(obj):
                 bin.fit_obj(obj)
@@ -75,49 +92,25 @@ class SimpleFirstFit:
         self.solution.append(new_bin)
         new_bin.fit_obj(obj)
         return
-
-class SimpleFirstFit:
-    def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_trials):
-        self.all_time_best = 1000
-        self.object_list = []
-        for obj_tuple in objects:
-            volume, weight = obj_tuple
-            obj = Obj(volume, weight)
-            self.object_list.append(obj)
-        self.number_objects = len(self.object_list)
-        self.number_trials = number_trials
-        self.bin_vol_capacity = bin_vol_capacity
-        self.bin_weight_capacity = bin_weight_capacity
-        self.solution = [Bin.create_empty_bin(bin_vol_capacity, bin_weight_capacity)]
-
-    def run(self):
-        start = time.time()
-        for index in np.arange(self.number_trials):
-            random.shuffle(self.object_list)
-            for obj in self.object_list:
-                self.first_fit(obj)
-            if len(self.solution) <= self.all_time_best:
-                self.all_time_best = len(self.solution)
-            self.solution = [Bin.create_empty_bin(self.bin_vol_capacity, self.bin_weight_capacity)]
-        end = time.time()
-        runtime = end - start
-        return self.all_time_best, runtime 
-    
-    def first_fit(self, obj):
-        for bin in self.solution:
-            if bin.check_fit(obj):
-                bin.fit_obj(obj)
-                return
-        new_bin = Bin.create_empty_bin()
-        self.solution.append(new_bin)
-        new_bin.fit_obj(obj)
-        return
-                
 
 class GeneticAlgorithm:
+    ''''Class that implements a Genetic Algorithm for the 2d Bin Packing Problem'''
     all_time_best = 1000000
     number_objects = None
     def __init__(self, objects,  bin_vol_capacity, bin_weight_capacity, number_generations = 30, population_size = 60, crossover_probability = 0.7,mutation_probability = 0.1, fitness_function = 'fill', fit_heuristic = 'first_fit', sampling_method = 'roulette_wheel_sampling', fit_sort = 'combined', sort_in_recom_and_mutation = True):
+        # Params:   objects <- objects to be inserted
+        #           bin_vol_capacity <- max volume of the bins that will be filled
+        #           bin_weight_capacity <- max weight of the bins that will be filled 
+        #           number_generations <- stopping criterion
+        #           population_size <- number of chromosomes in each population
+        #           crossover_probability <- probability at which a 'real' crossover ocurs (used in recombination)
+        #           mutation_probability <- probability that is used in the mutation (to delete a bin)
+        #           fitness_function <- fitness function that is used in the sampling (values: 'fill', 'constant', 'amount_bins', 'amount_bins_pow', 'combined')
+        #           fit_heuristic <- heuristic that is used to reinsert the objects in recombination and mutation (values: 'first_fit', 'random')
+        #           sampling_method <- sampling method that is used (values: 'roulette_wheel', 'tournament')
+        #           fit_sort <- sort that is used in the first_fit_heuristic (values: 'combined', 'chance', 'no_sort')
+        #           sort_in_reccom_and_mutation <- if true the algorithm will sort the objects in recombination and mutation according to fit_sort, if false only in recombination
+        #           
         # Create initial Population
         object_list = []
         for obj_tuple in objects:
@@ -171,6 +164,7 @@ class GeneticAlgorithm:
         self.sort_in_recom_and_mutation == sort_in_recom_and_mutation
         
     def run(self):
+        ''''Runs the Genetic Algorithm on the given Problem'''
         start = time.time()
         for generation_number in np.arange(self.number_generations):
             # Choose Parents
@@ -188,6 +182,15 @@ class GeneticAlgorithm:
             self.save_info(self.current_population , generation_number)
         end = time.time()
         runtime = end - start
+        # returns:
+        # self.solution <- the best solution found (object of class chromosome)
+        # self.current_population <- the last population containing pop_size chromosomes
+        # self.all_time_best <- best number of bins found
+        # self.av_vals <- average number of bins in population (ndarray size nummber_generations)
+        # self.best_vals <- best number of bins in population (ndarray size nummber_generations)
+        # self.worst_vals <- worst number of bins in population (ndarray size nummber_generations)
+        # runtime <- runtime
+        # self.av_fitness_vals <- average fitness in population (ndarray size nummber_generations) 
         return self.solution, self.current_population,  self.all_time_best, self.av_vals, self.best_vals, self.worst_vals, runtime, self.av_fitness_vals
 
     def save_info(self,current_population, generation_number):
@@ -499,35 +502,6 @@ class Chromosome:
             #assert(offspring_1.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), f'{len(offspring_1.group_part)} Bins with to many Objects after recombination'
             return offspring_1
 
-    #def mutate(self, mutation_probability, fit_heuristic, fit_sort, sort_in_recom_and_mutation):
-    #    '''Mutate the chromosome'''
-    #    # Iterate through the bins and delete bin with mutation_probability
-    #    removed_objects = []
-    #    for bin in reversed(self.group_part):
-    #        if np.random.random() <= mutation_probability:
-    #            # Delete the bin
-    #            self.group_part.remove(bin)
-    #            # save the objects that need to be reinserted
-    #            removed_objects = removed_objects + bin.objects_contained
-    #    # use first fit to distribute the items back to the bins
-    #     # sort using combined 
-    #    if sort_in_recom_and_mutation:
-    #        if fit_sort == 'combined':
-    #            removed_objects.sort(key=lambda x: x.volume+x.weight, reverse=True)
-    #        # sort using one of the attributes by chance
-    #        if fit_sort == 'chance':
-    #            coin = np.random.random()
-    #            if coin >= 0.5:
-    #                # sort using volume
-    #                removed_objects.sort(key=lambda x: x.volume, reverse=True)
-    #            else:
-    #                # sort using  weight
-    #                removed_objects.sort(key=lambda x: x.weight, reverse=True)
-    #    for obj in removed_objects:
-    #        fit_heuristic(self,obj)
-    #    #assert(self.total_amount_objects_in_bins() == GeneticAlgorithm.number_objects), 'Wrong number of Objects after mutation.'
-    #    #assert(len(self.group_part) <= GeneticAlgorithm.number_objects), 'To many bins after mutation'
-
     def mutate(self, mutation_probability, fit_heuristic, fit_sort ,sort_in_recom_and_mutation):
         '''Mutates the chromosome'''
         removed_objects = []
@@ -650,7 +624,7 @@ class Chromosome:
         ax.set_xticklabels(labels)
         plt.xlabel('Gewicht/Volumen pro Container')
         plt.ylabel('Füllstand')            
-        ax.set_title('Füllstände der Container')
+        #ax.set_title('Füllstände der Container')
 
 
 class Bin:
