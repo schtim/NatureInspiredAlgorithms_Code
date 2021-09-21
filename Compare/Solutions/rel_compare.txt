@@ -361,30 +361,30 @@ Algorithmus:	FFD        |  Beste Werte: 0.02 in 1.00 | 0.03 in 0.00 | 0.04 in 0.
 
 Zusammenfassung der Ergebnisse
 new_50 Problem:
-Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       0.41
-Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       2.22
-Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:      18.52
-Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       1.07
-Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 14.520% | Mit Laufzeit:       0.00
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 7.260% | Mit Laufzeit:       0.41
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 12.437% | Mit Laufzeit:       2.22
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 7.260% | Mit Laufzeit:      18.52
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 7.260% | Mit Laufzeit:       1.07
+Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 7.260% | Mit Laufzeit:       0.00
 
 new_100 Problem:
-Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 7.217% | Mit Laufzeit:       0.96
-Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 13.649% | Mit Laufzeit:       5.25
-Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 7.217% | Mit Laufzeit:      26.31
-Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 10.425% | Mit Laufzeit:       2.20
-Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 9.006% | Mit Laufzeit:       0.00
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 3.831% | Mit Laufzeit:       0.96
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 10.797% | Mit Laufzeit:       5.25
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 3.608% | Mit Laufzeit:      26.31
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 7.097% | Mit Laufzeit:       2.20
+Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 5.398% | Mit Laufzeit:       0.00
 
 new_250 Problem:
-Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 4.371% | Mit Laufzeit:       3.60
-Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 10.768% | Mit Laufzeit:      18.64
-Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 4.095% | Mit Laufzeit:      62.36
-Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 6.770% | Mit Laufzeit:       6.47
-Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 4.800% | Mit Laufzeit:       0.01
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 2.987% | Mit Laufzeit:       3.60
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 10.055% | Mit Laufzeit:      18.64
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 2.810% | Mit Laufzeit:      62.36
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 5.794% | Mit Laufzeit:       6.47
+Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 3.388% | Mit Laufzeit:       0.01
 
 new_500 Problem:
-Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 3.066% | Mit Laufzeit:      12.48
-Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 9.481% | Mit Laufzeit:      57.49
-Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 3.001% | Mit Laufzeit:      99.73
-Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 5.506% | Mit Laufzeit:      26.17
-Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 3.204% | Mit Laufzeit:       0.03
+Algorithmus:	GA         verfehlt das optimale Ergebnis durchschnittlich um 2.642% | Mit Laufzeit:      12.48
+Algorithmus:	PSO        verfehlt das optimale Ergebnis durchschnittlich um 9.188% | Mit Laufzeit:      57.49
+Algorithmus:	ACO        verfehlt das optimale Ergebnis durchschnittlich um 2.538% | Mit Laufzeit:      99.73
+Algorithmus:	FF         verfehlt das optimale Ergebnis durchschnittlich um 5.113% | Mit Laufzeit:      26.17
+Algorithmus:	FFD        verfehlt das optimale Ergebnis durchschnittlich um 2.506% | Mit Laufzeit:       0.03
 
